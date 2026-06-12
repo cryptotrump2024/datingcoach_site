@@ -56,6 +56,8 @@ export interface AnalysisItem {
 export interface Conversation {
   id: string
   personaId: string
+  personaName?: string
+  personaArchetype?: string
   messages: Message[]
   analyses: MessageAnalysis[]
   createdAt: number
@@ -63,6 +65,8 @@ export interface Conversation {
   phase: number
   phaseName: string
   isActive: boolean
+  scenarioSlug?: string
+  scenarioBrief?: string
 }
 
 export interface User {

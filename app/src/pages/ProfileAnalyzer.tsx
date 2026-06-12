@@ -33,6 +33,60 @@ import {
   Type,
 } from 'lucide-react'
 import Tesseract from 'tesseract.js'
+import { getAIProfileAnalysis, type ProfileResponse } from '@/lib/ai-client'
+
+// Downscale + JPEG-encode an image file for the vision API (keeps payloads small).
+async function fileToApiImage(
+  file: File
+): Promise<{ data: string; mediaType: 'image/jpeg' } | null> {
+  try {
+    const bitmap = await createImageBitmap(file)
+    const maxEdge = 1568
+    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.round(bitmap.width * scale)
+    canvas.height = Math.round(bitmap.height * scale)
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.85)
+    return { data: dataUrl.split(',')[1], mediaType: 'image/jpeg' }
+  } catch {
+    return null
+  }
+}
+
+// Overlay the live AI result onto the locally generated analysis shape.
+function mergeAnalysisWithAI(base: AnalysisResult, ai: ProfileResponse): AnalysisResult {
+  return {
+    ...base,
+    overallScore: ai.overallScore,
+    photoScore: ai.photoScore,
+    bioScore: ai.bioScore,
+    verdict: ai.firstImpression,
+    photoAnalysis: {
+      ...base.photoAnalysis,
+      greenFlags: ai.strengths.slice(0, 4),
+      communicates: ai.firstImpression,
+    },
+    bioAnalysis: {
+      ...base.bioAnalysis,
+      suggestions: ai.fixes,
+    },
+    strategy: {
+      ...base.strategy,
+      openingLines: ai.openers,
+    },
+    comparison: {
+      photoQuality: ai.photoScore,
+      bioQuality: ai.bioScore,
+      overallAppeal: ai.overallScore,
+    },
+    ocr: base.ocr
+      ? { ...base.ocr, bioSummary: ai.extractedBio || base.ocr.bioSummary }
+      : base.ocr,
+  }
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -814,6 +868,7 @@ export default function ProfileAnalyzer() {
   const [loadingProgress, setLoadingProgress] = useState(0)
   const [loadingStage, setLoadingStage] = useState(0)
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null)
+  const [aiPowered, setAiPowered] = useState(false)
   const [copySuccess, setCopySuccess] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -899,6 +954,13 @@ export default function ProfileAnalyzer() {
       setPhase('loading')
       setLoadingProgress(0)
       setLoadingStage(0)
+      setAiPowered(false)
+
+      // Live AI analysis runs in parallel with local OCR; whichever path
+      // succeeds shapes the result (AI preferred, OCR engine as fallback).
+      const aiPromise = fileToApiImage(file).then((img) =>
+        img ? getAIProfileAnalysis({ imageBase64: img.data, imageMediaType: img.mediaType }) : null
+      )
 
       // Run OCR
       setLoadingStage(1)
@@ -907,16 +969,26 @@ export default function ProfileAnalyzer() {
       // Build analysis
       const baseResult = getAnalysisFromInput(file.name)
 
+      let result = baseResult
       if (extractedText) {
         setOcrText(extractedText)
         const ocrAnalysis = parseExtractedText(extractedText)
-        const mergedAnalysis = mergeAnalysisWithOcr(baseResult, ocrAnalysis)
-        setAnalysis(mergedAnalysis)
+        result = mergeAnalysisWithOcr(baseResult, ocrAnalysis)
       } else {
         setOcrError(true)
         setOcrText(null)
-        setAnalysis(baseResult)
       }
+
+      const ai = await aiPromise
+      if (ai) {
+        result = mergeAnalysisWithAI(result, ai)
+        setAiPowered(true)
+        if (!extractedText && ai.extractedBio) {
+          setOcrText(ai.extractedBio)
+          setOcrError(false)
+        }
+      }
+      setAnalysis(result)
     },
     [runOCR]
   )
@@ -1334,6 +1406,19 @@ export default function ProfileAnalyzer() {
                         </span>
                         <span className="text-caption text-text-muted bg-bg-tertiary px-3 py-1 rounded-full">
                           {imageInfo.size}
+                        </span>
+                        <span
+                          className="text-caption px-3 py-1 rounded-full inline-flex items-center gap-1.5"
+                          style={{
+                            background: aiPowered ? 'rgba(5, 150, 105, 0.1)' : '#EDE6DA',
+                            color: aiPowered ? '#059669' : '#A8A29E',
+                          }}
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ background: aiPowered ? '#059669' : '#A8A29E' }}
+                          />
+                          {aiPowered ? 'Live AI analysis' : 'Standard analysis'}
                         </span>
                       </div>
                     )}

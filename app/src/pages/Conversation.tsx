@@ -28,6 +28,7 @@ import {
   generateId,
   phases,
 } from '@/lib/conversation-engine'
+import { getAIChatTurn, getAIEngineStatus } from '@/lib/ai-client'
 
 // ─── Typing Indicator Component ────────────────────────────────────────────
 
@@ -295,6 +296,9 @@ export default function Conversation() {
   const [isTyping, setIsTyping] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showEndConfirm, setShowEndConfirm] = useState(false)
+  const [aiStatus, setAIStatus] = useState(getAIEngineStatus())
+  // Scenario drill context (set when launched from /scenarios)
+  const scenarioBrief = currentConversation?.scenarioBrief ?? ''
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const hasStartedRef = useRef(false)
@@ -363,46 +367,98 @@ export default function Conversation() {
     // Start typing indicator
     setIsTyping(true)
 
-    // Generate response
+    // Generate response — live AI engine first, local practice engine as fallback
     const userMessageCount = messages.filter((m) => m.role === 'user').length
-    const result = generateResponse(persona, trimmed, currentPhase, userMessageCount)
 
-    // Delay then send her response
-    setTimeout(() => {
-      setIsTyping(false)
+    const respond = async (): Promise<{
+      message: string
+      delay: number
+      phaseTransition?: string
+      analysis: MessageAnalysis
+    }> => {
+      const history = [...messages, userMsg]
+        .filter((m) => m.role === 'user' || m.role === 'assistant')
+        .slice(-30)
+        .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }))
 
-      const herMsg: Message = {
-        id: generateId(),
-        role: 'assistant',
-        content: result.message,
-        timestamp: Date.now(),
-        phase: phaseName,
-      }
-      addMessage(herMsg)
+      const ai = await getAIChatTurn({
+        persona: {
+          name: persona.name,
+          age: persona.age,
+          archetype: persona.archetype,
+          bio: persona.bio,
+          difficulty: persona.difficulty,
+          scenario: persona.scenario,
+          personality: persona.personality,
+        },
+        scenarioBrief: scenarioBrief || undefined,
+        phase: currentPhase,
+        messages: history,
+      })
 
-      // Generate and add analysis
-      const analysis = generateAnalysis(persona, trimmed, result.message, currentPhase, phaseName)
-      addAnalysis(analysis)
-
-      // Check phase transition
-      if (result.phaseTransition && result.phaseTransition !== phaseName) {
-        const newPhaseIdx = phases.findIndex((p) => p.name === result.phaseTransition)
-        if (newPhaseIdx >= 0) {
-          updateConversationPhase(newPhaseIdx, result.phaseTransition)
-
-          // Add system message for phase transition
-          setTimeout(() => {
-            const sysMsg: Message = {
-              id: generateId(),
-              role: 'system',
-              content: getPhaseTransitionMessage(result.phaseTransition || ''),
-              timestamp: Date.now(),
-            }
-            addMessage(sysMsg)
-          }, 500)
+      if (ai) {
+        setAIStatus(getAIEngineStatus())
+        return {
+          message: ai.reply,
+          // the network round-trip already added realistic latency
+          delay: 500 + Math.random() * 800,
+          phaseTransition:
+            ai.suggestedPhase !== currentPhase ? phases[ai.suggestedPhase]?.name : undefined,
+          analysis: {
+            messageId: userMsg.id,
+            subtext: ai.analysis.subtext,
+            psychology: ai.analysis.psychology,
+            advice: ai.analysis.advice,
+            score: ai.analysis.score,
+            stars: ai.analysis.score,
+          },
         }
       }
-    }, result.delay)
+
+      setAIStatus(getAIEngineStatus())
+      const result = generateResponse(persona, trimmed, currentPhase, userMessageCount)
+      return {
+        message: result.message,
+        delay: result.delay,
+        phaseTransition: result.phaseTransition,
+        analysis: generateAnalysis(persona, trimmed, result.message, currentPhase, phaseName),
+      }
+    }
+
+    respond().then(({ message, delay, phaseTransition, analysis }) => {
+      setTimeout(() => {
+        setIsTyping(false)
+
+        const herMsg: Message = {
+          id: generateId(),
+          role: 'assistant',
+          content: message,
+          timestamp: Date.now(),
+          phase: phaseName,
+        }
+        addMessage(herMsg)
+        addAnalysis(analysis)
+
+        // Check phase transition
+        if (phaseTransition && phaseTransition !== phaseName) {
+          const newPhaseIdx = phases.findIndex((p) => p.name === phaseTransition)
+          if (newPhaseIdx >= 0) {
+            updateConversationPhase(newPhaseIdx, phaseTransition)
+
+            // Add system message for phase transition
+            setTimeout(() => {
+              const sysMsg: Message = {
+                id: generateId(),
+                role: 'system',
+                content: getPhaseTransitionMessage(phaseTransition),
+                timestamp: Date.now(),
+              }
+              addMessage(sysMsg)
+            }, 500)
+          }
+        }
+      }, delay)
+    })
   }, [
     inputText,
     persona,
@@ -411,6 +467,7 @@ export default function Conversation() {
     messages,
     currentPhase,
     phaseName,
+    scenarioBrief,
     addMessage,
     addAnalysis,
     updateConversationPhase,
@@ -547,6 +604,24 @@ export default function Conversation() {
             style={{ background: '#EDE6DA', color: '#A8A29E' }}
           >
             {persona.scenario}
+          </span>
+          <span
+            className="text-caption px-3 py-1.5 rounded-full hidden md:inline-flex items-center gap-1.5"
+            style={{
+              background: aiStatus === 'live' ? 'rgba(5, 150, 105, 0.1)' : '#EDE6DA',
+              color: aiStatus === 'live' ? '#059669' : '#A8A29E',
+            }}
+            title={
+              aiStatus === 'live'
+                ? 'Powered by the live AI engine'
+                : 'Using the built-in practice engine'
+            }
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: aiStatus === 'live' ? '#059669' : '#A8A29E' }}
+            />
+            {aiStatus === 'live' ? 'Live AI' : 'Practice engine'}
           </span>
         </div>
 
