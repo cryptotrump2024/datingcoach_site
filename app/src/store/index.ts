@@ -1,4 +1,8 @@
 import { create } from 'zustand'
+import { toast } from 'sonner'
+import { isCloudMode, supabase } from '@/lib/supabase'
+import { emptyProgress, getStorageAdapter, type Progress } from '@/lib/storage'
+import { applySession, levelForXp, LEVEL_TITLES } from '@/lib/gamification'
 
 export interface Persona {
   id: string
@@ -79,14 +83,27 @@ export interface User {
   createdAt: string
 }
 
-interface StoredUser extends User {
-  passwordHash: string
+export interface AuthResult {
+  ok: boolean
+  error?: string
 }
+
+export interface EndConversationOptions {
+  drillSlug?: string
+  drillBonus?: number
+  drillCategoryCompleted?: boolean
+}
+
+// ── Local (guest) profile persistence — no passwords stored, ever ──────────
 
 const STORAGE_KEY_USERS = 'datingcoach_users'
 const STORAGE_KEY_SESSION = 'datingcoach_session'
 
-function getStoredUsers(): StoredUser[] {
+interface StoredLocalUser extends User {
+  passwordHash?: string // legacy field from the old fake-auth implementation; ignored
+}
+
+function getLocalUsers(): StoredLocalUser[] {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY_USERS) || '[]')
   } catch {
@@ -94,11 +111,14 @@ function getStoredUsers(): StoredUser[] {
   }
 }
 
-function saveUsers(users: StoredUser[]) {
-  localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users))
+function saveLocalUsers(users: StoredLocalUser[]) {
+  localStorage.setItem(
+    STORAGE_KEY_USERS,
+    JSON.stringify(users.map(({ passwordHash: _legacy, ...u }) => u))
+  )
 }
 
-function getSession(): User | null {
+function getLocalSession(): User | null {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || 'null')
   } catch {
@@ -106,13 +126,12 @@ function getSession(): User | null {
   }
 }
 
-function saveSession(user: User | null) {
-  localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(user))
+function saveLocalSession(user: User | null) {
+  if (user) localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(user))
+  else localStorage.removeItem(STORAGE_KEY_SESSION)
 }
 
-function hashPassword(password: string): string {
-  return btoa(password + '_datingcoach_salt')
-}
+// ── Store ───────────────────────────────────────────────────────────────────
 
 interface AppState {
   // Persona builder state
@@ -130,13 +149,19 @@ interface AppState {
   addMessage: (message: Message) => void
   addAnalysis: (analysis: MessageAnalysis) => void
   updateConversationPhase: (phase: number, phaseName: string) => void
-  endConversation: () => void
+  endConversation: (options?: EndConversationOptions) => void
 
-  // User progress
+  // Practice history (persisted via storage adapter)
   conversations: Conversation[]
   addConversation: (conversation: Conversation) => void
   totalMessages: number
   incrementTotalMessages: () => void
+
+  // Gamification progress
+  progress: Progress
+  sessionUsedVoice: boolean
+  markVoiceUsed: () => void
+  saveProfileAnalysis: (id: string, result: unknown) => void
 
   // Current analysis
   currentAnalysis: AnalysisItem[] | null
@@ -148,17 +173,22 @@ interface AppState {
   isLoading: boolean
   setIsLoading: (loading: boolean) => void
 
-  // ===== Auth State =====
+  // ===== Auth =====
   user: User | null
   isAuthenticated: boolean
-  login: (email: string, password: string) => Promise<boolean>
-  signup: (username: string, email: string, password: string) => Promise<boolean>
+  isCloudMode: boolean
+  login: (email: string, password: string) => Promise<AuthResult>
+  signup: (username: string, email: string, password: string) => Promise<AuthResult>
+  loginWithGoogle: () => Promise<AuthResult>
   logout: () => void
   updatePlan: (plan: 'free' | 'pro' | 'advanced') => void
   useCredit: () => boolean
   addCredits: (amount: number) => void
   getCreditCost: (conversationCount: number) => number
   canUseFeature: (feature: string) => boolean
+
+  // internal hydration
+  _hydrate: (user: User | null) => Promise<void>
 }
 
 const initialPersonaConfig: Partial<Persona> = {
@@ -182,8 +212,45 @@ const initialPersonaConfig: Partial<Persona> = {
   image: '',
 }
 
-// Load session from localStorage on init
-const sessionUser = getSession()
+function adapterFor(user: User | null) {
+  return getStorageAdapter(Boolean(user) && isCloudMode)
+}
+
+async function fetchCloudProfile(authUserId: string, email: string, fallbackUsername: string): Promise<User> {
+  const base: User = {
+    id: authUserId,
+    username: fallbackUsername,
+    email,
+    avatar: '',
+    plan: 'free',
+    credits: 3,
+    createdAt: new Date().toISOString(),
+  }
+  if (!supabase) return base
+  // Tolerates a missing profiles table/row (schema not applied yet).
+  const { data } = await supabase.from('profiles').select('*').eq('id', authUserId).maybeSingle()
+  if (!data) return base
+  return {
+    ...base,
+    username: data.username ?? fallbackUsername,
+    plan: (data.plan ?? 'free') as User['plan'],
+    credits: data.credits ?? 3,
+    createdAt: data.created_at ?? base.createdAt,
+  }
+}
+
+function persistCloudProfile(user: User) {
+  if (!isCloudMode || !supabase) return
+  supabase
+    .from('profiles')
+    .upsert({ id: user.id, username: user.username, plan: user.plan, credits: user.credits })
+    .then(({ error }) => {
+      if (error) console.warn('Profile sync failed:', error.message)
+    })
+}
+
+// Load session synchronously for local mode so refreshes don't flash logged-out.
+const initialLocalUser = isCloudMode ? null : getLocalSession()
 
 export const useStore = create<AppState>((set, get) => ({
   // Persona builder state
@@ -227,20 +294,87 @@ export const useStore = create<AppState>((set, get) => ({
         ? { ...state.currentConversation, phase, phaseName }
         : null,
     })),
-  endConversation: () =>
-    set((state) => ({
-      currentConversation: state.currentConversation
-        ? { ...state.currentConversation, isActive: false, updatedAt: Date.now() }
-        : null,
-    })),
 
-  // User progress
+  endConversation: (options) => {
+    const state = get()
+    const conv = state.currentConversation
+    if (!conv) return
+
+    const persona = state.selectedPersona
+    const ended: Conversation = {
+      ...conv,
+      personaName: conv.personaName ?? persona?.name,
+      personaArchetype: conv.personaArchetype ?? persona?.archetype,
+      isActive: false,
+      updatedAt: Date.now(),
+    }
+
+    const userMessageCount = ended.messages.filter((m) => m.role === 'user').length
+    const conversations = [...state.conversations.filter((c) => c.id !== ended.id), ended]
+    set({ currentConversation: ended, conversations })
+
+    // Persist (fire-and-forget; never blocks the UI)
+    const user = state.user
+    if (user) {
+      adapterFor(user)
+        .saveConversation(user.id, ended)
+        .catch(() => toast.error('Could not sync this session — it is saved on this device.'))
+    } else {
+      adapterFor(null).saveConversation('guest', ended).catch(() => undefined)
+    }
+
+    // Gamification — only sessions with real participation earn progress
+    if (userMessageCount >= 2 && ended.analyses.length > 0) {
+      const avgScore =
+        ended.analyses.reduce((s, a) => s + a.score, 0) / ended.analyses.length
+      const update = applySession(state.progress, {
+        avgScore,
+        userMessageCount,
+        hadFiveStarMessage: ended.analyses.some((a) => a.score >= 5),
+        usedVoice: state.sessionUsedVoice,
+        drillSlug: options?.drillSlug ?? ended.scenarioSlug,
+        drillBonus: options?.drillBonus,
+        drillCategoryCompleted: options?.drillCategoryCompleted,
+        totalSessionsAfter: conversations.filter((c) => !c.isActive).length,
+      })
+      set({ progress: update.progress, sessionUsedVoice: false })
+
+      const uid = user?.id ?? 'guest'
+      adapterFor(user).saveProgress(uid, update.progress).catch(() => undefined)
+
+      toast.success(`+${update.xpGained} XP`, {
+        description: `Practice streak: ${update.progress.streak} day${update.progress.streak === 1 ? '' : 's'}`,
+      })
+      if (update.leveledUp) {
+        const lvl = levelForXp(update.progress.xp)
+        toast.success(`Level ${lvl} — ${LEVEL_TITLES[lvl - 1]}!`, { duration: 6000 })
+      }
+      for (const ach of update.newAchievements) {
+        toast(`${ach.emoji} Achievement unlocked: ${ach.title}`, {
+          description: ach.description,
+          duration: 6000,
+        })
+      }
+    }
+  },
+
+  // Practice history
   conversations: [],
   addConversation: (conversation) =>
     set((state) => ({ conversations: [...state.conversations, conversation] })),
   totalMessages: 0,
-  incrementTotalMessages: () =>
-    set((state) => ({ totalMessages: state.totalMessages + 1 })),
+  incrementTotalMessages: () => set((state) => ({ totalMessages: state.totalMessages + 1 })),
+
+  // Gamification
+  progress: { ...emptyProgress },
+  sessionUsedVoice: false,
+  markVoiceUsed: () => set({ sessionUsedVoice: true }),
+  saveProfileAnalysis: (id, result) => {
+    const user = get().user
+    adapterFor(user)
+      .saveAnalysis(user?.id ?? 'guest', id, result)
+      .catch(() => undefined)
+  },
 
   // Analysis
   currentAnalysis: null,
@@ -252,31 +386,65 @@ export const useStore = create<AppState>((set, get) => ({
   isLoading: false,
   setIsLoading: (loading) => set({ isLoading: loading }),
 
-  // ===== Auth State =====
-  user: sessionUser,
-  isAuthenticated: !!sessionUser,
+  // ===== Auth =====
+  user: initialLocalUser,
+  isAuthenticated: Boolean(initialLocalUser),
+  isCloudMode,
 
-  login: async (email: string, password: string) => {
-    const users = getStoredUsers()
-    const passwordHash = hashPassword(password)
-    const found = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase() && u.passwordHash === passwordHash
-    )
-    if (found) {
-      const { passwordHash: _, ...user } = found
-      saveSession(user)
+  login: async (email, password) => {
+    if (isCloudMode && supabase) {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) return { ok: false, error: error.message }
+      if (!data.user) return { ok: false, error: 'Login failed — please try again.' }
+      // onAuthStateChange hydrates the profile; set a provisional user now.
+      const user = await fetchCloudProfile(
+        data.user.id,
+        data.user.email ?? email,
+        (data.user.user_metadata?.username as string) ?? email.split('@')[0]
+      )
       set({ user, isAuthenticated: true })
-      return true
+      void get()._hydrate(user)
+      return { ok: true }
     }
-    return false
+
+    // Local mode: guest profile lookup (no passwords involved by design)
+    const found = getLocalUsers().find((u) => u.email.toLowerCase() === email.toLowerCase())
+    if (!found) {
+      return { ok: false, error: 'No local profile with that email. Create one via Sign up.' }
+    }
+    const { passwordHash: _legacy, ...user } = found
+    saveLocalSession(user)
+    set({ user, isAuthenticated: true })
+    void get()._hydrate(user)
+    return { ok: true }
   },
 
-  signup: async (username: string, email: string, password: string) => {
-    const users = getStoredUsers()
-    if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-      return false
+  signup: async (username, email, password) => {
+    if (isCloudMode && supabase) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { username } },
+      })
+      if (error) return { ok: false, error: error.message }
+      if (!data.session) {
+        return {
+          ok: false,
+          error: 'Account created — check your email to confirm it, then log in.',
+        }
+      }
+      const user = await fetchCloudProfile(data.user!.id, email, username)
+      set({ user, isAuthenticated: true })
+      void get()._hydrate(user)
+      return { ok: true }
     }
-    const newUser: StoredUser = {
+
+    // Local mode: create a guest profile on this device. No password stored.
+    const users = getLocalUsers()
+    if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
+      return { ok: false, error: 'A local profile with that email already exists.' }
+    }
+    const user: User = {
       id: crypto.randomUUID(),
       username,
       email: email.toLowerCase(),
@@ -284,19 +452,36 @@ export const useStore = create<AppState>((set, get) => ({
       plan: 'free',
       credits: 3,
       createdAt: new Date().toISOString(),
-      passwordHash: hashPassword(password),
     }
-    users.push(newUser)
-    saveUsers(users)
-    const { passwordHash: _, ...user } = newUser
-    saveSession(user)
+    users.push(user)
+    saveLocalUsers(users)
+    saveLocalSession(user)
     set({ user, isAuthenticated: true })
-    return true
+    void get()._hydrate(user)
+    return { ok: true }
+  },
+
+  loginWithGoogle: async () => {
+    if (!isCloudMode || !supabase) {
+      return { ok: false, error: 'Google sign-in requires the cloud backend (not configured).' }
+    }
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/dashboard` },
+    })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true } // browser redirects
   },
 
   logout: () => {
-    saveSession(null)
-    set({ user: null, isAuthenticated: false })
+    if (isCloudMode && supabase) void supabase.auth.signOut()
+    saveLocalSession(null)
+    set({
+      user: null,
+      isAuthenticated: false,
+      conversations: [],
+      progress: { ...emptyProgress },
+    })
   },
 
   updatePlan: (plan) => {
@@ -307,14 +492,17 @@ export const useStore = create<AppState>((set, get) => ({
         plan,
         credits: plan === 'advanced' ? -1 : plan === 'pro' ? 50 : state.user.credits,
       }
-      // Update stored users
-      const users = getStoredUsers()
-      const idx = users.findIndex((u) => u.id === updatedUser.id)
-      if (idx >= 0) {
-        users[idx] = { ...users[idx], plan: updatedUser.plan, credits: updatedUser.credits }
-        saveUsers(users)
+      if (isCloudMode) {
+        persistCloudProfile(updatedUser)
+      } else {
+        const users = getLocalUsers()
+        const idx = users.findIndex((u) => u.id === updatedUser.id)
+        if (idx >= 0) {
+          users[idx] = { ...users[idx], plan: updatedUser.plan, credits: updatedUser.credits }
+          saveLocalUsers(users)
+        }
+        saveLocalSession(updatedUser)
       }
-      saveSession(updatedUser)
       return { user: updatedUser }
     })
   },
@@ -324,16 +512,18 @@ export const useStore = create<AppState>((set, get) => ({
     if (!state.user) return false
     if (state.user.plan === 'advanced' || state.user.credits === -1) return true
     if (state.user.credits <= 0) return false
-    const newCredits = state.user.credits - 1
-    const updatedUser: User = { ...state.user, credits: newCredits }
-    // Update stored users
-    const users = getStoredUsers()
-    const idx = users.findIndex((u) => u.id === updatedUser.id)
-    if (idx >= 0) {
-      users[idx] = { ...users[idx], credits: newCredits }
-      saveUsers(users)
+    const updatedUser: User = { ...state.user, credits: state.user.credits - 1 }
+    if (isCloudMode) {
+      persistCloudProfile(updatedUser)
+    } else {
+      const users = getLocalUsers()
+      const idx = users.findIndex((u) => u.id === updatedUser.id)
+      if (idx >= 0) {
+        users[idx] = { ...users[idx], credits: updatedUser.credits }
+        saveLocalUsers(users)
+      }
+      saveLocalSession(updatedUser)
     }
-    saveSession(updatedUser)
     set({ user: updatedUser })
     return true
   },
@@ -342,37 +532,33 @@ export const useStore = create<AppState>((set, get) => ({
     set((state) => {
       if (!state.user || state.user.credits === -1) return state
       const updatedUser: User = { ...state.user, credits: state.user.credits + amount }
-      const users = getStoredUsers()
-      const idx = users.findIndex((u) => u.id === updatedUser.id)
-      if (idx >= 0) {
-        users[idx] = { ...users[idx], credits: updatedUser.credits }
-        saveUsers(users)
+      if (isCloudMode) {
+        persistCloudProfile(updatedUser)
+      } else {
+        const users = getLocalUsers()
+        const idx = users.findIndex((u) => u.id === updatedUser.id)
+        if (idx >= 0) {
+          users[idx] = { ...users[idx], credits: updatedUser.credits }
+          saveLocalUsers(users)
+        }
+        saveLocalSession(updatedUser)
       }
-      saveSession(updatedUser)
       return { user: updatedUser }
     })
   },
 
-  getCreditCost: (conversationCount: number) => {
-    const state = get()
-    if (!state.user) return 1
-    if (state.user.plan === 'advanced') return 0
-    if (state.user.plan === 'pro') return conversationCount >= 50 ? 1 : 1
-    return 1
-  },
+  getCreditCost: () => 1,
 
   canUseFeature: (feature: string) => {
     const state = get()
     if (!state.user) return false
 
     const plan = state.user.plan
-
     const freeFeatures = ['basic_feedback', 'limited_personas', 'profile_analysis']
     const proFeatures = [
       ...freeFeatures,
       'conversation_history',
       'analytics_dashboard',
-      'ai_image_generation',
       'all_personas',
       'subtext_decoding',
     ]
@@ -389,4 +575,52 @@ export const useStore = create<AppState>((set, get) => ({
     if (plan === 'pro') return proFeatures.includes(feature)
     return freeFeatures.includes(feature)
   },
+
+  _hydrate: async (user) => {
+    const adapter = adapterFor(user)
+    const uid = user?.id ?? 'guest'
+    try {
+      const [conversations, progress] = await Promise.all([
+        adapter.loadConversations(uid),
+        adapter.loadProgress(uid),
+      ])
+      set({
+        conversations,
+        progress: progress ?? { ...emptyProgress },
+        totalMessages: conversations.reduce(
+          (n, c) => n + c.messages.filter((m) => m.role === 'user').length,
+          0
+        ),
+      })
+    } catch {
+      /* hydration is best-effort */
+    }
+  },
 }))
+
+// ── Boot-time hydration & cloud auth subscription ──────────────────────────
+
+// Guests (and local-mode users) get their device history immediately.
+void useStore.getState()._hydrate(initialLocalUser)
+
+if (isCloudMode && supabase) {
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT' || !session?.user) {
+      if (useStore.getState().isAuthenticated) {
+        useStore.setState({ user: null, isAuthenticated: false })
+      }
+      return
+    }
+    const authUser = session.user
+    // Avoid duplicate hydration when login()/signup() already did it.
+    if (useStore.getState().user?.id === authUser.id) return
+    void fetchCloudProfile(
+      authUser.id,
+      authUser.email ?? '',
+      (authUser.user_metadata?.username as string) ?? (authUser.email ?? 'Member').split('@')[0]
+    ).then((user) => {
+      useStore.setState({ user, isAuthenticated: true })
+      void useStore.getState()._hydrate(user)
+    })
+  })
+}

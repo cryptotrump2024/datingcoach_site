@@ -33,6 +33,7 @@ import {
   Type,
 } from 'lucide-react'
 import Tesseract from 'tesseract.js'
+import { useStore } from '@/store'
 import { getAIProfileAnalysis, type ProfileResponse } from '@/lib/ai-client'
 
 // Downscale + JPEG-encode an image file for the vision API (keeps payloads small).
@@ -1081,14 +1082,17 @@ export default function ProfileAnalyzer() {
     setTimeout(() => setCopySuccess(false), 2000)
   }, [analysis])
 
+  const saveProfileAnalysis = useStore((s) => s.saveProfileAnalysis)
+
   const handleSave = useCallback(() => {
     if (!analysis) return
     const history = JSON.parse(localStorage.getItem('profileAnalyses') || '[]')
     history.push({ ...analysis, savedAt: Date.now() })
     localStorage.setItem('profileAnalyses', JSON.stringify(history))
+    saveProfileAnalysis(analysis.id, { ...analysis, savedAt: Date.now() })
     setSaveSuccess(true)
     setTimeout(() => setSaveSuccess(false), 2000)
-  }, [analysis])
+  }, [analysis, saveProfileAnalysis])
 
   const handleReset = useCallback(() => {
     setPhase('upload')

@@ -66,7 +66,7 @@ function strengthLabel(strength: PasswordStrength): string {
 
 export default function Signup() {
   const navigate = useNavigate()
-  const { signup } = useAuth()
+  const { signup, loginWithGoogle, isCloudMode: cloudMode } = useAuth()
 
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -110,17 +110,23 @@ export default function Signup() {
 
     setIsLoading(true)
     try {
-      const success = await signup(username, email, password)
-      if (success) {
+      const result = await signup(username, email, password)
+      if (result.ok) {
         navigate('/dashboard', { replace: true })
       } else {
-        setError('Email already registered')
+        setError(result.error ?? 'Could not create the account')
       }
     } catch {
       setError('Something went wrong. Please try again.')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleGoogle = async () => {
+    setError('')
+    const result = await loginWithGoogle()
+    if (!result.ok) setError(result.error ?? 'Google sign-in failed')
   }
 
   return (
@@ -387,6 +393,7 @@ export default function Signup() {
           <div className="flex flex-col gap-3 w-full mt-6">
             <button
               type="button"
+              onClick={handleGoogle}
               className="w-full flex items-center justify-center gap-3 bg-white text-[#1f1f1f] font-medium text-sm rounded px-4 py-2.5 border border-[#dadce0] hover:bg-[#f8f9fa] transition-colors cursor-pointer"
             >
               <GoogleIcon />
@@ -394,12 +401,18 @@ export default function Signup() {
             </button>
             <button
               type="button"
+              onClick={() => setError('Apple sign-in is coming soon.')}
               className="w-full flex items-center justify-center gap-3 bg-black text-white font-medium text-sm rounded px-4 py-2.5 hover:bg-[#1a1a1a] transition-colors cursor-pointer"
             >
               <AppleIcon />
               Continue with Apple
             </button>
           </div>
+          {!cloudMode && (
+            <p className="text-caption text-text-muted text-center mt-4">
+              Local mode — profiles live only in this browser, no password required.
+            </p>
+          )}
         </motion.div>
 
         {/* Login Link */}

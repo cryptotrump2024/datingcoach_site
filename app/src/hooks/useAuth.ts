@@ -13,8 +13,10 @@ export interface User {
 export function useAuth() {
   const user = useStore((state) => state.user)
   const isAuthenticated = useStore((state) => state.isAuthenticated)
+  const isCloudMode = useStore((state) => state.isCloudMode)
   const login = useStore((state) => state.login)
   const signup = useStore((state) => state.signup)
+  const loginWithGoogle = useStore((state) => state.loginWithGoogle)
   const logout = useStore((state) => state.logout)
   const useCredit = useStore((state) => state.useCredit)
   const addCredits = useStore((state) => state.addCredits)
@@ -25,8 +27,10 @@ export function useAuth() {
   return {
     user,
     isAuthenticated,
+    isCloudMode,
     login,
     signup,
+    loginWithGoogle,
     logout,
     useCredit,
     addCredits,
