@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   RadarChart,
@@ -16,968 +16,476 @@ import {
 } from 'recharts'
 import {
   MessageCircle,
-  TrendingUp,
-  Clock,
   Target,
-  Brain,
   Flame,
   Star,
-  Zap,
   Trophy,
-  Heart,
   ChevronRight,
-  RefreshCw,
   Lock,
-  TrendingDown,
-  ArrowUpRight,
+  Sparkles,
+  Mic,
 } from 'lucide-react'
+import { useStore } from '@/store'
+import { useAuth } from '@/hooks/useAuth'
+import { computeDashboardStats } from '@/lib/stats'
+import { ACHIEVEMENTS, LEVEL_TITLES, levelProgress } from '@/lib/gamification'
+import { scenarios } from '@/lib/scenarios'
 
 /* ------------------------------------------------------------------ */
-/*  Types                                                              */
+/*  Small building blocks                                              */
 /* ------------------------------------------------------------------ */
 
-type DateRange = '7days' | '30days' | 'all'
-
-interface Conversation {
-  id: string
-  personaName: string
-  personaInitial: string
-  date: string
-  scenario: string
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert' | 'Master'
-  score: number
-  grade: string
-  messages: number
-  duration: string
-  avatarGradient: string
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  sub,
+  tint,
+  delay,
+}: {
+  icon: typeof Star
+  label: string
+  value: string
+  sub?: string
+  tint: string
+  delay: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, delay }}
+      className="glass-card p-5"
+    >
+      <div
+        className="w-9 h-9 rounded-lg flex items-center justify-center mb-3 border"
+        style={{ background: `${tint}12`, borderColor: `${tint}30` }}
+      >
+        <Icon className="w-4.5 h-4.5" style={{ color: tint, width: 18, height: 18 }} aria-hidden="true" />
+      </div>
+      <p className="text-2xl font-display font-semibold text-text-primary">{value}</p>
+      <p className="text-body-sm text-text-secondary mt-0.5">{label}</p>
+      {sub && <p className="text-caption text-text-muted mt-1">{sub}</p>}
+    </motion.div>
+  )
 }
 
-interface Achievement {
-  id: string
-  title: string
-  description: string
-  icon: React.ReactNode
-  unlocked: boolean
-  unlockedDate?: string
-  bgColor: string
-}
-
-interface Tip {
-  icon: React.ReactNode
-  iconColor: string
-  category: string
-  categoryColor: string
-  title: string
-  content: string
-}
-
-/* ------------------------------------------------------------------ */
-/*  Mock Data                                                          */
-/* ------------------------------------------------------------------ */
-
-const SKILL_RADAR_DATA = [
-  { skill: 'Opening', current: 85, previous: 80 },
-  { skill: 'Engagement', current: 72, previous: 60 },
-  { skill: 'Emotional IQ', current: 68, previous: 53 },
-  { skill: 'Attraction', current: 80, previous: 77 },
-  { skill: 'Closing', current: 65, previous: 45 },
-  { skill: 'Consistency', current: 74, previous: 66 },
-]
-
-const SKILL_INSIGHTS = [
-  { name: 'Opening', score: 85, insight: 'Strong first impressions', change: '+5%', positive: true },
-  { name: 'Engagement', score: 72, insight: 'Good but inconsistent', change: '+12%', positive: true },
-  { name: 'Emotional IQ', score: 68, insight: 'Growing awareness', change: '+15%', positive: true },
-  { name: 'Attraction', score: 80, insight: 'Natural confidence', change: '+3%', positive: true },
-  { name: 'Closing', score: 65, insight: 'Work on the ask', change: '+20%', positive: true },
-  { name: 'Consistency', score: 74, insight: 'Good personality reading', change: '+8%', positive: true },
-]
-
-const TREND_DATA = [
-  { day: 'Oct 1', overall: 45, opening: 50, engagement: 40, emotionalIQ: 35 },
-  { day: 'Oct 3', overall: 52, opening: 55, engagement: 48, emotionalIQ: 42 },
-  { day: 'Oct 5', overall: 48, opening: 52, engagement: 45, emotionalIQ: 40 },
-  { day: 'Oct 8', overall: 58, opening: 60, engagement: 55, emotionalIQ: 48 },
-  { day: 'Oct 10', overall: 55, opening: 58, engagement: 50, emotionalIQ: 45 },
-  { day: 'Oct 12', overall: 62, opening: 65, engagement: 58, emotionalIQ: 52 },
-  { day: 'Oct 14', overall: 60, opening: 62, engagement: 56, emotionalIQ: 55 },
-  { day: 'Oct 16', overall: 68, opening: 70, engagement: 62, emotionalIQ: 60 },
-  { day: 'Oct 18', overall: 65, opening: 68, engagement: 60, emotionalIQ: 58 },
-  { day: 'Oct 20', overall: 72, opening: 74, engagement: 68, emotionalIQ: 65 },
-  { day: 'Oct 22', overall: 70, opening: 72, engagement: 66, emotionalIQ: 62 },
-  { day: 'Oct 24', overall: 78, opening: 80, engagement: 75, emotionalIQ: 70 },
-  { day: 'Oct 26', overall: 75, opening: 76, engagement: 72, emotionalIQ: 68 },
-  { day: 'Oct 28', overall: 82, opening: 84, engagement: 78, emotionalIQ: 75 },
-  { day: 'Oct 30', overall: 80, opening: 82, engagement: 76, emotionalIQ: 73 },
-]
-
-const CONVERSATIONS: Conversation[] = [
-  {
-    id: 'conv-001',
-    personaName: 'Sophia',
-    personaInitial: 'S',
-    date: 'Yesterday',
-    scenario: 'Coffee Shop Approach',
-    difficulty: 'Intermediate',
-    score: 78,
-    grade: 'B',
-    messages: 24,
-    duration: '12m',
-    avatarGradient: 'from-[#E11D48] to-[#F59E0B]',
-  },
-  {
-    id: 'conv-002',
-    personaName: 'Maya',
-    personaInitial: 'M',
-    date: '2 days ago',
-    scenario: 'Bookstore Conversation',
-    difficulty: 'Advanced',
-    score: 65,
-    grade: 'C',
-    messages: 18,
-    duration: '8m',
-    avatarGradient: 'from-[#8B5CF6] to-[#3B82F6]',
-  },
-  {
-    id: 'conv-003',
-    personaName: 'Chloe',
-    personaInitial: 'C',
-    date: '3 days ago',
-    scenario: 'Gym Small Talk',
-    difficulty: 'Beginner',
-    score: 82,
-    grade: 'B',
-    messages: 31,
-    duration: '15m',
-    avatarGradient: 'from-[#14B8A6] to-[#10B981]',
-  },
-  {
-    id: 'conv-004',
-    personaName: 'Ava',
-    personaInitial: 'A',
-    date: '5 days ago',
-    scenario: 'Art Gallery Opening',
-    difficulty: 'Intermediate',
-    score: 71,
-    grade: 'B',
-    messages: 22,
-    duration: '10m',
-    avatarGradient: 'from-[#F59E0B] to-[#EF4444]',
-  },
-  {
-    id: 'conv-005',
-    personaName: 'Zara',
-    personaInitial: 'Z',
-    date: '1 week ago',
-    scenario: 'Rooftop Bar',
-    difficulty: 'Expert',
-    score: 58,
-    grade: 'D',
-    messages: 14,
-    duration: '6m',
-    avatarGradient: 'from-[#8B5CF6] to-[#E11D48]',
-  },
-  {
-    id: 'conv-006',
-    personaName: 'Luna',
-    personaInitial: 'L',
-    date: '1 week ago',
-    scenario: 'Park Encounter',
-    difficulty: 'Beginner',
-    score: 88,
-    grade: 'A',
-    messages: 28,
-    duration: '14m',
-    avatarGradient: 'from-[#14B8A6] to-[#3B82F6]',
-  },
-  {
-    id: 'conv-007',
-    personaName: 'Sophia',
-    personaInitial: 'S',
-    date: '2 weeks ago',
-    scenario: 'Dinner Party',
-    difficulty: 'Advanced',
-    score: 62,
-    grade: 'C',
-    messages: 20,
-    duration: '9m',
-    avatarGradient: 'from-[#E11D48] to-[#F59E0B]',
-  },
-  {
-    id: 'conv-008',
-    personaName: 'Maya',
-    personaInitial: 'M',
-    date: '2 weeks ago',
-    scenario: 'Networking Event',
-    difficulty: 'Master',
-    score: 45,
-    grade: 'F',
-    messages: 12,
-    duration: '5m',
-    avatarGradient: 'from-[#8B5CF6] to-[#3B82F6]',
-  },
-]
-
-const ACHIEVEMENTS: Achievement[] = [
-  {
-    id: 'ach-1',
-    title: 'First Steps',
-    description: 'Complete your first conversation',
-    icon: <MessageCircle className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Oct 15',
-    bgColor: '#059669',
-  },
-  {
-    id: 'ach-2',
-    title: 'On the Rise',
-    description: 'Score above 75 for the first time',
-    icon: <TrendingUp className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Oct 18',
-    bgColor: '#E11D48',
-  },
-  {
-    id: 'ach-3',
-    title: 'Speed Demon',
-    description: 'Complete 5 conversations in one day',
-    icon: <Zap className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Oct 20',
-    bgColor: '#D97706',
-  },
-  {
-    id: 'ach-4',
-    title: 'Mind Reader',
-    description: 'Correctly identify hidden subtext 10 times',
-    icon: <Brain className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Oct 22',
-    bgColor: '#7C3AED',
-  },
-  {
-    id: 'ach-5',
-    title: 'Spark',
-    description: 'Build strong attraction in a conversation',
-    icon: <Flame className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Oct 24',
-    bgColor: '#E11D48',
-  },
-  {
-    id: 'ach-6',
-    title: 'Closer',
-    description: 'Achieve conversation goal 5 times',
-    icon: <Target className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Oct 25',
-    bgColor: '#0D9488',
-  },
-  {
-    id: 'ach-7',
-    title: 'Streak',
-    description: 'Practice 7 days in a row',
-    icon: <Star className="w-6 h-6" />,
-    unlocked: true,
-    unlockedDate: 'Today',
-    bgColor: '#D97706',
-  },
-  {
-    id: 'ach-8',
-    title: 'Master',
-    description: 'Score 90+ on Expert difficulty',
-    icon: <Trophy className="w-6 h-6" />,
-    unlocked: false,
-    bgColor: '#A8A29E',
-  },
-  {
-    id: 'ach-9',
-    title: 'Casanova',
-    description: 'Successfully complete all conversation goals',
-    icon: <Heart className="w-6 h-6" />,
-    unlocked: false,
-    bgColor: '#A8A29E',
-  },
-]
-
-const TIPS: Tip[] = [
-  {
-    icon: <Brain className="w-8 h-8" />,
-    iconColor: '#7C3AED',
-    category: 'PSYCHOLOGY',
-    categoryColor: '#7C3AED',
-    title: 'The Power of Vulnerability Calibration',
-    content:
-      'Your conversations show strong confidence, but adding calibrated vulnerability at the right moments could deepen connections by 40%. Learn when and how to open up without over-sharing.',
-  },
-  {
-    icon: <MessageCircle className="w-8 h-8" />,
-    iconColor: '#E11D48',
-    category: 'TECHNIQUE',
-    categoryColor: '#E11D48',
-    title: 'Mastering the Transition',
-    content:
-      'You tend to stay in one conversational stage too long. Practice smoother transitions between banter, personal topics, and the close. The best conversations flow like a natural escalation.',
-  },
-  {
-    icon: <Target className="w-8 h-8" />,
-    iconColor: '#0D9488',
-    category: 'STRATEGY',
-    categoryColor: '#0D9488',
-    title: 'The Abundance Mindset',
-    content:
-      'Some of your messages show subtle neediness cues. Work on embodying abundance mentality. You\'re offering value, not seeking validation. This shift alone could improve your scores by 15%',
-  },
-]
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
-function getDifficultyColor(d: string): string {
-  switch (d) {
-    case 'Beginner':
-      return '#059669'
-    case 'Intermediate':
-      return '#D97706'
-    case 'Advanced':
-      return '#F97316'
-    case 'Expert':
-      return '#EF4444'
-    case 'Master':
-      return '#7C3AED'
-    default:
-      return '#D97706'
-  }
-}
-
-function getGradeColor(grade: string): string {
-  switch (grade) {
-    case 'S':
-      return '#0D9488'
-    case 'A':
-      return '#16A34A'
-    case 'B':
-      return '#CA8A04'
-    case 'C':
-      return '#EA580C'
-    case 'D':
-      return '#EF4444'
-    case 'F':
-      return '#DC2626'
-    default:
-      return '#CA8A04'
-  }
-}
-
-function getScoreColor(score: number): string {
-  if (score >= 80) return '#16A34A'
-  if (score >= 70) return '#CA8A04'
-  if (score >= 60) return '#EA580C'
-  return '#EF4444'
+function EmptyState() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="glass-card-elevated max-w-xl mx-auto text-center p-10 md:p-14 mt-8"
+    >
+      <p className="text-5xl mb-4" aria-hidden="true">📊</p>
+      <h2 className="text-heading-xl text-text-primary font-display mb-3">
+        Your stats start with your first conversation
+      </h2>
+      <p className="text-body text-text-secondary mb-8">
+        Complete a practice session or a scenario drill and this dashboard fills with real
+        numbers: score trends, skill breakdowns, streaks and achievements. No fake data here.
+      </p>
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link
+          to="/scenarios"
+          className="btn-gradient inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-body font-semibold"
+        >
+          <Target className="w-4 h-4" aria-hidden="true" />
+          Start your first drill
+        </Link>
+        <Link
+          to="/create"
+          className="inline-flex items-center gap-2 rounded-full border border-stone-900/15 px-7 py-3.5 text-body font-medium text-text-primary hover:border-rose-300 transition-colors"
+        >
+          <MessageCircle className="w-4 h-4 text-text-rose" aria-hidden="true" />
+          Free practice
+        </Link>
+      </div>
+    </motion.div>
+  )
 }
 
 /* ------------------------------------------------------------------ */
-/*  Animation variants                                                 */
-/* ------------------------------------------------------------------ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      delay: i * 0.1,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  }),
-}
-
-/* ------------------------------------------------------------------ */
-/*  Main Component                                                     */
+/*  Dashboard                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const [dateRange, setDateRange] = useState<DateRange>('7days')
+  const { user } = useAuth()
+  const conversations = useStore((s) => s.conversations)
+  const progress = useStore((s) => s.progress)
 
-  const dateRanges: { key: DateRange; label: string }[] = [
-    { key: '7days', label: '7 days' },
-    { key: '30days', label: '30 days' },
-    { key: 'all', label: 'All time' },
-  ]
+  const stats = useMemo(() => computeDashboardStats(conversations), [conversations])
+  const lp = levelProgress(progress.xp)
+  const levelTitle = LEVEL_TITLES[progress.level - 1] ?? LEVEL_TITLES[0]
+  const drillsDone = Object.keys(progress.drills).length
 
-  const stats = [
-    {
-      icon: <MessageCircle className="w-6 h-6 text-[#E11D48]" />,
-      label: 'Conversations',
-      value: '24',
-      trend: '+12% this week',
-      positive: true,
-    },
-    {
-      icon: <TrendingUp className="w-6 h-6 text-[#14B8A6]" />,
-      label: 'Avg. Score',
-      value: '72/100',
-      trend: '+8% this week',
-      positive: true,
-    },
-    {
-      icon: <Clock className="w-6 h-6 text-[#F59E0B]" />,
-      label: 'Practice Time',
-      value: '4.2h',
-      trend: '+23% this week',
-      positive: true,
-    },
-    {
-      icon: <Target className="w-6 h-6 text-[#8B5CF6]" />,
-      label: 'Goals Reached',
-      value: '18',
-      trend: '+5 this week',
-      positive: true,
-    },
-  ]
+  const hasData = stats.totalSessions > 0
 
   return (
-    <div className="min-h-[100dvh] pt-[72px]">
-      {/* ============================================================ */}
-      {/* SECTION 1: Header + Stats                                      */}
-      {/* ============================================================ */}
-      <section className="relative bg-bg-primary" style={{ padding: 'clamp(48px, 5vw, 64px) 0 48px' }}>
-        <div className="max-w-[1400px] mx-auto px-6">
-          <motion.div
-            className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-          >
-            <div>
-              <h1 className="text-display-subsection text-text-primary mb-2">
-                Welcome back, Alex
-              </h1>
-              <p className="text-body-lg text-text-secondary">
-                Here&apos;s your progress this week. You&apos;re improving fast.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              {dateRanges.map((range) => (
-                <button
-                  key={range.key}
-                  onClick={() => setDateRange(range.key)}
-                  className={`text-caption font-medium px-4 py-1.5 rounded-full transition-all ${
-                    dateRange === range.key
-                      ? 'bg-bg-tertiary text-text-primary'
-                      : 'text-text-muted hover:text-text-secondary'
-                  }`}
-                >
-                  {range.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Stats grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                className="glass-card-elevated p-6"
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  {stat.icon}
-                  <span className="text-caption text-text-muted">{stat.label}</span>
-                </div>
-                <p className="text-heading-xl font-semibold text-text-primary mb-2">
-                  {stat.value}
-                </p>
-                <div className="flex items-center gap-1">
-                  {stat.positive ? (
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#14B8A6]" />
-                  ) : (
-                    <TrendingDown className="w-3.5 h-3.5 text-[#EF4444]" />
-                  )}
-                  <span
-                    className={`text-caption font-medium ${
-                      stat.positive ? 'text-[#14B8A6]' : 'text-[#EF4444]'
-                    }`}
-                  >
-                    {stat.trend}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+    <div className="min-h-[100dvh] bg-bg-primary">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-wrap items-end justify-between gap-4 mb-8"
+        >
+          <div>
+            <p className="text-caption uppercase tracking-[0.18em] text-text-rose mb-2">
+              Your progress
+            </p>
+            <h1 className="text-display-subsection text-text-primary">
+              {user ? `Welcome back, ${user.username}` : 'Welcome back'}
+            </h1>
           </div>
-        </div>
-      </section>
+          <button
+            onClick={() => navigate('/create')}
+            className="btn-gradient inline-flex items-center gap-2 rounded-full px-6 py-3 text-body-sm font-semibold"
+          >
+            <MessageCircle className="w-4 h-4" aria-hidden="true" />
+            New practice session
+          </button>
+        </motion.div>
 
-      {/* ============================================================ */}
-      {/* SECTION 2 + 3: Charts Grid                                      */}
-      {/* ============================================================ */}
-      <section className="bg-bg-secondary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Skill Radar Chart */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            >
-              <div className="mb-6">
-                <p className="text-caption text-text-muted uppercase mb-2">Skill Analysis</p>
-                <h2 className="text-display-subsection text-text-primary">
-                  Your Communication Profile
-                </h2>
+        {/* Level + streak banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="glass-card-elevated p-6 md:p-7 mb-6"
+        >
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="w-14 h-14 rounded-2xl btn-gradient flex items-center justify-center shrink-0">
+                <span className="text-white font-display text-xl font-bold">{progress.level}</span>
               </div>
-              <div className="glass-card p-6">
-                <div className="flex flex-col xl:flex-row gap-6">
-                  <div className="flex-1 min-h-[300px]">
-                    <ResponsiveContainer width="100%" height={320}>
-                      <RadarChart cx="50%" cy="50%" outerRadius="75%" data={SKILL_RADAR_DATA}>
-                        <PolarGrid stroke="rgba(28, 25, 23, 0.1)" />
-                        <PolarAngleAxis
-                          dataKey="skill"
-                          tick={{ fill: '#57534E', fontSize: 11, fontFamily: 'Inter' }}
-                        />
-                        <Radar
-                          name="Previous"
-                          dataKey="previous"
-                          stroke="#D8D0C2"
-                          strokeWidth={1}
-                          strokeDasharray="4 4"
-                          fill="transparent"
-                        />
-                        <Radar
-                          name="Current"
-                          dataKey="current"
-                          stroke="#E11D48"
-                          strokeWidth={2}
-                          fill="url(#radarGradient)"
-                          fillOpacity={0.3}
-                        />
-                        <defs>
-                          <linearGradient id="radarGradient" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stopColor="#E11D48" stopOpacity={0.4} />
-                            <stop offset="100%" stopColor="#F59E0B" stopOpacity={0.2} />
-                          </linearGradient>
-                        </defs>
-                      </RadarChart>
-                    </ResponsiveContainer>
-                  </div>
-                  {/* Skill Insights */}
-                  <div className="xl:w-[240px] space-y-4">
-                    {SKILL_INSIGHTS.map((skill, i) => (
-                      <motion.div
-                        key={skill.name}
-                        className="flex flex-col gap-1"
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          delay: i * 0.08,
-                          duration: 0.4,
-                          ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-                        }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-body-sm font-semibold text-text-primary">
-                            {skill.name}
-                          </span>
-                          <span
-                            className="text-caption font-semibold"
-                            style={{ color: getScoreColor(skill.score) }}
-                          >
-                            {skill.score}
-                          </span>
-                        </div>
-                        <div className="w-full h-1.5 bg-bg-tertiary rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full rounded-full"
-                            style={{
-                              background: `linear-gradient(90deg, #E11D48, #F59E0B)`,
-                            }}
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.score}%` }}
-                            viewport={{ once: true }}
-                            transition={{
-                              duration: 0.8,
-                              delay: 0.3 + i * 0.08,
-                              ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-                            }}
-                          />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-caption text-text-secondary">{skill.insight}</span>
-                          <span className="text-caption text-[#14B8A6] font-medium">
-                            {skill.change}
-                          </span>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="text-heading-md text-text-primary font-display truncate">
+                    Level {progress.level} — {levelTitle}
+                  </p>
+                  <p className="text-caption text-text-muted shrink-0">
+                    {lp.next === null ? `${progress.xp} XP (max)` : `${progress.xp} / ${lp.next} XP`}
+                  </p>
+                </div>
+                <div
+                  className="h-2.5 rounded-full bg-bg-tertiary mt-2 overflow-hidden"
+                  role="progressbar"
+                  aria-valuenow={lp.pct}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label="Progress to next level"
+                >
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${lp.pct}%` }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="h-full rounded-full"
+                    style={{ background: 'linear-gradient(90deg, #E11D48, #D97706)' }}
+                  />
                 </div>
               </div>
-            </motion.div>
-
-            {/* Performance Trend */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.6,
-                delay: 0.15,
-                ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-              }}
-            >
-              <div className="mb-6">
-                <p className="text-caption text-text-muted uppercase mb-2">Performance Trends</p>
-                <h2 className="text-display-subsection text-text-primary">
-                  Your Improvement Over Time
-                </h2>
+            </div>
+            <div className="flex items-center gap-6 md:border-l md:border-stone-900/10 md:pl-6">
+              <div className="text-center">
+                <p className="text-2xl font-display font-semibold text-text-primary inline-flex items-center gap-1.5">
+                  <Flame className="w-5 h-5 text-amber-500" aria-hidden="true" />
+                  {progress.streak}
+                </p>
+                <p className="text-caption text-text-muted">day streak</p>
               </div>
-              <div className="glass-card p-6">
-                <div className="min-h-[300px]">
-                  <ResponsiveContainer width="100%" height={340}>
-                    <AreaChart data={TREND_DATA} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+              <div className="text-center">
+                <p className="text-2xl font-display font-semibold text-text-primary">
+                  {progress.longestStreak}
+                </p>
+                <p className="text-caption text-text-muted">best streak</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-display font-semibold text-text-primary">
+                  {drillsDone}/{scenarios.length}
+                </p>
+                <p className="text-caption text-text-muted">drills done</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {!hasData ? (
+          <EmptyState />
+        ) : (
+          <>
+            {/* Stat cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <StatCard
+                icon={MessageCircle}
+                label="Sessions completed"
+                value={String(stats.totalSessions)}
+                tint="#E11D48"
+                delay={0.08}
+              />
+              <StatCard
+                icon={Star}
+                label="Average score"
+                value={stats.overallAvg.toFixed(1)}
+                sub="out of 5"
+                tint="#D97706"
+                delay={0.12}
+              />
+              <StatCard
+                icon={Sparkles}
+                label="Best session"
+                value={stats.bestSession.toFixed(1)}
+                tint="#0D9488"
+                delay={0.16}
+              />
+              <StatCard
+                icon={Target}
+                label="Messages sent"
+                value={String(stats.totalMessages)}
+                tint="#7C3AED"
+                delay={0.2}
+              />
+            </div>
+
+            {/* Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="glass-card p-6 lg:col-span-3"
+              >
+                <h2 className="text-heading-md text-text-primary font-display mb-1">
+                  Score trend
+                </h2>
+                <p className="text-body-sm text-text-muted mb-4">
+                  Average message score per session (last {stats.trend.length})
+                </p>
+                <div className="h-56">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={stats.trend} margin={{ top: 4, right: 8, left: -22, bottom: 0 }}>
                       <defs>
-                        <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#E11D48" stopOpacity={0.2} />
-                          <stop offset="100%" stopColor="#E11D48" stopOpacity={0} />
-                        </linearGradient>
-                        <linearGradient id="openingGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#E11D48" stopOpacity={0.1} />
+                        <linearGradient id="scoreFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#E11D48" stopOpacity={0.25} />
                           <stop offset="100%" stopColor="#E11D48" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(28, 25, 23, 0.06)" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#EDE6DA" vertical={false} />
                       <XAxis
-                        dataKey="day"
-                        tick={{ fill: '#A8A29E', fontSize: 10, fontFamily: 'Inter' }}
-                        axisLine={{ stroke: 'rgba(28, 25, 23, 0.08)' }}
+                        dataKey="label"
+                        tick={{ fill: '#A8A29E', fontSize: 11, fontFamily: 'Inter' }}
+                        axisLine={false}
                         tickLine={false}
                       />
                       <YAxis
                         domain={[0, 100]}
-                        tick={{ fill: '#A8A29E', fontSize: 10, fontFamily: 'Inter' }}
-                        axisLine={{ stroke: 'rgba(28, 25, 23, 0.08)' }}
+                        tick={{ fill: '#A8A29E', fontSize: 11, fontFamily: 'Inter' }}
+                        axisLine={false}
                         tickLine={false}
                       />
                       <Tooltip
                         contentStyle={{
                           background: 'rgba(255, 255, 255, 0.96)',
-                          border: '1px solid rgba(28, 25, 23, 0.1)',
-                          borderRadius: '12px',
-                          backdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(28, 25, 23, 0.08)',
+                          borderRadius: 12,
+                          fontFamily: 'Inter',
+                          fontSize: 12,
                         }}
-                        labelStyle={{ color: '#57534E', fontSize: '12px' }}
-                        itemStyle={{ fontSize: '12px', fontFamily: 'Inter' }}
+                        formatter={(value: number) => [`${value}/100`, 'Score']}
                       />
                       <Area
                         type="monotone"
-                        dataKey="overall"
-                        stroke="url(#lineGradient)"
-                        strokeWidth={3}
-                        fill="url(#areaGradient)"
-                        dot={{ r: 4, fill: '#1C1917', stroke: '#E11D48', strokeWidth: 2 }}
-                        activeDot={{ r: 6, fill: '#E11D48', stroke: '#1C1917', strokeWidth: 2 }}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="opening"
+                        dataKey="score"
                         stroke="#E11D48"
-                        strokeWidth={2}
-                        strokeDasharray="4 4"
-                        fill="url(#openingGradient)"
-                        dot={false}
+                        strokeWidth={2.5}
+                        fill="url(#scoreFill)"
+                        dot={{ r: 3.5, fill: '#FFFFFF', stroke: '#E11D48', strokeWidth: 2 }}
+                        activeDot={{ r: 5, fill: '#E11D48', stroke: '#FFFFFF', strokeWidth: 2 }}
                       />
-                      <defs>
-                        <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="#E11D48" />
-                          <stop offset="50%" stopColor="#F59E0B" />
-                          <stop offset="100%" stopColor="#8B5CF6" />
-                        </linearGradient>
-                      </defs>
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
-
-                {/* Legend */}
-                <div className="flex items-center gap-6 mt-4 flex-wrap">
-                  {[
-                    { color: '#E11D48', label: 'Overall Score' },
-                    { color: '#E11D48', label: 'Opening', dashed: true },
-                  ].map((item) => (
-                    <div key={item.label} className="flex items-center gap-2">
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                          backgroundColor: item.color,
-                          border: item.dashed ? `2px dashed ${item.color}` : 'none',
-                          background: item.dashed ? 'transparent' : item.color,
-                        }}
-                      />
-                      <span className="text-caption text-text-muted">{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Breakthrough annotation */}
-                <div className="mt-4 glass-card px-4 py-2 inline-flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-[#14B8A6]" />
-                  <span className="text-caption font-semibold text-[#14B8A6]">
-                    Breakthrough! +15 points
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* SECTION 4: Conversation History                                */}
-      {/* ============================================================ */}
-      <section className="bg-bg-primary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
-        <div className="max-w-[1400px] mx-auto px-6">
-          <motion.div
-            className="flex items-end justify-between mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div>
-              <p className="text-caption text-text-muted uppercase mb-2">History</p>
-              <h2 className="text-display-subsection text-text-primary">Recent Conversations</h2>
-            </div>
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="text-body-sm text-[#BE123C] hover:underline flex items-center gap-1"
-            >
-              View All
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </motion.div>
-
-          <div className="space-y-3">
-            {CONVERSATIONS.map((conv, i) => (
-              <motion.div
-                key={conv.id}
-                className="glass-card p-4 flex items-center gap-4 cursor-pointer group hover:bg-[rgba(30,30,40,0.6)] transition-all"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{
-                  duration: 0.4,
-                  delay: i * 0.08,
-                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-                }}
-                whileHover={{ x: 4, boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}
-                onClick={() => navigate(`/review/${conv.id}`)}
-              >
-                {/* Avatar */}
-                <div
-                  className={`w-12 h-12 rounded-full bg-gradient-to-br ${conv.avatarGradient} flex items-center justify-center flex-shrink-0`}
-                >
-                  <span className="text-body font-semibold text-white">{conv.personaInitial}</span>
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-heading-sm font-semibold text-text-primary">
-                      {conv.personaName}
-                    </span>
-                    <span className="text-caption text-text-muted">{conv.date}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-body-sm text-text-secondary">{conv.scenario}</span>
-                    <span
-                      className="text-caption font-medium uppercase px-2 py-0.5 rounded-full"
-                      style={{
-                        backgroundColor: `${getDifficultyColor(conv.difficulty)}20`,
-                        color: getDifficultyColor(conv.difficulty),
-                      }}
-                    >
-                      {conv.difficulty}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="hidden sm:flex items-center gap-4">
-                  <span
-                    className="text-heading-sm font-semibold"
-                    style={{ color: getGradeColor(conv.grade) }}
-                  >
-                    {conv.grade}
-                  </span>
-                  <div className="flex items-center gap-1 text-caption text-text-muted">
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    {conv.messages}
-                  </div>
-                  <div className="flex items-center gap-1 text-caption text-text-muted">
-                    <Clock className="w-3.5 h-3.5" />
-                    {conv.duration}
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigate(`/review/${conv.id}`)
-                    }}
-                    className="text-body-sm text-text-secondary hover:text-text-primary px-3 py-1.5 rounded-lg transition-colors"
-                    style={{ border: '1px solid rgba(28, 25, 23, 0.1)' }}
-                  >
-                    Review
-                  </button>
-                  <button
-                    onClick={(e) => e.stopPropagation()}
-                    className="p-2 text-text-muted hover:text-text-secondary transition-colors"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                  </button>
-                  <ChevronRight className="w-5 h-5 text-text-muted group-hover:text-text-secondary transition-colors" />
-                </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ============================================================ */}
-      {/* SECTION 5: Achievements                                        */}
-      {/* ============================================================ */}
-      <section className="bg-bg-secondary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
-        <div className="max-w-[1400px] mx-auto px-6">
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-caption text-[#F59E0B] uppercase mb-2">Achievements</p>
-            <div className="flex items-baseline gap-3">
-              <h2 className="text-display-subsection text-text-primary">Your Milestones</h2>
-              <span className="text-body-sm text-text-secondary">7 of 9 unlocked</span>
-            </div>
-          </motion.div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {ACHIEVEMENTS.map((ach, i) => (
               <motion.div
-                key={ach.id}
-                className={`glass-card p-4 flex flex-col items-center text-center ${
-                  !ach.unlocked ? 'opacity-50' : ''
-                }`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: ach.unlocked ? 1 : 0.5, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.4,
-                  delay: i * 0.08,
-                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="glass-card p-6 lg:col-span-2"
               >
-                <div
-                  className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${
-                    ach.unlocked ? '' : 'bg-bg-tertiary'
-                  }`}
-                  style={{
-                    backgroundColor: ach.unlocked ? ach.bgColor : undefined,
-                    color: ach.unlocked ? '#fff' : '#A8A29E',
-                    boxShadow: ach.unlocked ? `0 0 20px ${ach.bgColor}40` : 'none',
-                  }}
-                >
-                  {ach.unlocked ? ach.icon : <Lock className="w-5 h-5" />}
-                </div>
-                <h3
-                  className={`text-heading-sm font-semibold mb-1 ${
-                    ach.unlocked ? 'text-text-primary' : 'text-text-muted'
-                  }`}
-                >
-                  {ach.title}
-                </h3>
-                <p
-                  className={`text-caption ${
-                    ach.unlocked ? 'text-text-secondary' : 'text-text-muted'
-                  }`}
-                >
-                  {ach.description}
+                <h2 className="text-heading-md text-text-primary font-display mb-1">
+                  Skill breakdown
+                </h2>
+                <p className="text-body-sm text-text-muted mb-2">
+                  From every analyzed message, by conversation phase
                 </p>
-                {ach.unlocked && ach.unlockedDate && (
-                  <p className="text-caption text-text-muted mt-2">{ach.unlockedDate}</p>
+                <div className="h-56">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={stats.radar} outerRadius="75%">
+                      <PolarGrid stroke="#E5DCCB" />
+                      <PolarAngleAxis
+                        dataKey="skill"
+                        tick={{ fill: '#57534E', fontSize: 11, fontFamily: 'Inter' }}
+                      />
+                      <Radar
+                        dataKey="score"
+                        stroke="#7C3AED"
+                        fill="#7C3AED"
+                        fillOpacity={0.18}
+                        strokeWidth={2}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          background: 'rgba(255, 255, 255, 0.96)',
+                          border: '1px solid rgba(28, 25, 23, 0.08)',
+                          borderRadius: 12,
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                        }}
+                        formatter={(value: number) => [`${value}/100`, 'Skill']}
+                      />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+                {stats.weakest && (
+                  <Link
+                    to="/scenarios"
+                    className="mt-2 flex items-center justify-between gap-2 rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-body-sm text-amber-900 hover:bg-amber-50 transition-colors"
+                  >
+                    <span>
+                      Weakest skill: <strong>{stats.weakest.skill}</strong> — train it with{' '}
+                      <strong>{stats.weakest.drillCategory}</strong> drills
+                    </span>
+                    <ChevronRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  </Link>
                 )}
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* ============================================================ */}
-      {/* SECTION 6: Personalized Tips                                   */}
-      {/* ============================================================ */}
-      <section className="bg-bg-primary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
-        <div className="max-w-[1400px] mx-auto px-6">
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-caption text-text-muted uppercase mb-2">Personalized For You</p>
-            <h2 className="text-display-subsection text-text-primary">This Week&apos;s Focus</h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TIPS.map((tip, i) => (
+            {/* Recent sessions + achievements */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
               <motion.div
-                key={tip.title}
-                className="glass-card-elevated p-8 group cursor-default"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.15,
-                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-                }}
-                whileHover={{
-                  y: -6,
-                  boxShadow: '0 0 40px rgba(225,29,72,0.15)',
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="glass-card p-6 lg:col-span-3"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div style={{ color: tip.iconColor }}>{tip.icon}</div>
-                  <span className="text-caption font-medium" style={{ color: tip.categoryColor }}>
-                    {tip.category}
+                <h2 className="text-heading-md text-text-primary font-display mb-4">
+                  Recent sessions
+                </h2>
+                <ul className="divide-y divide-stone-900/5">
+                  {stats.sessions.slice(0, 8).map((s) => (
+                    <li key={s.id} className="flex items-center gap-4 py-3">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white text-caption font-bold shrink-0"
+                        style={{
+                          background: s.scenarioSlug
+                            ? 'linear-gradient(135deg, #7C3AED, #4F46E5)'
+                            : 'linear-gradient(135deg, #E11D48, #D97706)',
+                        }}
+                        aria-hidden="true"
+                      >
+                        {s.personaName.charAt(0)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-body-sm font-medium text-text-primary truncate">
+                          {s.personaName}
+                          {s.scenarioSlug && (
+                            <span className="ml-2 text-caption text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-full">
+                              Drill
+                            </span>
+                          )}
+                        </p>
+                        <p className="text-caption text-text-muted">
+                          {new Date(s.date).toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                          })}{' '}
+                          · {s.userMessages} messages
+                        </p>
+                      </div>
+                      <span
+                        className="text-body-sm font-semibold shrink-0"
+                        style={{
+                          color:
+                            s.avgScore >= 4 ? '#059669' : s.avgScore >= 3 ? '#CA8A04' : '#DC2626',
+                        }}
+                      >
+                        {s.avgScore.toFixed(1)}
+                        <span className="text-text-muted font-normal">/5</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="glass-card p-6 lg:col-span-2"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-heading-md text-text-primary font-display">Achievements</h2>
+                  <span className="text-caption text-text-muted">
+                    {progress.achievements.length}/{ACHIEVEMENTS.length}
                   </span>
                 </div>
-                <h3 className="text-heading-md font-semibold text-text-primary mb-3">{tip.title}</h3>
-                <p className="text-body text-text-secondary leading-relaxed mb-5">{tip.content}</p>
-                <button
-                  onClick={() => navigate('/science')}
-                  className="text-body-sm text-[#BE123C] hover:underline inline-flex items-center gap-1"
-                >
-                  Read More
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                <ul className="grid grid-cols-1 gap-2">
+                  {ACHIEVEMENTS.map((a) => {
+                    const unlocked = progress.achievements.includes(a.id)
+                    return (
+                      <li
+                        key={a.id}
+                        className={`flex items-center gap-3 rounded-xl border px-3.5 py-2.5 ${
+                          unlocked
+                            ? 'border-amber-200 bg-amber-50/60'
+                            : 'border-stone-900/5 bg-bg-secondary/60 opacity-60'
+                        }`}
+                      >
+                        <span className="text-xl" aria-hidden="true">
+                          {unlocked ? a.emoji : <Lock className="w-4 h-4 text-stone-400" />}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-body-sm font-medium text-text-primary truncate">
+                            {a.title}
+                          </p>
+                          <p className="text-caption text-text-muted truncate">{a.description}</p>
+                        </div>
+                        {unlocked && (
+                          <Trophy className="w-4 h-4 text-amber-500 ml-auto shrink-0" aria-hidden="true" />
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+
+            {/* Voice nudge */}
+            {!progress.voiceUsed && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="glass-card flex flex-wrap items-center gap-4 p-5 mt-6"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <Mic className="w-5 h-5 text-blue-600" aria-hidden="true" />
+                </div>
+                <p className="text-body-sm text-text-secondary flex-1 min-w-[220px]">
+                  <strong className="text-text-primary">Try voice practice.</strong> Real dates
+                  happen out loud — use the mic button in any conversation to practice speaking.
+                </p>
+                <Link to="/create" className="text-body-sm font-medium text-text-rose hover:underline">
+                  Start talking →
+                </Link>
+              </motion.div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }

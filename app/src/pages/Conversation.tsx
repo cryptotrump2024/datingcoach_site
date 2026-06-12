@@ -16,6 +16,9 @@ import {
   RotateCcw,
   Flag,
   MessageCircle,
+  Mic,
+  Volume2,
+  VolumeX,
 } from 'lucide-react'
 import { useStore } from '@/store'
 import type { Persona, Message, MessageAnalysis } from '@/store'
@@ -29,6 +32,9 @@ import {
   phases,
 } from '@/lib/conversation-engine'
 import { getAIChatTurn, getAIEngineStatus } from '@/lib/ai-client'
+import { completesCategory, evaluateScenario, scenarioBySlug } from '@/lib/scenarios'
+import { useVoice } from '@/hooks/useVoice'
+import { toast } from 'sonner'
 
 // ─── Typing Indicator Component ────────────────────────────────────────────
 
@@ -299,6 +305,21 @@ export default function Conversation() {
   const [aiStatus, setAIStatus] = useState(getAIEngineStatus())
   // Scenario drill context (set when launched from /scenarios)
   const scenarioBrief = currentConversation?.scenarioBrief ?? ''
+  const activeScenario = currentConversation?.scenarioSlug
+    ? scenarioBySlug(currentConversation.scenarioSlug)
+    : undefined
+
+  // Voice practice (Web Speech API; hidden when unsupported)
+  const markVoiceUsed = useStore((s) => s.markVoiceUsed)
+  const voice = useVoice((transcript) => setInputText(transcript))
+  const handleMicToggle = () => {
+    if (voice.listening) {
+      voice.stopListening()
+    } else {
+      markVoiceUsed()
+      voice.startListening()
+    }
+  }
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const hasStartedRef = useRef(false)
@@ -324,14 +345,21 @@ export default function Conversation() {
       const sysMsg: Message = {
         id: generateId(),
         role: 'system',
-        content: `Conversation started with ${persona.name} · ${persona.scenario} · ${persona.difficulty}`,
+        content: activeScenario
+          ? `Drill: ${activeScenario.title} · ${persona.name} · ${persona.difficulty}\nGoal: ${activeScenario.goal}`
+          : `Conversation started with ${persona.name} · ${persona.scenario} · ${persona.difficulty}`,
         timestamp: Date.now(),
       }
       addMessage(sysMsg)
 
+      // Drills where YOU open: no auto-greeting — your move.
+      if (activeScenario && !activeScenario.openingMessage) {
+        return
+      }
+
       // Simulate initial greeting after delay
       setIsTyping(true)
-      const greeting = getInitialGreeting(persona)
+      const greeting = activeScenario?.openingMessage ?? getInitialGreeting(persona)
       const delay = 1500 + Math.random() * 1500
 
       setTimeout(() => {
@@ -346,7 +374,7 @@ export default function Conversation() {
         addMessage(herMsg)
       }, delay)
     }
-  }, [persona, currentConversation, messages.length, addMessage])
+  }, [persona, currentConversation, messages.length, addMessage, activeScenario])
 
   // Handle sending a message
   const handleSend = useCallback(() => {
@@ -438,6 +466,7 @@ export default function Conversation() {
         }
         addMessage(herMsg)
         addAnalysis(analysis)
+        if (voice.voiceEnabled) voice.speak(message, persona.archetype)
 
         // Check phase transition
         if (phaseTransition && phaseTransition !== phaseName) {
@@ -471,6 +500,7 @@ export default function Conversation() {
     addMessage,
     addAnalysis,
     updateConversationPhase,
+    voice,
   ])
 
   // Handle key press
@@ -486,7 +516,25 @@ export default function Conversation() {
 
   // End conversation
   const handleEndConversation = () => {
-    endConversation()
+    if (activeScenario && currentConversation) {
+      const userMessageCount = currentConversation.messages.filter((m) => m.role === 'user').length
+      const result = evaluateScenario(activeScenario, currentConversation.analyses, userMessageCount)
+      const progress = useStore.getState().progress
+      endConversation({
+        drillSlug: activeScenario.slug,
+        drillBonus: result.passed ? activeScenario.xpBonus : 0,
+        drillCategoryCompleted: result.passed
+          ? completesCategory(activeScenario.slug, Object.keys(progress.drills))
+          : false,
+      })
+      if (result.passed) {
+        toast.success(`Drill passed: ${activeScenario.title}`, { description: result.reason })
+      } else {
+        toast(`Drill not passed yet`, { description: result.reason })
+      }
+    } else {
+      endConversation()
+    }
     const convId = currentConversation?.id || generateId()
     navigate(`/review/${convId}`)
   }
@@ -627,18 +675,40 @@ export default function Conversation() {
 
         {/* Right Group */}
         <div className="flex items-center gap-1">
+          {/* Voice replies toggle */}
+          {voice.ttsSupported && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                if (!voice.voiceEnabled) markVoiceUsed()
+                voice.setVoiceEnabled(!voice.voiceEnabled)
+              }}
+              aria-label={voice.voiceEnabled ? 'Mute spoken replies' : 'Hear her replies out loud'}
+              title={voice.voiceEnabled ? 'Mute spoken replies' : 'Hear her replies out loud'}
+              className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
+              style={{
+                background: voice.voiceEnabled ? 'rgba(37, 99, 235, 0.12)' : 'transparent',
+                color: voice.voiceEnabled ? '#2563EB' : '#57534E',
+              }}
+            >
+              {voice.voiceEnabled ? <Volume2 className="w-5 h-5" aria-hidden="true" /> : <VolumeX className="w-5 h-5" aria-hidden="true" />}
+            </motion.button>
+          )}
+
           {/* Analysis Toggle */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsAnalysisOpen(!isAnalysisOpen)}
+            aria-label="Toggle coaching analysis panel"
             className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
             style={{
               background: isAnalysisOpen ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
               color: isAnalysisOpen ? '#7C3AED' : '#57534E',
             }}
           >
-            <Brain className="w-5 h-5" />
+            <Brain className="w-5 h-5" aria-hidden="true" />
           </motion.button>
 
           {/* Settings */}
@@ -772,13 +842,40 @@ export default function Conversation() {
             }}
           >
             <div className="flex items-center gap-3 max-w-4xl mx-auto">
+              {voice.speechSupported && (
+                <motion.button
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={handleMicToggle}
+                  aria-label={voice.listening ? 'Stop voice input' : 'Speak your message'}
+                  title={voice.listening ? 'Stop voice input' : 'Speak your message'}
+                  className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200"
+                  style={{
+                    background: voice.listening ? 'rgba(225, 29, 72, 0.12)' : '#EDE6DA',
+                    border: voice.listening
+                      ? '1px solid rgba(225, 29, 72, 0.4)'
+                      : '1px solid transparent',
+                  }}
+                >
+                  {voice.listening ? (
+                    <motion.span
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1.2, repeat: Infinity }}
+                    >
+                      <Mic className="w-[18px] h-[18px] text-[#E11D48]" aria-hidden="true" />
+                    </motion.span>
+                  ) : (
+                    <Mic className="w-[18px] h-[18px] text-stone-500" aria-hidden="true" />
+                  )}
+                </motion.button>
+              )}
               <div className="flex-1 relative">
                 <input
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={`Message ${persona.name}...`}
+                  placeholder={voice.listening ? 'Listening…' : `Message ${persona.name}...`}
                   disabled={isTyping}
                   className="w-full px-5 py-3 rounded-full text-body text-text-primary outline-none transition-all duration-200 disabled:opacity-50"
                   style={{

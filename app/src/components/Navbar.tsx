@@ -12,12 +12,15 @@ import {
   Home,
   BookOpen,
   CreditCard,
+  Target,
+  Flame,
 } from 'lucide-react'
 import CreditBadge from './CreditBadge'
 import { useStore } from '@/store'
 
 const navLinks = [
   { label: 'Home', path: '/' },
+  { label: 'Scenarios', path: '/scenarios' },
   { label: 'Science', path: '/science' },
   { label: 'Pricing', path: '/pricing' },
   { label: 'Profile Analyzer', path: '/profile-analyzer' },
@@ -25,10 +28,25 @@ const navLinks = [
 
 const bottomTabs = [
   { label: 'Home', path: '/', icon: Home },
-  { label: 'Science', path: '/science', icon: BookOpen },
+  { label: 'Drills', path: '/scenarios', icon: Target },
   { label: 'Pricing', path: '/pricing', icon: CreditCard },
   { label: 'Profile', path: '/profile-analyzer', icon: User },
 ]
+
+function StreakFlame() {
+  const streak = useStore((s) => s.progress.streak)
+  if (streak < 1) return null
+  return (
+    <span
+      className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-caption font-semibold"
+      style={{ background: 'rgba(217, 119, 6, 0.12)', color: '#B45309' }}
+      title={`${streak}-day practice streak`}
+    >
+      <Flame className="w-3.5 h-3.5 text-amber-500" aria-hidden="true" />
+      {streak}
+    </span>
+  )
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -130,6 +148,7 @@ export default function Navbar() {
 
           {/* Desktop Right Section – hidden on mobile */}
           <div className="hidden md:flex items-center gap-4">
+            <StreakFlame />
             {isAuthenticated && user && (
               <>
                 <CreditBadge />
