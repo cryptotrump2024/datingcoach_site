@@ -27,13 +27,13 @@ function AccordionItem({ item, index }: { item: typeof faqs[0]; index: number })
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.05, ease: easeOutExpo }} className="glass-card mb-3 overflow-hidden">
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-5 text-left hover:bg-[rgba(255,255,255,0.02)] transition-colors">
-        <span className="text-body font-medium text-[#F5F5F7] pr-4">{item.q}</span>
-        <ChevronDown className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} style={{ color: '#52525B' }} />
+        <span className="text-body font-medium text-text-primary pr-4">{item.q}</span>
+        <ChevronDown className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} style={{ color: '#A8A29E' }} />
       </button>
       <AnimatePresence>
         {open && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: easeOutExpo }} className="overflow-hidden">
-            <div className="px-5 pb-5 text-body leading-relaxed border-t pt-4" style={{ color: '#A1A1AA', borderColor: 'rgba(255,255,255,0.04)' }}>{item.a}</div>
+            <div className="px-5 pb-5 text-body leading-relaxed border-t pt-4" style={{ color: '#57534E', borderColor: 'rgba(28, 25, 23, 0.06)' }}>{item.a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -46,14 +46,14 @@ export default function FAQ() {
   const isInView = useInView(ref, { once: true, margin: '-5% 0px' })
 
   return (
-    <div className="min-h-[100dvh] pt-[72px]" style={{ background: '#0A0A0F' }}>
+    <div className="min-h-[100dvh] pt-[72px]" style={{ background: '#FDFBF7' }}>
       <section className="relative pt-24 pb-12">
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(225, 29, 72, 0.06) 0%, transparent 60%)' }} />
         <div className="relative max-w-[800px] mx-auto px-6 text-center">
-          <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: easeOutExpo }} className="text-caption uppercase tracking-[0.15em] block mb-4" style={{ color: '#52525B' }}>Help Center</motion.span>
+          <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: easeOutExpo }} className="text-caption uppercase tracking-[0.15em] block mb-4" style={{ color: '#A8A29E' }}>Help Center</motion.span>
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: easeOutExpo }} className="text-display-section gradient-text mb-4">Frequently Asked Questions</motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: easeOutExpo }} className="text-body-lg" style={{ color: '#A1A1AA' }}>
-            Everything you need to know about DatingCoach. Can not find your answer? Contact us at <a href="mailto:support@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">support@datingcoach.site</a>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: easeOutExpo }} className="text-body-lg" style={{ color: '#57534E' }}>
+            Everything you need to know about DatingCoach. Can not find your answer? Contact us at <a href="mailto:support@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">support@datingcoach.site</a>
           </motion.p>
         </div>
       </section>
@@ -64,11 +64,11 @@ export default function FAQ() {
         </div>
       </section>
 
-      <section className="relative py-24" style={{ background: '#0E0E15' }}>
+      <section className="relative py-24" style={{ background: '#F6F1E9' }}>
         <div className="max-w-[600px] mx-auto px-6 text-center">
-          <h2 className="text-heading-xl text-[#F5F5F7] mb-4">Still Have Questions?</h2>
-          <p className="text-body-lg mb-8" style={{ color: '#A1A1AA' }}>Our team is here to help. Reach out and we will get back to you within 24 hours.</p>
-          <Link to="/contact" className="inline-flex items-center gap-2 btn-gradient text-[#F5F5F7] text-body font-semibold px-6 py-3 rounded-full">
+          <h2 className="text-heading-xl text-text-primary mb-4">Still Have Questions?</h2>
+          <p className="text-body-lg mb-8" style={{ color: '#57534E' }}>Our team is here to help. Reach out and we will get back to you within 24 hours.</p>
+          <Link to="/contact" className="inline-flex items-center gap-2 btn-gradient text-text-primary text-body font-semibold px-6 py-3 rounded-full">
             Contact Support<ArrowRight className="w-4 h-4" />
           </Link>
         </div>

@@ -71,10 +71,10 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
         className={`fixed top-0 left-0 right-0 h-[72px] z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-[rgba(10,10,15,0.95)] shadow-card'
-            : 'bg-[rgba(10,10,15,0.8)]'
+            ? 'bg-[rgba(253,251,247,0.92)] shadow-card'
+            : 'bg-[rgba(253,251,247,0.75)]'
         }`}
-        style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+        style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(28, 25, 23, 0.06)' }}
       >
         <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-6">
           {/* Logo – visible on all screens */}
@@ -101,7 +101,7 @@ export default function Navbar() {
                 <path d="M13.5 18C13.5 18 14.5 19.5 16 19.5C17.5 19.5 18.5 18 18.5 18" stroke="url(#logoGradient)" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
-            <span className="text-heading-sm text-[#F5F5F7]">DatingCoach</span>
+            <span className="text-heading-sm text-text-primary">DatingCoach</span>
           </Link>
 
           {/* Desktop Nav Links – hidden on mobile */}
@@ -112,8 +112,8 @@ export default function Navbar() {
                 to={link.path}
                 className={`relative text-body font-medium transition-colors duration-200 ${
                   location.pathname === link.path
-                    ? 'text-[#FB7185]'
-                    : 'text-[#A1A1AA] hover:text-[#F5F5F7]'
+                    ? 'text-[#BE123C]'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {link.label}
@@ -136,7 +136,7 @@ export default function Navbar() {
                 <Link
                   to="/dashboard"
                   className={`text-body font-medium transition-colors ${
-                    location.pathname === '/dashboard' ? 'text-[#FB7185]' : 'text-[#A1A1AA] hover:text-[#F5F5F7]'
+                    location.pathname === '/dashboard' ? 'text-[#BE123C]' : 'text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   Dashboard
@@ -145,7 +145,7 @@ export default function Navbar() {
             )}
             <Link
               to="/create"
-              className="flex items-center gap-2 btn-gradient text-[#F5F5F7] text-body-sm font-semibold px-5 py-2.5 rounded-full"
+              className="flex items-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-5 py-2.5 rounded-full"
             >
               Start Practice
               <MessageCircle className="w-4 h-4" />
@@ -154,14 +154,14 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-[rgba(28, 25, 23, 0.08)] hover:bg-[rgba(255,255,255,0.1)] transition-colors"
                 >
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#E11D48] to-[#8B5CF6] flex items-center justify-center text-white text-xs font-bold">
                     {user.username?.charAt(0).toUpperCase() || 'U'}
                   </div>
-                  <span className="text-body-sm text-[#F5F5F7] font-medium">{user.username}</span>
+                  <span className="text-body-sm text-text-primary font-medium">{user.username}</span>
                   {user.plan === 'advanced' && <Crown className="w-3.5 h-3.5 text-[#FBBF24]" />}
-                  {user.plan === 'pro' && <Crown className="w-3.5 h-3.5 text-[#A1A1AA]" />}
+                  {user.plan === 'pro' && <Crown className="w-3.5 h-3.5 text-text-secondary" />}
                 </button>
                 <AnimatePresence>
                   {userMenuOpen && (
@@ -172,13 +172,13 @@ export default function Navbar() {
                       transition={{ duration: 0.15 }}
                       className="absolute right-0 top-12 w-48 glass-card-elevated rounded-xl overflow-hidden"
                     >
-                      <div className="p-3 border-b border-[rgba(255,255,255,0.06)]">
-                        <p className="text-body-sm text-[#F5F5F7] font-medium truncate">{user.username}</p>
-                        <p className="text-caption text-[#52525B]">{user.email}</p>
+                      <div className="p-3 border-b border-[rgba(28, 25, 23, 0.08)]">
+                        <p className="text-body-sm text-text-primary font-medium truncate">{user.username}</p>
+                        <p className="text-caption text-text-muted">{user.email}</p>
                         <span className={`inline-block mt-1 text-caption font-semibold px-2 py-0.5 rounded-full ${
                           user.plan === 'advanced' ? 'bg-[#8B5CF6]/20 text-[#A78BFA]' :
                           user.plan === 'pro' ? 'bg-[#F59E0B]/20 text-[#FBBF24]' :
-                          'bg-[#52525B]/20 text-[#A1A1AA]'
+                          'bg-stone-400/20 text-text-secondary'
                         }`}>
                           {user.plan === 'advanced' ? 'Advanced' : user.plan === 'pro' ? 'Pro' : 'Free'}
                         </span>
@@ -186,7 +186,7 @@ export default function Navbar() {
                       <Link
                         to="/dashboard"
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-body-sm text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[rgba(255,255,255,0.04)] transition-colors"
+                        className="flex items-center gap-2 px-4 py-2.5 text-body-sm text-text-secondary hover:text-text-primary hover:bg-[rgba(28, 25, 23, 0.06)] transition-colors"
                       >
                         <User className="w-4 h-4" /> Dashboard
                       </Link>
@@ -204,13 +204,13 @@ export default function Navbar() {
               <div className="flex items-center gap-3">
                 <Link
                   to="/login"
-                  className="text-body font-medium text-[#F5F5F7] px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.12)] hover:border-[rgba(225,29,72,0.5)] hover:bg-[rgba(225,29,72,0.08)] hover:text-[#FB7185] transition-all duration-200"
+                  className="text-body font-medium text-text-primary px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.12)] hover:border-[rgba(225,29,72,0.5)] hover:bg-[rgba(225,29,72,0.08)] hover:text-[#BE123C] transition-all duration-200"
                 >
                   Log In
                 </Link>
                 <Link
                   to="/signup"
-                  className="flex items-center gap-2 btn-gradient text-[#F5F5F7] text-body-sm font-semibold px-5 py-2.5 rounded-full"
+                  className="flex items-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-5 py-2.5 rounded-full"
                 >
                   Sign Up
                 </Link>
@@ -221,7 +221,7 @@ export default function Navbar() {
           {/* Mobile Hamburger – visible on mobile only */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 text-[#A1A1AA] hover:text-[#F5F5F7] transition-colors"
+            className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -237,13 +237,13 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[60] md:hidden bg-[rgba(10,10,15,0.98)] backdrop-blur-xl"
+            className="fixed inset-0 z-[60] md:hidden bg-[rgba(253,251,247,0.98)] backdrop-blur-xl"
           >
             {/* Close button */}
             <div className="flex items-center justify-end h-[72px] px-6">
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-2 text-[#A1A1AA] hover:text-[#F5F5F7] transition-colors"
+                className="p-2 text-text-secondary hover:text-text-primary transition-colors"
                 aria-label="Close menu"
               >
                 <X className="w-6 h-6" />
@@ -256,7 +256,7 @@ export default function Navbar() {
               <Link
                 to="/create"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 btn-gradient text-[#F5F5F7] text-body-sm font-semibold px-6 py-3.5 rounded-full w-full min-h-[56px]"
+                className="flex items-center justify-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-6 py-3.5 rounded-full w-full min-h-[56px]"
               >
                 Start Practice
                 <MessageCircle className="w-4 h-4" />
@@ -268,15 +268,15 @@ export default function Navbar() {
                   <Link
                     to="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="text-body font-medium text-[#F5F5F7] py-2 transition-colors hover:text-[#FB7185]"
+                    className="text-body font-medium text-text-primary py-2 transition-colors hover:text-[#BE123C]"
                   >
                     Log In
                   </Link>
-                  <span className="text-[#52525B]">/</span>
+                  <span className="text-text-muted">/</span>
                   <Link
                     to="/signup"
                     onClick={() => setMobileOpen(false)}
-                    className="text-body font-medium text-[#F5F5F7] py-2 transition-colors hover:text-[#FB7185]"
+                    className="text-body font-medium text-text-primary py-2 transition-colors hover:text-[#BE123C]"
                   >
                     Sign Up
                   </Link>
@@ -284,7 +284,7 @@ export default function Navbar() {
               )}
 
               {/* Separator */}
-              <div className="my-3 border-t border-white/10" />
+              <div className="my-3 border-t border-stone-900/10" />
 
               {/* Nav links */}
               {navLinks.map((link) => (
@@ -294,8 +294,8 @@ export default function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center min-h-[56px] px-4 rounded-xl text-body font-medium transition-colors ${
                     location.pathname === link.path
-                      ? 'text-[#FB7185] bg-[rgba(225,29,72,0.1)]'
-                      : 'text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[rgba(255,255,255,0.04)]'
+                      ? 'text-[#BE123C] bg-[rgba(225,29,72,0.1)]'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-[rgba(28, 25, 23, 0.06)]'
                   }`}
                 >
                   {link.label}
@@ -310,25 +310,25 @@ export default function Navbar() {
                     onClick={() => setMobileOpen(false)}
                     className={`flex items-center min-h-[56px] px-4 rounded-xl text-body font-medium transition-colors ${
                       location.pathname === '/dashboard'
-                        ? 'text-[#FB7185] bg-[rgba(225,29,72,0.1)]'
-                        : 'text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[rgba(255,255,255,0.04)]'
+                        ? 'text-[#BE123C] bg-[rgba(225,29,72,0.1)]'
+                        : 'text-text-secondary hover:text-text-primary hover:bg-[rgba(28, 25, 23, 0.06)]'
                     }`}
                   >
                     Dashboard
                   </Link>
                   {/* Separator */}
-                  <div className="my-3 border-t border-white/10" />
+                  <div className="my-3 border-t border-stone-900/10" />
                   {/* User info + Sign Out */}
                   <div className="flex items-center gap-3 px-4 py-2">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E11D48] to-[#8B5CF6] flex items-center justify-center text-white text-xs font-bold">
                       {user.username?.charAt(0).toUpperCase() || 'U'}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-body-sm text-[#F5F5F7] font-medium truncate">{user.username}</p>
-                      <p className="text-caption text-[#52525B]">{user.credits} credits</p>
+                      <p className="text-body-sm text-text-primary font-medium truncate">{user.username}</p>
+                      <p className="text-caption text-text-muted">{user.credits} credits</p>
                     </div>
                     {user.plan === 'advanced' && <Crown className="w-4 h-4 text-[#FBBF24]" />}
-                    {user.plan === 'pro' && <Crown className="w-4 h-4 text-[#A1A1AA]" />}
+                    {user.plan === 'pro' && <Crown className="w-4 h-4 text-text-secondary" />}
                   </div>
                   <button
                     onClick={() => { logout(); setMobileOpen(false) }}
@@ -344,7 +344,7 @@ export default function Navbar() {
       </AnimatePresence>
 
       {/* ====== MOBILE BOTTOM TAB BAR ====== */}
-      <nav className="fixed bottom-0 left-0 right-0 h-16 z-50 md:hidden bg-[rgba(10,10,15,0.95)] backdrop-blur-xl border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
+      <nav className="fixed bottom-0 left-0 right-0 h-16 z-50 md:hidden bg-[rgba(253,251,247,0.95)] backdrop-blur-xl border-t border-stone-900/10 pb-[env(safe-area-inset-bottom)]">
         <div className="flex items-center justify-around h-full px-2">
           {bottomTabs.map((tab) => {
             const isActive = location.pathname === tab.path
@@ -358,15 +358,15 @@ export default function Navbar() {
                 <Icon
                   className={`w-5 h-5 transition-colors duration-200 ${
                     isActive
-                      ? 'text-[#FB7185]'
-                      : 'text-white/50'
+                      ? 'text-[#BE123C]'
+                      : 'text-stone-500'
                   }`}
                 />
                 <span
                   className={`text-[10px] font-medium transition-colors duration-200 ${
                     isActive
-                      ? 'text-[#FB7185]'
-                      : 'text-white/50'
+                      ? 'text-[#BE123C]'
+                      : 'text-stone-500'
                   }`}
                 >
                   {tab.label}
@@ -381,12 +381,12 @@ export default function Navbar() {
           >
             <Menu
               className={`w-5 h-5 transition-colors duration-200 ${
-                mobileOpen ? 'text-[#FB7185]' : 'text-white/50'
+                mobileOpen ? 'text-[#BE123C]' : 'text-stone-500'
               }`}
             />
             <span
               className={`text-[10px] font-medium transition-colors duration-200 ${
-                mobileOpen ? 'text-[#FB7185]' : 'text-white/50'
+                mobileOpen ? 'text-[#BE123C]' : 'text-stone-500'
               }`}
             >
               More

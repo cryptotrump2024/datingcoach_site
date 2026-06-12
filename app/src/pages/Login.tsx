@@ -84,7 +84,7 @@ export default function Login() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-5"
             style={{
-              background: 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)',
+              background: 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)',
               boxShadow: '0 0 40px rgba(225, 29, 72, 0.3)',
             }}
           >
@@ -94,7 +94,7 @@ export default function Login() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-display-subsection text-[#F5F5F7] mb-2"
+            className="text-display-subsection text-text-primary mb-2"
           >
             Welcome back
           </motion.h1>
@@ -102,7 +102,7 @@ export default function Login() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-body text-[#A1A1AA]"
+            className="text-body text-text-secondary"
           >
             Sign in to continue your conversation practice
           </motion.p>
@@ -117,49 +117,49 @@ export default function Login() {
         >
           {/* Divider */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
-            <span className="text-caption text-[#52525B] uppercase tracking-wider">or</span>
-            <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
+            <div className="flex-1 h-px bg-[rgba(28, 25, 23, 0.1)]" />
+            <span className="text-caption text-text-muted uppercase tracking-wider">or</span>
+            <div className="flex-1 h-px bg-[rgba(28, 25, 23, 0.1)]" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Field */}
             <div>
-              <label className="block text-body-sm font-medium text-[#A1A1AA] mb-2">
+              <label className="block text-body-sm font-medium text-text-secondary mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#52525B]" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-[#F5F5F7] text-body placeholder-[#52525B] focus:outline-none focus:border-[rgba(225,29,72,0.4)] focus:ring-1 focus:ring-[rgba(225,29,72,0.2)] transition-all duration-200"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-text-primary text-body placeholder-text-muted focus:outline-none focus:border-[rgba(225,29,72,0.4)] focus:ring-1 focus:ring-[rgba(225,29,72,0.2)] transition-all duration-200"
                 />
               </div>
             </div>
 
             {/* Password Field */}
             <div>
-              <label className="block text-body-sm font-medium text-[#A1A1AA] mb-2">
+              <label className="block text-body-sm font-medium text-text-secondary mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#52525B]" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
-                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-[#F5F5F7] text-body placeholder-[#52525B] focus:outline-none focus:border-[rgba(225,29,72,0.4)] focus:ring-1 focus:ring-[rgba(225,29,72,0.2)] transition-all duration-200"
+                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-text-primary text-body placeholder-text-muted focus:outline-none focus:border-[rgba(225,29,72,0.4)] focus:ring-1 focus:ring-[rgba(225,29,72,0.2)] transition-all duration-200"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#52525B] hover:text-[#A1A1AA] transition-colors cursor-pointer"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                 </button>
@@ -177,16 +177,16 @@ export default function Login() {
                     className="sr-only peer"
                   />
                   <div
-                    className="w-5 h-5 rounded-md border border-[rgba(255,255,255,0.12)] bg-[#1A1A25] peer-checked:bg-[#E11D48] peer-checked:border-[#E11D48] transition-all duration-200 flex items-center justify-center"
+                    className="w-5 h-5 rounded-md border border-[rgba(255,255,255,0.12)] bg-bg-tertiary peer-checked:bg-[#E11D48] peer-checked:border-[#E11D48] transition-all duration-200 flex items-center justify-center"
                   >
                     {rememberMe && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                   </div>
                 </div>
-                <span className="text-body-sm text-[#A1A1AA]">Remember me</span>
+                <span className="text-body-sm text-text-secondary">Remember me</span>
               </label>
               <Link
                 to="#"
-                className="text-body-sm text-[#FB7185] hover:text-[#E11D48] transition-colors"
+                className="text-body-sm text-[#BE123C] hover:text-[#E11D48] transition-colors"
               >
                 Forgot password?
               </Link>
@@ -209,7 +209,7 @@ export default function Login() {
               disabled={isLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl btn-gradient text-[#F5F5F7] font-semibold text-body disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl btn-gradient text-text-primary font-semibold text-body disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -246,12 +246,12 @@ export default function Login() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-6 text-body text-[#A1A1AA]"
+          className="text-center mt-6 text-body text-text-secondary"
         >
           Don&apos;t have an account?{' '}
           <Link
             to="/signup"
-            className="text-[#FB7185] hover:text-[#E11D48] font-medium transition-colors"
+            className="text-[#BE123C] hover:text-[#E11D48] font-medium transition-colors"
           >
             Sign up
           </Link>

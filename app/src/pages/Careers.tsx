@@ -19,13 +19,13 @@ const openings = [
 
 export default function Careers() {
   return (
-    <div className="min-h-[100dvh] pt-[72px]" style={{ background: '#0A0A0F' }}>
+    <div className="min-h-[100dvh] pt-[72px]" style={{ background: '#FDFBF7' }}>
       <section className="relative pt-24 pb-16">
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(225, 29, 72, 0.06) 0%, transparent 60%)' }} />
         <div className="relative max-w-[800px] mx-auto px-6 text-center">
-          <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: easeOutExpo }} className="text-caption uppercase tracking-[0.15em] block mb-4" style={{ color: '#52525B' }}>Join the Team</motion.span>
+          <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: easeOutExpo }} className="text-caption uppercase tracking-[0.15em] block mb-4" style={{ color: '#A8A29E' }}>Join the Team</motion.span>
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: easeOutExpo }} className="text-display-section gradient-text mb-4">Careers at DatingCoach</motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: easeOutExpo }} className="text-body-lg" style={{ color: '#A1A1AA' }}>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: easeOutExpo }} className="text-body-lg" style={{ color: '#57534E' }}>
             We are a small team building something big. If you are passionate about helping people connect, we want to hear from you.
           </motion.p>
         </div>
@@ -36,16 +36,16 @@ export default function Careers() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
             {values.map((v, i) => (
               <motion.div key={v.title} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 * i, ease: easeOutExpo }} className="glass-card p-6 text-center">
-                <div className="flex justify-center mb-3" style={{ color: '#FB7185' }}>{v.icon}</div>
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-2">{v.title}</h3>
-                <p className="text-body-sm" style={{ color: '#A1A1AA' }}>{v.desc}</p>
+                <div className="flex justify-center mb-3" style={{ color: '#BE123C' }}>{v.icon}</div>
+                <h3 className="text-heading-sm text-text-primary mb-2">{v.title}</h3>
+                <p className="text-body-sm" style={{ color: '#57534E' }}>{v.desc}</p>
               </motion.div>
             ))}
           </div>
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: easeOutExpo }} className="text-center mb-10">
-            <h2 className="text-display-subsection text-[#F5F5F7] mb-2">Open Positions</h2>
-            <p className="text-body" style={{ color: '#A1A1AA' }}>No open roles at the moment, but we are always on the lookout for great people.</p>
+            <h2 className="text-display-subsection text-text-primary mb-2">Open Positions</h2>
+            <p className="text-body" style={{ color: '#57534E' }}>No open roles at the moment, but we are always on the lookout for great people.</p>
           </motion.div>
 
           <div className="space-y-4 mb-16">
@@ -54,22 +54,22 @@ export default function Careers() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-heading-md text-[#F5F5F7]">{job.title}</h3>
-                      <span className="text-caption font-medium px-3 py-1 rounded-full" style={{ background: 'rgba(225,29,72,0.15)', color: '#FB7185' }}>{job.type}</span>
+                      <h3 className="text-heading-md text-text-primary">{job.title}</h3>
+                      <span className="text-caption font-medium px-3 py-1 rounded-full" style={{ background: 'rgba(225,29,72,0.15)', color: '#BE123C' }}>{job.type}</span>
                     </div>
-                    <p className="text-caption mb-2" style={{ color: '#52525B' }}>{job.department}</p>
-                    <p className="text-body-sm" style={{ color: '#A1A1AA' }}>{job.desc}</p>
+                    <p className="text-caption mb-2" style={{ color: '#A8A29E' }}>{job.department}</p>
+                    <p className="text-body-sm" style={{ color: '#57534E' }}>{job.desc}</p>
                   </div>
-                  <Link to="/contact" className="flex-shrink-0 btn-gradient text-[#F5F5F7] text-body-sm font-semibold px-6 py-2.5 rounded-full text-center">Apply</Link>
+                  <Link to="/contact" className="flex-shrink-0 btn-gradient text-text-primary text-body-sm font-semibold px-6 py-2.5 rounded-full text-center">Apply</Link>
                 </div>
               </motion.div>
             ))}
           </div>
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3, ease: easeOutExpo }} className="glass-card p-8 text-center">
-            <h3 className="text-heading-md text-[#F5F5F7] mb-3">Do not see your role?</h3>
-            <p className="text-body mb-6" style={{ color: '#A1A1AA' }}>We are always open to meeting talented people. Send us a note telling us what you would bring to the team.</p>
-            <Link to="/contact" className="inline-flex items-center gap-2 btn-gradient text-[#F5F5F7] text-body font-semibold px-6 py-3 rounded-full">
+            <h3 className="text-heading-md text-text-primary mb-3">Do not see your role?</h3>
+            <p className="text-body mb-6" style={{ color: '#57534E' }}>We are always open to meeting talented people. Send us a note telling us what you would bring to the team.</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 btn-gradient text-text-primary text-body font-semibold px-6 py-3 rounded-full">
               <Mail className="w-4 h-4" />Get in Touch
             </Link>
           </motion.div>

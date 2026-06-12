@@ -90,7 +90,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="text-display-hero text-4xl md:text-5xl lg:text-7xl text-[#F5F5F7] mb-2"
+          className="text-display-hero text-4xl md:text-5xl lg:text-7xl text-text-primary mb-2"
         >
           Master the Conversation.
         </motion.h1>
@@ -110,7 +110,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="text-body-lg text-base md:text-lg text-[#A1A1AA] max-w-[90%] md:max-w-[640px] mb-10 leading-[1.7]"
+          className="text-body-lg text-base md:text-lg text-text-secondary max-w-[90%] md:max-w-[640px] mb-10 leading-[1.7]"
         >
           Practice real conversations with different personalities. Get instant feedback on every
           message, learn what she is really saying, and build the confidence to make genuine
@@ -127,14 +127,14 @@ function HeroSection() {
         >
           <Link
             to="/create"
-            className="flex items-center justify-center gap-2 btn-gradient text-[#F5F5F7] text-heading-sm font-semibold px-6 md:px-8 py-4 rounded-full w-full md:w-auto"
+            className="flex items-center justify-center gap-2 btn-gradient text-text-primary text-heading-sm font-semibold px-6 md:px-8 py-4 rounded-full w-full md:w-auto"
           >
             Start Your First Conversation
             <MessageCircle className="w-5 h-5" />
           </Link>
           <a
             href="#how-it-works"
-            className="flex items-center justify-center gap-2 text-heading-sm font-semibold text-[#A1A1AA] px-6 md:px-8 py-4 rounded-full border border-[rgba(255,255,255,0.12)] hover:border-[rgba(255,255,255,0.25)] transition-colors w-full md:w-auto"
+            className="flex items-center justify-center gap-2 text-heading-sm font-semibold text-text-secondary px-6 md:px-8 py-4 rounded-full border border-[rgba(255,255,255,0.12)] hover:border-[rgba(255,255,255,0.25)] transition-colors w-full md:w-auto"
           >
             See How It Works
           </a>
@@ -159,7 +159,7 @@ function HeroSection() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="w-8 h-8 rounded-full border-2 border-[#0A0A0F] bg-[#1A1A25] flex items-center justify-center overflow-hidden"
+                className="w-8 h-8 rounded-full border-2 border-bg-primary bg-bg-tertiary flex items-center justify-center overflow-hidden"
               >
                 <div
                   className="w-full h-full rounded-full"
@@ -176,7 +176,7 @@ function HeroSection() {
                 <Star key={i} className="w-3 h-3 text-[#FBBF24] fill-[#FBBF24]" />
               ))}
             </div>
-            <span className="text-caption text-[#52525B]">Trusted by 8,500+ guys worldwide</span>
+            <span className="text-caption text-text-muted">Trusted by 8,500+ guys worldwide</span>
           </div>
         </motion.div>
 
@@ -187,15 +187,15 @@ function HeroSection() {
           transition={{ delay: 1.5, duration: 0.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
-          <div className="w-px h-10 bg-[#52525B]/30 relative overflow-hidden">
+          <div className="w-px h-10 bg-stone-400/30 relative overflow-hidden">
             <motion.div
-              className="absolute top-0 left-0 w-full bg-[#A1A1AA]"
+              className="absolute top-0 left-0 w-full bg-stone-400"
               initial={{ height: '0%', top: '0%' }}
               animate={{ height: ['0%', '100%', '0%'], top: ['0%', '0%', '100%'] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             />
           </div>
-          <span className="text-caption text-[#52525B]">Scroll to explore</span>
+          <span className="text-caption text-text-muted">Scroll to explore</span>
         </motion.div>
       </motion.div>
     </section>
@@ -233,7 +233,7 @@ function TrustBarSection() {
         transition={{ duration: 0.5 }}
         className="text-center mb-8"
       >
-        <span className="text-xs md:text-caption text-[#52525B] uppercase tracking-[0.2em]">Trusted By Leading Publications</span>
+        <span className="text-xs md:text-caption text-text-muted uppercase tracking-[0.2em]">Trusted By Leading Publications</span>
       </motion.div>
 
       <div className="relative max-w-[1400px] mx-auto overflow-hidden">
@@ -267,8 +267,8 @@ function TrustBarSection() {
                 {pub.name.charAt(0)}
               </div>
               <div>
-                <div className="text-body-sm font-semibold text-[#A1A1AA]">{pub.name}</div>
-                <div className="text-caption text-[#52525B]">{pub.readers} readers</div>
+                <div className="text-body-sm font-semibold text-text-secondary">{pub.name}</div>
+                <div className="text-caption text-text-muted">{pub.readers} readers</div>
               </div>
             </div>
           ))}
@@ -288,8 +288,8 @@ function TrustBarSection() {
           { value: '4.8', label: 'Average Rating' },
         ].map((stat) => (
           <div key={stat.label} className="text-center">
-            <div className="text-4xl md:text-[56px] font-bold text-[#F5F5F7]">{stat.value}</div>
-            <div className="text-caption text-[#52525B] mt-1">{stat.label}</div>
+            <div className="text-4xl md:text-[56px] font-bold text-text-primary">{stat.value}</div>
+            <div className="text-caption text-text-muted mt-1">{stat.label}</div>
           </div>
         ))}
       </motion.div>
@@ -426,7 +426,7 @@ function HowItWorksSection() {
           style={{ y: headerY, opacity: headerOp }}
           className="absolute top-16 left-0 right-0 text-center z-10"
         >
-          <h2 className="text-display-subsection text-4xl md:text-[56px] text-[#F5F5F7]">How It Works</h2>
+          <h2 className="text-display-subsection text-4xl md:text-[56px] text-text-primary">How It Works</h2>
         </motion.div>
 
         {/* ── Individual Step Cards (Phases 1-3) — desktop only */}
@@ -458,8 +458,8 @@ function HowItWorksSection() {
                   style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.4), 0 0 60px ${step.glow}` }}
                 >
                   <div className="mb-6">{step.icon}</div>
-                  <h3 className="text-heading-lg text-xl md:text-2xl text-[#F5F5F7] mb-4">{step.title}</h3>
-                  <p className="text-body text-sm md:text-[15px] text-[#A1A1AA] leading-relaxed">{step.desc}</p>
+                  <h3 className="text-heading-lg text-xl md:text-2xl text-text-primary mb-4">{step.title}</h3>
+                  <p className="text-body text-sm md:text-[15px] text-text-secondary leading-relaxed">{step.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -478,8 +478,8 @@ function HowItWorksSection() {
             >
               <div className="flex-shrink-0 mt-0.5">{step.icon}</div>
               <div>
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-1">{step.title}</h3>
-                <p className="text-body-sm text-[#A1A1AA]">{step.shortDesc}</p>
+                <h3 className="text-heading-sm text-text-primary mb-1">{step.title}</h3>
+                <p className="text-body-sm text-text-secondary">{step.shortDesc}</p>
               </div>
               <span
                 className="ml-auto text-display-subsection font-display flex-shrink-0"
@@ -494,7 +494,7 @@ function HowItWorksSection() {
           <div className="text-center mt-6">
             <Link
               to="/create"
-              className="inline-flex items-center gap-2 btn-gradient text-[#F5F5F7] text-body font-semibold px-6 py-3 rounded-full"
+              className="inline-flex items-center gap-2 btn-gradient text-text-primary text-body font-semibold px-6 py-3 rounded-full"
             >
               <Sparkles className="w-4 h-4" />
               Get Started Now
@@ -507,7 +507,7 @@ function HowItWorksSection() {
           className="hidden md:flex absolute inset-0 flex-col items-center justify-center px-6"
           style={{ opacity: allStackedOp, y: allStackedY }}
         >
-          <p className="text-caption text-[#52525B] uppercase tracking-[0.12em] mb-6">
+          <p className="text-caption text-text-muted uppercase tracking-[0.12em] mb-6">
             All the steps at a glance
           </p>
 
@@ -524,8 +524,8 @@ function HowItWorksSection() {
               >
                 <div className="flex-shrink-0 mt-0.5">{step.icon}</div>
                 <div>
-                  <h3 className="text-heading-sm text-[#F5F5F7] mb-1">{step.title}</h3>
-                  <p className="text-body-sm text-[#A1A1AA]">{step.shortDesc}</p>
+                  <h3 className="text-heading-sm text-text-primary mb-1">{step.title}</h3>
+                  <p className="text-body-sm text-text-secondary">{step.shortDesc}</p>
                 </div>
                 <span
                   className="ml-auto text-display-subsection font-display flex-shrink-0"
@@ -542,10 +542,10 @@ function HowItWorksSection() {
             className="mt-8 text-center"
             style={{ opacity: ctaOp, y: ctaY }}
           >
-            <p className="text-body text-[#A1A1AA] mb-4">Ready to give it a shot?</p>
+            <p className="text-body text-text-secondary mb-4">Ready to give it a shot?</p>
             <Link
               to="/create"
-              className="inline-flex items-center gap-3 btn-gradient text-[#F5F5F7] text-body-lg font-semibold px-8 py-4 rounded-full shadow-glow-rose hover:shadow-[0_0_50px_rgba(225,29,72,0.4)] transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-3 btn-gradient text-text-primary text-body-lg font-semibold px-8 py-4 rounded-full shadow-glow-rose hover:shadow-[0_0_50px_rgba(225,29,72,0.4)] transition-all duration-300 hover:scale-105"
             >
               <Sparkles className="w-5 h-5" />
               Get Started Now
@@ -610,8 +610,8 @@ function PersonaCard({ persona, onSelect }: { persona: typeof personas[0]; onSel
             className="flex flex-col items-center gap-2"
           >
             <Sparkles className="w-8 h-8 text-[#E11D48]" />
-            <span className="text-[#F5F5F7] font-semibold text-body-lg">Practice with {persona.name}</span>
-            <span className="inline-flex items-center gap-1.5 btn-gradient text-[#F5F5F7] text-body-sm font-semibold px-6 py-2.5 rounded-full mt-1">
+            <span className="text-text-primary font-semibold text-body-lg">Practice with {persona.name}</span>
+            <span className="inline-flex items-center gap-1.5 btn-gradient text-text-primary text-body-sm font-semibold px-6 py-2.5 rounded-full mt-1">
               <Sparkles className="w-4 h-4" />
               Select
             </span>
@@ -622,7 +622,7 @@ function PersonaCard({ persona, onSelect }: { persona: typeof personas[0]; onSel
       {/* Content */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-1">
-          <h3 className="text-heading-sm text-lg md:text-xl text-[#F5F5F7]">{persona.name}</h3>
+          <h3 className="text-heading-sm text-lg md:text-xl text-text-primary">{persona.name}</h3>
           <span
             className="text-caption uppercase px-2.5 py-0.5 rounded-full"
             style={{ backgroundColor: `${persona.color}20`, color: persona.color }}
@@ -630,14 +630,14 @@ function PersonaCard({ persona, onSelect }: { persona: typeof personas[0]; onSel
             {persona.difficulty}
           </span>
         </div>
-        <p className="text-body-sm text-xs md:text-sm text-[#52525B] mb-2">
+        <p className="text-body-sm text-xs md:text-sm text-text-muted mb-2">
           {persona.age}, {persona.ethnicity}
         </p>
         <div className="flex flex-wrap gap-1.5 mb-3">
           {persona.personality.map((trait) => (
             <span
               key={trait}
-              className="text-body-sm text-[#A1A1AA] px-2 py-0.5 md:px-2.5 md:py-1 rounded-full"
+              className="text-body-sm text-text-secondary px-2 py-0.5 md:px-2.5 md:py-1 rounded-full"
               style={{ background: '#1A1A25', border: '1px solid rgba(255,255,255,0.06)' }}
             >
               {trait}
@@ -713,7 +713,7 @@ function PersonaShowcaseSection() {
             variants={headerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="text-caption text-[#52525B] uppercase tracking-[0.12em] block mb-4"
+            className="text-caption text-text-muted uppercase tracking-[0.12em] block mb-4"
           >
             12 Unique Personalities
           </motion.span>
@@ -722,7 +722,7 @@ function PersonaShowcaseSection() {
             variants={headerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="text-display-subsection text-4xl md:text-[56px] text-[#F5F5F7] mb-4"
+            className="text-display-subsection text-4xl md:text-[56px] text-text-primary mb-4"
           >
             Choose Your Practice Partner
           </motion.h2>
@@ -731,7 +731,7 @@ function PersonaShowcaseSection() {
             variants={headerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="text-base md:text-body-lg text-[#A1A1AA] max-w-[90%] md:max-w-[560px] mx-auto"
+            className="text-base md:text-body-lg text-text-secondary max-w-[90%] md:max-w-[560px] mx-auto"
           >
             From the girl next door to the sophisticated mystery. Each one brings a different challenge.
           </motion.p>
@@ -743,7 +743,7 @@ function PersonaShowcaseSection() {
           {scrollPos > 10 && (
             <button
               onClick={() => scroll(-1)}
-              className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-[#F5F5F7] hover:scale-110 transition-transform"
+              className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-text-primary hover:scale-110 transition-transform"
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -754,7 +754,7 @@ function PersonaShowcaseSection() {
           {scrollPos < maxScroll - 10 && (
             <button
               onClick={() => scroll(1)}
-              className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-[#F5F5F7] hover:scale-110 transition-transform"
+              className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-text-primary hover:scale-110 transition-transform"
               aria-label="Scroll right"
             >
               <ChevronRight className="w-5 h-5" />
@@ -824,7 +824,7 @@ function PersonaShowcaseSection() {
         >
           <Link
             to="/create"
-            className="group inline-flex items-center gap-3 btn-gradient text-[#F5F5F7] text-body-lg font-semibold px-8 py-4 rounded-full shadow-glow-rose hover:shadow-[0_0_50px_rgba(225,29,72,0.4)] transition-all duration-300 hover:scale-105"
+            className="group inline-flex items-center gap-3 btn-gradient text-text-primary text-body-lg font-semibold px-8 py-4 rounded-full shadow-glow-rose hover:shadow-[0_0_50px_rgba(225,29,72,0.4)] transition-all duration-300 hover:scale-105"
           >
             <Sparkles className="w-5 h-5" />
             Create Your Own Persona
@@ -910,7 +910,7 @@ function AnalysisPreviewSection() {
           className="absolute inset-0 opacity-[0.15]"
           style={{ backgroundImage: 'url(/conversation-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
-        <div className="absolute inset-0 bg-[#0A0A0F]/80" />
+        <div className="absolute inset-0 bg-bg-primary/80" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 w-full">
           {/* Section Label */}
@@ -941,7 +941,7 @@ function AnalysisPreviewSection() {
                   <div
                     className={`max-w-[80%] px-4 py-3 text-body-sm ${
                       msg.role === 'her'
-                        ? 'bg-[rgba(18,18,26,0.6)] text-[#F5F5F7] border-l-[3px] border-[#F472B6] rounded-[0_20px_20px_20px]'
+                        ? 'bg-[rgba(255,255,255,0.82)] text-text-primary border-l-[3px] border-[#F472B6] rounded-[0_20px_20px_20px]'
                         : 'bg-gradient-to-r from-[#E11D48] to-[#F59E0B] text-white rounded-[20px_20px_0_20px]'
                     }`}
                   >
@@ -967,8 +967,8 @@ function AnalysisPreviewSection() {
                       {panel.icon}
                     </div>
                     <div>
-                      <h4 className="text-heading-md text-base md:text-lg text-[#F5F5F7] mb-2">{panel.title}</h4>
-                      <p className="text-body-sm text-xs md:text-[13px] text-[#A1A1AA] leading-relaxed">{panel.content}</p>
+                      <h4 className="text-heading-md text-base md:text-lg text-text-primary mb-2">{panel.title}</h4>
+                      <p className="text-body-sm text-xs md:text-[13px] text-text-secondary leading-relaxed">{panel.content}</p>
                     </div>
                   </div>
                   <div
@@ -990,10 +990,10 @@ function AnalysisPreviewSection() {
         <span className="text-caption text-[#8B5CF6] uppercase tracking-[0.12em]">
           Real-Time Analysis
         </span>
-        <h2 className="text-3xl text-[#F5F5F7] mt-4 mb-4">
+        <h2 className="text-3xl text-text-primary mt-4 mb-4">
           Understand Every Message
         </h2>
-        <p className="text-base text-[#A1A1AA]">
+        <p className="text-base text-text-secondary">
           Get instant breakdowns of hidden meaning, emotional dynamics, and strategic opportunities.
         </p>
       </div>
@@ -1010,7 +1010,7 @@ function AnalysisPreviewSection() {
             <div
               className={`max-w-[80%] px-4 py-3 text-sm ${
                 msg.role === 'her'
-                  ? 'bg-[rgba(18,18,26,0.6)] text-[#F5F5F7] border-l-[3px] border-[#F472B6] rounded-[0_20px_20px_20px]'
+                  ? 'bg-[rgba(255,255,255,0.82)] text-text-primary border-l-[3px] border-[#F472B6] rounded-[0_20px_20px_20px]'
                   : 'bg-gradient-to-r from-[#E11D48] to-[#F59E0B] text-white rounded-[20px_20px_0_20px]'
               }`}
             >
@@ -1032,8 +1032,8 @@ function AnalysisPreviewSection() {
               {panel.icon}
             </div>
             <div>
-              <h4 className="text-base text-[#F5F5F7] mb-2">{panel.title}</h4>
-              <p className="text-sm text-[#A1A1AA] leading-relaxed">{panel.content}</p>
+              <h4 className="text-base text-text-primary mb-2">{panel.title}</h4>
+              <p className="text-sm text-text-secondary leading-relaxed">{panel.content}</p>
             </div>
           </div>
           <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full" style={{ backgroundColor: panel.color }} />
@@ -1104,7 +1104,7 @@ function TestimonialsSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, ease: easeOutExpo }}
-            className="text-caption text-[#52525B] uppercase tracking-[0.12em] block mb-4"
+            className="text-caption text-text-muted uppercase tracking-[0.12em] block mb-4"
           >
             Success Stories
           </motion.span>
@@ -1112,7 +1112,7 @@ function TestimonialsSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.1, ease: easeOutExpo }}
-            className="text-display-subsection text-4xl md:text-[56px] text-[#F5F5F7] mb-4"
+            className="text-display-subsection text-4xl md:text-[56px] text-text-primary mb-4"
           >
             Real Guys, Real Results
           </motion.h2>
@@ -1120,7 +1120,7 @@ function TestimonialsSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2, ease: easeOutExpo }}
-            className="text-base md:text-body-lg text-[#A1A1AA] max-w-[90%] md:max-w-[500px] mx-auto"
+            className="text-base md:text-body-lg text-text-secondary max-w-[90%] md:max-w-[500px] mx-auto"
           >
             Join thousands who have transformed their dating lives through practice.
           </motion.p>
@@ -1132,7 +1132,7 @@ function TestimonialsSection() {
           {scrollPos > 10 && (
             <button
               onClick={() => scroll(-1)}
-              className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-[#F5F5F7] hover:scale-110 transition-transform"
+              className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-text-primary hover:scale-110 transition-transform"
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -1143,7 +1143,7 @@ function TestimonialsSection() {
           {scrollPos < maxScroll - 10 && (
             <button
               onClick={() => scroll(1)}
-              className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-[#F5F5F7] hover:scale-110 transition-transform"
+              className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 glass-card-elevated w-10 h-10 rounded-full flex items-center justify-center text-text-primary hover:scale-110 transition-transform"
               aria-label="Scroll right"
             >
               <ChevronRight className="w-5 h-5" />
@@ -1181,7 +1181,7 @@ function TestimonialsSection() {
                   </div>
 
                   {/* Quote */}
-                  <p className="text-sm md:text-[15px] text-[#F5F5F7] italic leading-[1.7] mb-6">
+                  <p className="text-sm md:text-[15px] text-text-primary italic leading-[1.7] mb-6">
                     &ldquo;{t.quote}&rdquo;
                   </p>
 
@@ -1194,8 +1194,8 @@ function TestimonialsSection() {
                       {t.initials}
                     </div>
                     <div>
-                      <div className="text-heading-sm text-[#F5F5F7]">{t.name}</div>
-                      <div className="text-caption text-[#52525B]">{t.age} years old</div>
+                      <div className="text-heading-sm text-text-primary">{t.name}</div>
+                      <div className="text-caption text-text-muted">{t.age} years old</div>
                     </div>
                   </div>
                 </motion.div>
@@ -1236,7 +1236,7 @@ function FinalCTASection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, ease: easeOutExpo }}
-          className="text-display-section text-3xl md:text-[48px] text-[#F5F5F7] mb-4"
+          className="text-display-section text-3xl md:text-[48px] text-text-primary mb-4"
         >
           Your Next Great Conversation
           <br />
@@ -1247,7 +1247,7 @@ function FinalCTASection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.1, ease: easeOutExpo }}
-          className="text-base md:text-body-lg text-[#A1A1AA] mb-10"
+          className="text-base md:text-body-lg text-text-secondary mb-10"
         >
           Join 1,500+ guys/girls who are practicing smarter, not harder.
         </motion.p>
@@ -1259,7 +1259,7 @@ function FinalCTASection() {
         >
           <Link
             to="/create"
-            className="inline-flex items-center justify-center gap-2 btn-gradient text-[#F5F5F7] text-heading-sm md:text-heading-md font-semibold px-6 md:px-8 py-4 rounded-full animate-pulse-scale w-full md:w-auto"
+            className="inline-flex items-center justify-center gap-2 btn-gradient text-text-primary text-heading-sm md:text-heading-md font-semibold px-6 md:px-8 py-4 rounded-full animate-pulse-scale w-full md:w-auto"
           >
             Start Practicing Free
             <ArrowRight className="w-5 h-5" />
@@ -1270,7 +1270,7 @@ function FinalCTASection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-caption text-[#52525B] mt-8"
+          className="text-caption text-text-muted mt-8"
         >
           Free forever plan available. Upgrade anytime.
         </motion.p>

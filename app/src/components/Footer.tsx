@@ -46,18 +46,18 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="w-full" style={{ background: '#0A0A0F', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+    <footer className="w-full" style={{ background: '#FDFBF7', borderTop: '1px solid rgba(28, 25, 23, 0.06)' }}>
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-10">
         {/* Top */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-14">
           <div className="flex items-center gap-3">
             <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8"><defs><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#E11D48" /><stop offset="100%" stopColor="#8B5CF6" /></linearGradient></defs><path d="M8 8C8 8 12 4 16 8C20 12 24 8 24 8V16C24 20 20 24 16 24C12 24 8 20 8 16V8Z" stroke="url(#fg)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
             <div>
-              <div className="text-heading-sm text-[#F5F5F7]">DatingCoach</div>
-              <div className="text-body-sm" style={{ color: '#52525B' }}>Master the art of connection</div>
+              <div className="text-heading-sm text-text-primary">DatingCoach</div>
+              <div className="text-body-sm" style={{ color: '#A8A29E' }}>Master the art of connection</div>
             </div>
           </div>
-          <a href="mailto:support@datingcoach.site" className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-xl text-body-sm hover:text-[#F5F5F7] transition-colors" style={{ color: '#A1A1AA' }}>
+          <a href="mailto:support@datingcoach.site" className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-xl text-body-sm hover:text-text-primary transition-colors" style={{ color: '#57534E' }}>
             <Mail className="w-4 h-4" />support@datingcoach.site
           </a>
         </div>
@@ -66,11 +66,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-14">
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h4 className="text-caption uppercase tracking-wider mb-4" style={{ color: '#52525B' }}>{category}</h4>
+              <h4 className="text-caption uppercase tracking-wider mb-4" style={{ color: '#A8A29E' }}>{category}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <Link to={link.path} className="text-body-sm transition-colors duration-200 hover:text-rose-400" style={{ color: '#52525B' }}>
+                    <Link to={link.path} className="text-body-sm transition-colors duration-200 hover:text-rose-600" style={{ color: '#A8A29E' }}>
                       {link.label}
                     </Link>
                   </li>
@@ -81,11 +81,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-          <p className="text-caption" style={{ color: '#52525B' }}>&copy; {new Date().getFullYear()} DatingCoach. All rights reserved.</p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8" style={{ borderTop: '1px solid rgba(28, 25, 23, 0.06)' }}>
+          <p className="text-caption" style={{ color: '#A8A29E' }}>&copy; {new Date().getFullYear()} DatingCoach. All rights reserved.</p>
           <div className="flex items-center gap-4">
             {socialLinks.map((s) => (
-              <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 hover:text-rose-400" style={{ color: '#52525B' }} aria-label={s.name}>
+              <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 hover:text-rose-600" style={{ color: '#A8A29E' }} aria-label={s.name}>
                 {s.icon}
               </a>
             ))}

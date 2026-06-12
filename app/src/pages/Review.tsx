@@ -96,7 +96,7 @@ const CATEGORY_SCORES: CategoryScore[] = [
     icon: <TrendingUp className="w-8 h-8" />,
     score: 14,
     maxScore: 20,
-    color: '#F59E0B',
+    color: '#D97706',
     glowColor: 'rgba(245,158,11,0.25)',
     label: 'Good',
     feedback: 'Good flow, but some lulls in the middle.',
@@ -106,7 +106,7 @@ const CATEGORY_SCORES: CategoryScore[] = [
     icon: <Brain className="w-8 h-8" />,
     score: 14,
     maxScore: 20,
-    color: '#8B5CF6',
+    color: '#7C3AED',
     glowColor: 'rgba(139,92,246,0.25)',
     label: 'Good',
     feedback: 'Missed some subtext cues. Work on reading between the lines.',
@@ -126,7 +126,7 @@ const CATEGORY_SCORES: CategoryScore[] = [
     icon: <Target className="w-8 h-8" />,
     score: 15,
     maxScore: 20,
-    color: '#14B8A6',
+    color: '#0D9488',
     glowColor: 'rgba(20,184,166,0.25)',
     label: 'Good',
     feedback: 'Solid progress toward the conversation objective.',
@@ -204,7 +204,7 @@ const PSYCHOLOGY_INSIGHTS: InsightCard[] = [
   {
     title: 'Reciprocity Principle',
     icon: <RefreshCw className="w-10 h-10" />,
-    color: '#14B8A6',
+    color: '#0D9488',
     content:
       'You maintained good give-and-take. Your investment roughly matched hers, which kept the dynamic balanced. When you invested slightly less, she increased her effort. A positive sign.',
   },
@@ -218,14 +218,14 @@ const PSYCHOLOGY_INSIGHTS: InsightCard[] = [
   {
     title: 'Social Proof Dynamics',
     icon: <Users className="w-10 h-10" />,
-    color: '#F59E0B',
+    color: '#D97706',
     content:
       'You effectively used subtle pre-selection signals without overdoing it. Mentioning social activities created a sense of an active, interesting lifestyle without bragging.',
   },
   {
     title: 'Emotional Escalation',
     icon: <TrendingUp className="w-10 h-10" />,
-    color: '#8B5CF6',
+    color: '#7C3AED',
     content:
       'The conversation followed a healthy emotional escalation curve. You moved from light banter to personal topics at a natural pace. The peak emotional moment came around message 5. Ideal timing for the number close.',
   },
@@ -274,7 +274,7 @@ const ROADMAP_STEPS: RoadmapStep[] = [
 function getGradeColor(grade: string): string {
   switch (grade) {
     case 'S':
-      return '#14B8A6'
+      return '#0D9488'
     case 'A':
       return '#16A34A'
     case 'B':
@@ -305,17 +305,17 @@ function getStarCount(score: number): number {
 function getDifficultyColor(d: string): string {
   switch (d) {
     case 'Beginner':
-      return '#10B981'
+      return '#059669'
     case 'Intermediate':
-      return '#F59E0B'
+      return '#D97706'
     case 'Advanced':
       return '#F97316'
     case 'Expert':
       return '#EF4444'
     case 'Master':
-      return '#8B5CF6'
+      return '#7C3AED'
     default:
-      return '#F59E0B'
+      return '#D97706'
   }
 }
 
@@ -373,7 +373,7 @@ function ScoreRing({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="rgba(255,255,255,0.06)"
+        stroke="rgba(28, 25, 23, 0.08)"
         strokeWidth={strokeWidth}
       />
       <defs>
@@ -418,8 +418,8 @@ function StarRating({ score, size = 20 }: { score: number; size?: number }) {
           }}
         >
           <Star
-            className={i <= count ? 'text-[#F59E0B]' : 'text-[#1A1A25]'}
-            style={{ width: size, height: size, fill: i <= count ? '#F59E0B' : 'transparent' }}
+            className={i <= count ? 'text-[#F59E0B]' : 'text-text-primary'}
+            style={{ width: size, height: size, fill: i <= count ? '#D97706' : 'transparent' }}
           />
         </motion.div>
       ))}
@@ -443,7 +443,7 @@ function ScoreBar({
   const pct = (score / maxScore) * 100
 
   return (
-    <div ref={ref} className="w-full h-2 bg-[#1A1A25] rounded-full overflow-hidden">
+    <div ref={ref} className="w-full h-2 bg-bg-tertiary rounded-full overflow-hidden">
       <motion.div
         className="h-full rounded-full"
         style={{ backgroundColor: color }}
@@ -504,7 +504,7 @@ export default function Review() {
         className="relative"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 40%, rgba(225, 29, 72, 0.1) 0%, transparent 60%), #0A0A0F',
+            'radial-gradient(ellipse at 50% 40%, rgba(225, 29, 72, 0.06) 0%, transparent 60%), #FDFBF7',
           padding: 'clamp(48px, 6vw, 96px) 0 clamp(32px, 4vw, 64px)',
         }}
       >
@@ -512,7 +512,7 @@ export default function Review() {
           {/* Back nav */}
           <motion.button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-1 text-body-sm font-medium text-[#52525B] hover:text-[#A1A1AA] transition-colors mb-8"
+            className="flex items-center gap-1 text-body-sm font-medium text-text-muted hover:text-text-secondary transition-colors mb-8"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
@@ -532,7 +532,7 @@ export default function Review() {
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E11D48] to-[#8B5CF6] flex items-center justify-center text-caption font-semibold text-white">
                 {CONVERSATION_DATA.personaName[0]}
               </div>
-              <span className="text-caption font-medium text-[#52525B]">
+              <span className="text-caption font-medium text-text-muted">
                 {CONVERSATION_DATA.personaName}
               </span>
             </div>
@@ -545,10 +545,10 @@ export default function Review() {
             >
               {CONVERSATION_DATA.difficulty}
             </span>
-            <span className="text-caption text-[#52525B]">
+            <span className="text-caption text-text-muted">
               {CONVERSATION_DATA.duration} &middot; {CONVERSATION_DATA.messageCount} messages
             </span>
-            <span className="text-caption text-[#52525B] ml-auto">
+            <span className="text-caption text-text-muted ml-auto">
               {CONVERSATION_DATA.date}
             </span>
           </motion.div>
@@ -563,10 +563,10 @@ export default function Review() {
             <motion.div variants={fadeUpVariants} className="relative mb-6">
               <ScoreRing score={CONVERSATION_DATA.overallScore} size={200} strokeWidth={12} />
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-display-hero text-[#F5F5F7]">
+                <span className="text-display-hero text-text-primary">
                   <AnimatedScore target={CONVERSATION_DATA.overallScore} />
                 </span>
-                <span className="text-heading-md text-[#52525B]">/100</span>
+                <span className="text-heading-md text-text-muted">/100</span>
               </div>
             </motion.div>
 
@@ -585,7 +585,7 @@ export default function Review() {
 
             <motion.p
               variants={fadeUpVariants}
-              className="text-body-lg text-[#A1A1AA] max-w-[560px]"
+              className="text-body-lg text-text-secondary max-w-[560px]"
             >
               {CONVERSATION_DATA.descriptor}
             </motion.p>
@@ -629,10 +629,10 @@ export default function Review() {
                   }}
                 >
                   {stat.icon}
-                  <span className="text-heading-lg font-semibold text-[#F5F5F7]">
+                  <span className="text-heading-lg font-semibold text-text-primary">
                     {stat.value}
                   </span>
-                  <span className="text-caption text-[#52525B]">{stat.label}</span>
+                  <span className="text-caption text-text-muted">{stat.label}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -643,7 +643,7 @@ export default function Review() {
       {/* ============================================================ */}
       {/* SECTION 2: Category Scores                                     */}
       {/* ============================================================ */}
-      <section className="bg-[#12121A]" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
+      <section className="bg-bg-secondary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div
             className="mb-12"
@@ -652,8 +652,8 @@ export default function Review() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-caption text-[#52525B] uppercase mb-2">Detailed Breakdown</p>
-            <h2 className="text-display-subsection text-[#F5F5F7]">
+            <p className="text-caption text-text-muted uppercase mb-2">Detailed Breakdown</p>
+            <h2 className="text-display-subsection text-text-primary">
               Where You Excelled &amp; Where to Grow
             </h2>
           </motion.div>
@@ -674,13 +674,13 @@ export default function Review() {
                 <div className="mb-4" style={{ color: cat.color }}>
                   {cat.icon}
                 </div>
-                <h3 className="text-heading-sm font-semibold text-[#F5F5F7] mb-3">{cat.name}</h3>
+                <h3 className="text-heading-sm font-semibold text-text-primary mb-3">{cat.name}</h3>
                 <ScoreBar score={cat.score} maxScore={cat.maxScore} color={cat.color} delay={i * 0.12} />
                 <div className="mt-3 flex items-baseline gap-2">
-                  <span className="text-heading-xl font-semibold text-[#F5F5F7]">
+                  <span className="text-heading-xl font-semibold text-text-primary">
                     <AnimatedScore target={cat.score} duration={800} />
                   </span>
-                  <span className="text-body-sm text-[#52525B]">/20</span>
+                  <span className="text-body-sm text-text-muted">/20</span>
                 </div>
                 <StarRating score={cat.score} />
                 <p
@@ -689,7 +689,7 @@ export default function Review() {
                 >
                   {cat.label}
                 </p>
-                <p className="text-body-sm text-[#A1A1AA] mt-2">{cat.feedback}</p>
+                <p className="text-body-sm text-text-secondary mt-2">{cat.feedback}</p>
               </motion.div>
             ))}
           </div>
@@ -700,7 +700,7 @@ export default function Review() {
       {/* SECTION 3: Message Timeline                                    */}
       {/* ============================================================ */}
       <section
-        className="bg-[#0A0A0F]"
+        className="bg-bg-primary"
         style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}
       >
         <div className="max-w-[1200px] mx-auto px-6">
@@ -711,18 +711,18 @@ export default function Review() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-caption text-[#52525B] uppercase mb-2">Message Timeline</p>
-            <h2 className="text-display-subsection text-[#F5F5F7] mb-3">
+            <p className="text-caption text-text-muted uppercase mb-2">Message Timeline</p>
+            <h2 className="text-display-subsection text-text-primary mb-3">
               Every Message, Analyzed
             </h2>
-            <p className="text-body text-[#A1A1AA]">
+            <p className="text-body text-text-secondary">
               Click any message to see the full breakdown of what was really going on.
             </p>
           </motion.div>
 
           <div className="relative">
             {/* Center line */}
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-[#1A1A25] md:-translate-x-px" />
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-bg-tertiary md:-translate-x-px" />
 
             <div className="space-y-6">
               {TIMELINE_MESSAGES.map((msg, i) => (
@@ -737,7 +737,7 @@ export default function Review() {
       {/* SECTION 4: Psychology Deep Dive                                */}
       {/* ============================================================ */}
       <section
-        className="bg-[#12121A] relative overflow-hidden"
+        className="bg-bg-secondary relative overflow-hidden"
         style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}
       >
         {/* Subtle purple overlay */}
@@ -757,7 +757,7 @@ export default function Review() {
             transition={{ duration: 0.5 }}
           >
             <p className="text-caption text-[#8B5CF6] uppercase mb-2">Psychology Insights</p>
-            <h2 className="text-display-subsection text-[#F5F5F7]">
+            <h2 className="text-display-subsection text-text-primary">
               The Science Behind Your Interaction
             </h2>
           </motion.div>
@@ -777,7 +777,7 @@ export default function Review() {
                 }}
               >
                 <motion.div
-                  className="w-16 h-16 rounded-full bg-[#1A1A25] flex items-center justify-center mb-5"
+                  className="w-16 h-16 rounded-full bg-bg-tertiary flex items-center justify-center mb-5"
                   style={{ color: insight.color }}
                   initial={{ scale: 0.8, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -790,10 +790,10 @@ export default function Review() {
                 >
                   {insight.icon}
                 </motion.div>
-                <h3 className="text-heading-md font-semibold text-[#F5F5F7] mb-3">
+                <h3 className="text-heading-md font-semibold text-text-primary mb-3">
                   {insight.title}
                 </h3>
-                <p className="text-body text-[#A1A1AA] leading-relaxed">{insight.content}</p>
+                <p className="text-body text-text-secondary leading-relaxed">{insight.content}</p>
                 <button
                   onClick={() => navigate('/science')}
                   className="mt-4 text-body-sm text-[#8B5CF6] hover:underline inline-flex items-center gap-1"
@@ -811,7 +811,7 @@ export default function Review() {
       {/* SECTION 5: Improvement Roadmap                                 */}
       {/* ============================================================ */}
       <section
-        className="bg-[#0A0A0F]"
+        className="bg-bg-primary"
         style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}
       >
         <div className="max-w-[1200px] mx-auto px-6">
@@ -822,13 +822,13 @@ export default function Review() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-caption text-[#52525B] uppercase mb-2">Your Roadmap</p>
-            <h2 className="text-display-subsection text-[#F5F5F7]">3 Steps to Level Up</h2>
+            <p className="text-caption text-text-muted uppercase mb-2">Your Roadmap</p>
+            <h2 className="text-display-subsection text-text-primary">3 Steps to Level Up</h2>
           </motion.div>
 
           <div className="relative space-y-8">
             {/* Connector line */}
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-[#1A1A25]" />
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-bg-tertiary" />
 
             {ROADMAP_STEPS.map((step, i) => (
               <RoadmapStepItem key={step.number} step={step} index={i} />
@@ -841,12 +841,12 @@ export default function Review() {
       {/* SECTION 6: Actions                                             */}
       {/* ============================================================ */}
       <section
-        className="bg-[#12121A]"
+        className="bg-bg-secondary"
         style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}
       >
         <div className="max-w-[900px] mx-auto px-6 text-center">
           <motion.h2
-            className="text-display-subsection text-[#F5F5F7] mb-10"
+            className="text-display-subsection text-text-primary mb-10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -864,14 +864,14 @@ export default function Review() {
           >
             <button
               onClick={() => navigate('/create')}
-              className="flex items-center gap-2 btn-gradient text-[#F5F5F7] text-heading-sm font-semibold px-8 py-4 rounded-full"
+              className="flex items-center gap-2 btn-gradient text-text-primary text-heading-sm font-semibold px-8 py-4 rounded-full"
             >
               <TrendingUp className="w-5 h-5" />
               Try a Harder Challenge
             </button>
             <button
               onClick={() => navigate('/chat')}
-              className="flex items-center gap-2 text-[#F5F5F7] text-heading-sm font-semibold px-8 py-4 rounded-full"
+              className="flex items-center gap-2 text-text-primary text-heading-sm font-semibold px-8 py-4 rounded-full"
               style={{ border: '1px solid rgba(255,255,255,0.12)' }}
             >
               <RefreshCw className="w-5 h-5" />
@@ -879,7 +879,7 @@ export default function Review() {
             </button>
             <button
               onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 text-[#F5F5F7] text-heading-sm font-semibold px-8 py-4 rounded-full"
+              className="flex items-center gap-2 text-text-primary text-heading-sm font-semibold px-8 py-4 rounded-full"
               style={{ border: '1px solid rgba(255,255,255,0.12)' }}
             >
               <Star className="w-5 h-5" />
@@ -893,7 +893,7 @@ export default function Review() {
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
           >
-            <p className="text-body-sm text-[#52525B] mb-4">Share your progress</p>
+            <p className="text-body-sm text-text-muted mb-4">Share your progress</p>
             <div className="flex items-center justify-center gap-3">
               {[
                 { icon: <TwitterIcon />, label: 'Twitter' },
@@ -902,7 +902,7 @@ export default function Review() {
               ].map((share, i) => (
                 <motion.button
                   key={share.label}
-                  className="w-10 h-10 rounded-full bg-[#1A1A25] flex items-center justify-center text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[#2A2A35] transition-colors"
+                  className="w-10 h-10 rounded-full bg-bg-tertiary flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-[#2A2A35] transition-colors"
                   initial={{ scale: 0.9, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
@@ -960,7 +960,7 @@ function TimelineMessageItem({ message, index }: { message: TimelineMessage; ind
           {isGreat && (
             <Star
               className="w-4 h-4 text-[#F59E0B] mt-1 flex-shrink-0"
-              style={{ fill: '#F59E0B' }}
+              style={{ fill: '#D97706' }}
             />
           )}
           {isPoor && <AlertTriangle className="w-4 h-4 text-[#EF4444] mt-1 flex-shrink-0" />}
@@ -968,7 +968,7 @@ function TimelineMessageItem({ message, index }: { message: TimelineMessage; ind
             className={`inline-block p-4 max-w-full ${
               isUser
                 ? 'bg-gradient-to-br from-[#E11D48] to-[#BE123C] text-white'
-                : 'bg-[rgba(18,18,26,0.6)] text-[#F5F5F7]'
+                : 'bg-[rgba(255,255,255,0.82)] text-text-primary'
             }`}
             style={{
               borderRadius: isUser ? '20px 20px 0 20px' : '0 20px 20px 20px',
@@ -1003,7 +1003,7 @@ function TimelineMessageItem({ message, index }: { message: TimelineMessage; ind
 
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-caption text-[#52525B] hover:text-[#A1A1AA] flex items-center gap-1 transition-colors"
+              className="text-caption text-text-muted hover:text-text-secondary flex items-center gap-1 transition-colors"
             >
               {expanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
               {expanded ? 'Hide' : 'Analyze'}
@@ -1025,8 +1025,8 @@ function TimelineMessageItem({ message, index }: { message: TimelineMessage; ind
               <div className="flex items-start gap-3">
                 <Zap className="w-5 h-5 text-[#F59E0B] mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-body-sm font-semibold text-[#F5F5F7] mb-1">Key Insight</p>
-                  <p className="text-body-sm text-[#A1A1AA]">{message.insight}</p>
+                  <p className="text-body-sm font-semibold text-text-primary mb-1">Key Insight</p>
+                  <p className="text-body-sm text-text-secondary">{message.insight}</p>
                 </div>
               </div>
             </motion.div>
@@ -1072,11 +1072,11 @@ function RoadmapStepItem({ step, index }: { step: RoadmapStep; index: number }) 
 
       {/* Content card */}
       <div className="glass-card p-6 flex-1">
-        <h3 className="text-heading-md font-semibold text-[#F5F5F7] mb-2">{step.title}</h3>
-        <p className="text-body text-[#A1A1AA] mb-4">{step.description}</p>
+        <h3 className="text-heading-md font-semibold text-text-primary mb-2">{step.title}</h3>
+        <p className="text-body text-text-secondary mb-4">{step.description}</p>
         <ul className="space-y-2 mb-4">
           {step.actions.map((action) => (
-            <li key={action} className="flex items-start gap-2 text-body-sm text-[#A1A1AA]">
+            <li key={action} className="flex items-start gap-2 text-body-sm text-text-secondary">
               <CheckCircle2 className="w-4 h-4 text-[#14B8A6] mt-0.5 flex-shrink-0" />
               {action}
             </li>
@@ -1084,7 +1084,7 @@ function RoadmapStepItem({ step, index }: { step: RoadmapStep; index: number }) 
         </ul>
         <motion.button
           onClick={() => {}}
-          className="inline-flex items-center gap-2 btn-gradient text-[#F5F5F7] text-body-sm font-semibold px-5 py-2.5 rounded-full"
+          className="inline-flex items-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-5 py-2.5 rounded-full"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

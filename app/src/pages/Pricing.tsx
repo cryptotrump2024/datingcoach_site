@@ -78,7 +78,7 @@ const tiers: PricingTier[] = [
     priceMonthly: 0,
     priceAnnual: 0,
     badge: 'Get Started',
-    badgeColor: 'bg-[#1A1A25] text-[#A1A1AA]',
+    badgeColor: 'bg-bg-tertiary text-text-secondary',
     description: 'Perfect for trying out DatingCoach',
     icon: Sparkles,
     buttonText: 'Start Free',
@@ -100,7 +100,7 @@ const tiers: PricingTier[] = [
     priceMonthly: 9.95,
     priceAnnual: 7.95,
     badge: 'Most Popular',
-    badgeColor: 'bg-[rgba(225,29,72,0.15)] text-[#FB7185]',
+    badgeColor: 'bg-[rgba(225,29,72,0.15)] text-[#BE123C]',
     description: 'Best for active daters',
     icon: Zap,
     buttonText: 'Get Pro',
@@ -209,10 +209,10 @@ export default function Pricing() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           className="text-center mb-12"
         >
-          <h1 className="text-display-section text-4xl md:text-[56px] text-[#F5F5F7] mb-4">
+          <h1 className="text-display-section text-4xl md:text-[56px] text-text-primary mb-4">
             Choose Your Plan
           </h1>
-          <p className="text-base md:text-body-lg text-[#A1A1AA] max-w-[90%] md:max-w-[540px] mx-auto">
+          <p className="text-base md:text-body-lg text-text-secondary max-w-[90%] md:max-w-[540px] mx-auto">
             Unlock your full potential with conversation practice. Upgrade anytime to access more features.
           </p>
         </motion.div>
@@ -226,7 +226,7 @@ export default function Pricing() {
         >
           <span
             className={`text-body-sm font-medium transition-colors ${
-              billingPeriod === 'monthly' ? 'text-[#F5F5F7]' : 'text-[#52525B]'
+              billingPeriod === 'monthly' ? 'text-text-primary' : 'text-text-muted'
             }`}
           >
             Monthly
@@ -237,8 +237,8 @@ export default function Pricing() {
             style={{
               background: billingPeriod === 'annual'
                 ? 'linear-gradient(135deg, #E11D48, #F59E0B)'
-                : '#1A1A25',
-              border: billingPeriod === 'annual' ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                : '#EDE6DA',
+              border: billingPeriod === 'annual' ? 'none' : '1px solid rgba(28, 25, 23, 0.1)',
             }}
           >
             <motion.div
@@ -249,7 +249,7 @@ export default function Pricing() {
           </button>
           <span
             className={`text-body-sm font-medium transition-colors ${
-              billingPeriod === 'annual' ? 'text-[#F5F5F7]' : 'text-[#52525B]'
+              billingPeriod === 'annual' ? 'text-text-primary' : 'text-text-muted'
             }`}
           >
             Annual
@@ -308,26 +308,26 @@ export default function Pricing() {
                       style={{
                         background:
                           tier.name === 'Free'
-                            ? 'rgba(255,255,255,0.06)'
+                            ? 'rgba(28, 25, 23, 0.08)'
                             : tier.name === 'Pro'
                               ? 'linear-gradient(135deg, rgba(225,29,72,0.2), rgba(245,158,11,0.15))'
                               : 'linear-gradient(135deg, rgba(139,92,246,0.2), rgba(225,29,72,0.15))',
                       }}
                     >
-                      <Icon className="w-5 h-5 text-[#F5F5F7]" />
+                      <Icon className="w-5 h-5 text-text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-heading-md text-[#F5F5F7]">{tier.name}</h3>
-                      <p className="text-caption text-[#52525B]">{tier.description}</p>
+                      <h3 className="text-heading-md text-text-primary">{tier.name}</h3>
+                      <p className="text-caption text-text-muted">{tier.description}</p>
                     </div>
                   </div>
 
                   {/* Price */}
                   <div className="mb-5">
-                    <span className="text-display-subsection text-4xl md:text-[56px] text-[#F5F5F7]">
+                    <span className="text-display-subsection text-4xl md:text-[56px] text-text-primary">
                       ${price === 0 ? '0' : price.toFixed(price % 1 === 0 ? 0 : 2)}
                     </span>
-                    <span className="text-body text-[#52525B] ml-1">/ month</span>
+                    <span className="text-body text-text-muted ml-1">/ month</span>
                     {billingPeriod === 'annual' && price > 0 && (
                       <p className="text-caption text-emerald-400 mt-1">
                         Billed annually (${(price * 12).toFixed(0)}/year)
@@ -342,11 +342,11 @@ export default function Pricing() {
                         {feature.included ? (
                           <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
                         ) : (
-                          <X className="w-4 h-4 text-[#52525B] mt-0.5 shrink-0" />
+                          <X className="w-4 h-4 text-text-muted mt-0.5 shrink-0" />
                         )}
                         <span
                           className={`text-xs md:text-body-sm ${
-                            feature.included ? 'text-[#A1A1AA]' : 'text-[#52525B]'
+                            feature.included ? 'text-text-secondary' : 'text-text-muted'
                           }`}
                         >
                           {feature.name}
@@ -360,7 +360,7 @@ export default function Pricing() {
                     onClick={() => handleSelectPlan(tier.name)}
                     className={`w-full py-3 rounded-xl font-semibold text-body transition-all duration-200 cursor-pointer ${
                       tier.buttonStyle === 'outline'
-                        ? 'border border-[rgba(255,255,255,0.12)] text-[#F5F5F7] hover:bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.2)]'
+                        ? 'border border-[rgba(255,255,255,0.12)] text-text-primary hover:bg-[rgba(28, 25, 23, 0.06)] hover:border-[rgba(255,255,255,0.2)]'
                         : tier.buttonStyle === 'gradient-rose'
                           ? 'btn-gradient text-white'
                           : 'text-white hover:scale-[1.03] active:scale-[0.98]'
@@ -394,22 +394,22 @@ export default function Pricing() {
             >
               <div className="glass-card-elevated p-8 max-w-[680px] mx-auto">
                 <div className="text-center mb-6">
-                  <h2 className="text-heading-xl text-[#F5F5F7] mb-2">
+                  <h2 className="text-heading-xl text-text-primary mb-2">
                     Choose Your Payment Method
                   </h2>
-                  <p className="text-body text-[#A1A1AA]">
-                    You selected <span className="text-[#FB7185] font-semibold">{selectedPlan}</span>. Complete your upgrade
+                  <p className="text-body text-text-secondary">
+                    You selected <span className="text-[#BE123C] font-semibold">{selectedPlan}</span>. Complete your upgrade
                   </p>
                 </div>
 
                 {/* Payment Tabs */}
-                <div className="flex gap-2 p-1 rounded-xl bg-[#1A1A25] mb-6">
+                <div className="flex gap-2 p-1 rounded-xl bg-bg-tertiary mb-6">
                   <button
                     onClick={() => setPaymentMethod('card')}
                     className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-body-sm font-medium transition-all duration-200 cursor-pointer ${
                       paymentMethod === 'card'
-                        ? 'bg-[#2A2A35] text-[#F5F5F7] shadow-sm'
-                        : 'text-[#52525B] hover:text-[#A1A1AA]'
+                        ? 'bg-[#2A2A35] text-text-primary shadow-sm'
+                        : 'text-text-muted hover:text-text-secondary'
                     }`}
                   >
                     <CreditCard className="w-4 h-4" />
@@ -419,8 +419,8 @@ export default function Pricing() {
                     onClick={() => setPaymentMethod('crypto')}
                     className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-body-sm font-medium transition-all duration-200 cursor-pointer ${
                       paymentMethod === 'crypto'
-                        ? 'bg-[#2A2A35] text-[#F5F5F7] shadow-sm'
-                        : 'text-[#52525B] hover:text-[#A1A1AA]'
+                        ? 'bg-[#2A2A35] text-text-primary shadow-sm'
+                        : 'text-text-muted hover:text-text-secondary'
                     }`}
                   >
                     <Bitcoin className="w-4 h-4" />
@@ -441,15 +441,15 @@ export default function Pricing() {
                       <div className="space-y-4">
                         {/* Card Number */}
                         <div>
-                          <label className="block text-body-sm font-medium text-[#A1A1AA] mb-2">
+                          <label className="block text-body-sm font-medium text-text-secondary mb-2">
                             Card Number
                           </label>
                           <div className="relative">
-                            <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#52525B]" />
+                            <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted" />
                             <input
                               type="text"
                               placeholder="4242 4242 4242 4242"
-                              className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-[#F5F5F7] text-body placeholder-[#52525B] focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all"
+                              className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-text-primary text-body placeholder-text-muted focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all"
                             />
                           </div>
                         </div>
@@ -457,25 +457,25 @@ export default function Pricing() {
                         {/* Expiry & CVC */}
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-body-sm font-medium text-[#A1A1AA] mb-2">
+                            <label className="block text-body-sm font-medium text-text-secondary mb-2">
                               Expiry
                             </label>
                             <input
                               type="text"
                               placeholder="MM / YY"
-                              className="w-full px-4 py-3 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-[#F5F5F7] text-body placeholder-[#52525B] focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all"
+                              className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-text-primary text-body placeholder-text-muted focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all"
                             />
                           </div>
                           <div>
-                            <label className="block text-body-sm font-medium text-[#A1A1AA] mb-2">
+                            <label className="block text-body-sm font-medium text-text-secondary mb-2">
                               CVC
                             </label>
                             <div className="relative">
-                              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#52525B]" />
+                              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted" />
                               <input
                                 type="text"
                                 placeholder="123"
-                                className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-[#F5F5F7] text-body placeholder-[#52525B] focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all"
+                                className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-text-primary text-body placeholder-text-muted focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all"
                               />
                             </div>
                           </div>
@@ -483,12 +483,12 @@ export default function Pricing() {
 
                         {/* Country */}
                         <div>
-                          <label className="block text-body-sm font-medium text-[#A1A1AA] mb-2">
+                          <label className="block text-body-sm font-medium text-text-secondary mb-2">
                             Country
                           </label>
                           <div className="relative">
-                            <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#52525B]" />
-                            <select className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-[#F5F5F7] text-body focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all appearance-none cursor-pointer">
+                            <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted" />
+                            <select className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-text-primary text-body focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-all appearance-none cursor-pointer">
                               <option>United States</option>
                               <option>United Kingdom</option>
                               <option>Canada</option>
@@ -502,7 +502,7 @@ export default function Pricing() {
                         </div>
 
                         {/* Secure Badge */}
-                        <div className="flex items-center gap-2 text-caption text-[#52525B]">
+                        <div className="flex items-center gap-2 text-caption text-text-muted">
                           <Lock className="w-3.5 h-3.5" />
                           <span>Secure payment powered by Stripe</span>
                         </div>
@@ -512,7 +512,7 @@ export default function Pricing() {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={handleConfirmPayment}
-                          className="w-full py-3.5 rounded-xl btn-gradient text-[#F5F5F7] font-semibold text-body cursor-pointer"
+                          className="w-full py-3.5 rounded-xl btn-gradient text-text-primary font-semibold text-body cursor-pointer"
                         >
                           Pay ${billingPeriod === 'monthly'
                             ? tiers.find((t) => t.name === selectedPlan)?.priceMonthly.toFixed(2)
@@ -541,7 +541,7 @@ export default function Pricing() {
                               onClick={() => setSelectedCrypto(key)}
                               className={`flex-1 flex flex-col items-center gap-1.5 py-3 rounded-xl border transition-all duration-200 cursor-pointer ${
                                 selectedCrypto === key
-                                  ? 'border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)]'
+                                  ? 'border-[rgba(255,255,255,0.12)] bg-[rgba(28, 25, 23, 0.06)]'
                                   : 'border-transparent bg-transparent hover:bg-[rgba(255,255,255,0.02)]'
                               }`}
                             >
@@ -551,14 +551,14 @@ export default function Pricing() {
                               >
                                 {crypto.symbol[0]}
                               </div>
-                              <span className="text-body-sm text-[#F5F5F7] font-medium">{crypto.symbol}</span>
+                              <span className="text-body-sm text-text-primary font-medium">{crypto.symbol}</span>
                             </button>
                           )
                         })}
                       </div>
 
                       {/* Selected Crypto Payment Details */}
-                      <div className="p-5 rounded-xl bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] mb-4">
+                      <div className="p-5 rounded-xl bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] mb-4">
                         <div className="flex items-center gap-3 mb-4">
                           <div
                             className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
@@ -567,10 +567,10 @@ export default function Pricing() {
                             {cryptoWallets[selectedCrypto].symbol[0]}
                           </div>
                           <div>
-                            <p className="text-body-sm text-[#F5F5F7] font-medium">
+                            <p className="text-body-sm text-text-primary font-medium">
                               {cryptoWallets[selectedCrypto].name}
                             </p>
-                            <p className="text-caption text-[#52525B]">
+                            <p className="text-caption text-text-muted">
                               {cryptoWallets[selectedCrypto].symbol}
                             </p>
                           </div>
@@ -595,14 +595,14 @@ export default function Pricing() {
 
                         {/* Wallet Address */}
                         <div className="mb-4">
-                          <label className="block text-caption text-[#52525B] mb-1.5">Wallet Address</label>
+                          <label className="block text-caption text-text-muted mb-1.5">Wallet Address</label>
                           <div className="flex gap-2">
-                            <div className="flex-1 px-3 py-2.5 rounded-lg bg-[#12121A] border border-[rgba(255,255,255,0.04)] text-mono text-[#A1A1AA] truncate">
+                            <div className="flex-1 px-3 py-2.5 rounded-lg bg-bg-secondary border border-[rgba(28, 25, 23, 0.06)] text-mono text-text-secondary truncate">
                               {cryptoWallets[selectedCrypto].address}
                             </div>
                             <button
                               onClick={handleCopyAddress}
-                              className="px-3 py-2.5 rounded-lg bg-[#2A2A35] border border-[rgba(255,255,255,0.08)] text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[#33333F] transition-all cursor-pointer"
+                              className="px-3 py-2.5 rounded-lg bg-[#2A2A35] border border-[rgba(28, 25, 23, 0.1)] text-text-secondary hover:text-text-primary hover:bg-[#33333F] transition-all cursor-pointer"
                             >
                               {copiedAddress ? (
                                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -647,15 +647,15 @@ export default function Pricing() {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="flex flex-wrap items-center justify-center gap-6 mb-16"
         >
-          <div className="flex items-center gap-2 text-body-sm text-[#52525B]">
+          <div className="flex items-center gap-2 text-body-sm text-text-muted">
             <Lock className="w-4 h-4 text-emerald-400" />
             <span>Secure SSL encryption</span>
           </div>
-          <div className="flex items-center gap-2 text-body-sm text-[#52525B]">
-            <Clock className="w-4 h-4 text-[#A1A1AA]" />
+          <div className="flex items-center gap-2 text-body-sm text-text-muted">
+            <Clock className="w-4 h-4 text-text-secondary" />
             <span>Cancel anytime</span>
           </div>
-          <div className="flex items-center gap-2 text-body-sm text-[#52525B]">
+          <div className="flex items-center gap-2 text-body-sm text-text-muted">
             <Shield className="w-4 h-4 text-[#8B5CF6]" />
             <span>7-day money-back guarantee</span>
           </div>
@@ -669,8 +669,8 @@ export default function Pricing() {
           className="max-w-[720px] mx-auto"
         >
           <div className="text-center mb-8">
-            <MessageCircle className="w-8 h-8 text-[#FB7185] mx-auto mb-3" />
-            <h2 className="text-heading-xl text-[#F5F5F7]">Frequently Asked Questions</h2>
+            <MessageCircle className="w-8 h-8 text-[#BE123C] mx-auto mb-3" />
+            <h2 className="text-heading-xl text-text-primary">Frequently Asked Questions</h2>
           </div>
 
           <div className="space-y-3">
@@ -686,12 +686,12 @@ export default function Pricing() {
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
                   className="w-full flex items-center justify-between p-5 text-left cursor-pointer"
                 >
-                  <span className="text-body font-medium text-[#F5F5F7] pr-4">{faq.question}</span>
+                  <span className="text-body font-medium text-text-primary pr-4">{faq.question}</span>
                   <motion.div
                     animate={{ rotate: openFaq === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDown className="w-5 h-5 text-[#52525B] shrink-0" />
+                    <ChevronDown className="w-5 h-5 text-text-muted shrink-0" />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -703,7 +703,7 @@ export default function Pricing() {
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-5 pb-5 text-body-sm text-[#A1A1AA] leading-relaxed border-t border-[rgba(255,255,255,0.04)] pt-4">
+                      <div className="px-5 pb-5 text-body-sm text-text-secondary leading-relaxed border-t border-[rgba(28, 25, 23, 0.06)] pt-4">
                         {faq.answer}
                       </div>
                     </motion.div>

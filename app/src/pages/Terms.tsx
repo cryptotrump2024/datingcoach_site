@@ -16,10 +16,10 @@ function Section({ children, title, index }: { children: React.ReactNode; title:
       transition={{ duration: 0.5, delay: index * 0.08, ease: easeOutExpo }}
       className="glass-card p-8 md:p-10"
     >
-      <h2 className="text-heading-lg text-[#F5F5F7] mb-5 border-l-[3px] border-[#E11D48] pl-4">
+      <h2 className="text-heading-lg text-text-primary mb-5 border-l-[3px] border-[#E11D48] pl-4">
         {title}
       </h2>
-      <div className="text-body text-[#A1A1AA] leading-[1.7] space-y-4">
+      <div className="text-body text-text-secondary leading-[1.7] space-y-4">
         {children}
       </div>
     </motion.div>
@@ -30,7 +30,7 @@ export default function Terms() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
   return (
-    <div className="min-h-[100dvh] bg-[#0A0A0F]">
+    <div className="min-h-[100dvh] bg-bg-primary">
       {/* Hero */}
       <section className="relative pt-32 pb-16 px-6">
         <div
@@ -43,10 +43,10 @@ export default function Terms() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: easeOutExpo }}
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full glow-border mb-8"
-            style={{ background: 'rgba(18,18,26,0.6)', backdropFilter: 'blur(12px)' }}
+            style={{ background: 'rgba(255, 255, 255, 0.82)', backdropFilter: 'blur(12px)' }}
           >
-            <FileText className="w-4 h-4 text-[#FB7185]" />
-            <span className="text-caption text-[#FB7185] uppercase tracking-[0.1em]">Legal</span>
+            <FileText className="w-4 h-4 text-[#BE123C]" />
+            <span className="text-caption text-[#BE123C] uppercase tracking-[0.1em]">Legal</span>
           </motion.div>
 
           <motion.h1
@@ -62,7 +62,7 @@ export default function Terms() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-body text-[#52525B]"
+            className="text-body text-text-muted"
           >
             Last updated: June 2026
           </motion.p>
@@ -92,7 +92,7 @@ export default function Terms() {
               feedback scoring, and educational content.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">Important:</strong> DatingCoach is <em>not</em> a dating service, 
+              <strong className="text-text-primary">Important:</strong> DatingCoach is <em>not</em> a dating service, 
               matchmaking platform, or social networking site. The personas are entirely simulated and do not represent 
               real people. The Service is designed for educational and practice purposes only.
             </p>
@@ -109,15 +109,15 @@ export default function Terms() {
               current, and complete information during registration and to keep your account information updated.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">Age Requirement:</strong> You must be at least 18 years of age to use 
+              <strong className="text-text-primary">Age Requirement:</strong> You must be at least 18 years of age to use 
               the Service. By creating an account, you represent and warrant that you are 18 years of age or older. We 
               do not knowingly permit individuals under 18 to register for accounts.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">Account Security:</strong> You are responsible for maintaining the 
+              <strong className="text-text-primary">Account Security:</strong> You are responsible for maintaining the 
               confidentiality of your account credentials and for all activities that occur under your account. You agree 
               to notify us immediately at{' '}
-              <a href="mailto:support@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:support@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 support@datingcoach.site
               </a>{' '}
               of any unauthorized use of your account.
@@ -130,18 +130,18 @@ export default function Terms() {
               unless otherwise stated:
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong className="text-[#F5F5F7]">Free Tier</strong>. Limited conversations and basic feedback at no cost.</li>
-              <li><strong className="text-[#F5F5F7]">Pro ($9.95/month)</strong>. Unlimited conversations, detailed analysis, and advanced scoring.</li>
-              <li><strong className="text-[#F5F5F7]">Advanced ($29.95/month)</strong>. All Pro features plus persona builder, profile analyzer, and priority support.</li>
+              <li><strong className="text-text-primary">Free Tier</strong>. Limited conversations and basic feedback at no cost.</li>
+              <li><strong className="text-text-primary">Pro ($9.95/month)</strong>. Unlimited conversations, detailed analysis, and advanced scoring.</li>
+              <li><strong className="text-text-primary">Advanced ($29.95/month)</strong>. All Pro features plus persona builder, profile analyzer, and priority support.</li>
             </ul>
             <p>
               Payments are processed through our third-party payment processor, Stripe. By subscribing, you authorize us 
               to charge your payment method on a recurring basis until you cancel.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">Cancellation:</strong> You may cancel your subscription at any time 
+              <strong className="text-text-primary">Cancellation:</strong> You may cancel your subscription at any time 
               through your account settings or by emailing us at{' '}
-              <a href="mailto:support@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:support@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 support@datingcoach.site
               </a>. 
               Cancellation takes effect at the end of your current billing cycle. You will continue to have access to 
@@ -151,19 +151,19 @@ export default function Terms() {
 
           <Section title="5. Refund Policy" index={4}>
             <p>
-              We offer a <strong className="text-[#F5F5F7]">7-day money-back guarantee</strong> for first-time subscribers. 
+              We offer a <strong className="text-text-primary">7-day money-back guarantee</strong> for first-time subscribers. 
               If you are not satisfied with the Service, you may request a full refund within 7 days of your initial 
               subscription purchase.
             </p>
             <p>
               To request a refund, contact us at{' '}
-              <a href="mailto:support@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:support@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 support@datingcoach.site
               </a>{' '}
               with your account email and the reason for your request.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">No refunds</strong> will be issued after the 7-day period, for 
+              <strong className="text-text-primary">No refunds</strong> will be issued after the 7-day period, for 
               subscription renewals, or for users who have previously received a refund and re-subscribed. We reserve 
               the right to evaluate refund requests on a case-by-case basis at our discretion.
             </p>
@@ -197,7 +197,7 @@ export default function Terms() {
               revocable license to access and use the Service for personal, non-commercial purposes.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">Your Content:</strong> You retain all rights to the conversations, 
+              <strong className="text-text-primary">Your Content:</strong> You retain all rights to the conversations, 
               messages, and other content you create through the Service ("Your Content"). By using the Service, you 
               grant us a limited license to process Your Content solely for the purpose of providing and improving the 
               Service. We do not claim ownership of Your Content.
@@ -209,7 +209,7 @@ export default function Terms() {
           </Section>
 
           <Section title="8. Disclaimer of Warranties" index={7}>
-            <p className="uppercase tracking-wide text-[#F5F5F7] font-semibold">
+            <p className="uppercase tracking-wide text-text-primary font-semibold">
               THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR 
               IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
               PURPOSE, AND NON-INFRINGEMENT.
@@ -227,7 +227,7 @@ export default function Terms() {
           </Section>
 
           <Section title="9. Limitation of Liability" index={8}>
-            <p className="uppercase tracking-wide text-[#F5F5F7] font-semibold">
+            <p className="uppercase tracking-wide text-text-primary font-semibold">
               TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL DATINGCOACH, ITS OFFICERS, DIRECTORS, EMPLOYEES, 
               OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT 
               OF OR RELATING TO YOUR USE OF THE SERVICE.
@@ -251,11 +251,11 @@ export default function Terms() {
             </p>
             <p>
               You may delete your account at any time through your account settings or by contacting us at{' '}
-              <a href="mailto:support@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:support@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 support@datingcoach.site
               </a>. 
               Upon account deletion, your personal data will be handled in accordance with our{' '}
-              <a href="/privacy" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="/privacy" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 Privacy Policy
               </a>.
             </p>
@@ -293,14 +293,14 @@ export default function Terms() {
               If you have any questions about these Terms, please contact us at:
             </p>
             <div className="glass-card-elevated p-6 mt-4">
-              <p className="text-[#F5F5F7] font-semibold mb-1">DatingCoach, Inc.</p>
-              <p className="text-[#A1A1AA] mb-1">
+              <p className="text-text-primary font-semibold mb-1">DatingCoach, Inc.</p>
+              <p className="text-text-secondary mb-1">
                 Email:{' '}
-                <a href="mailto:support@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+                <a href="mailto:support@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                   support@datingcoach.site
                 </a>
               </p>
-              <p className="text-[#52525B] text-body-sm">
+              <p className="text-text-muted text-body-sm">
                 We aim to respond to all inquiries within 48 business hours.
               </p>
             </div>
@@ -311,7 +311,7 @@ export default function Terms() {
         <div className="max-w-[800px] mx-auto mt-16 text-center">
           <button
             onClick={scrollToTop}
-            className="inline-flex items-center gap-2 text-[#FB7185] hover:text-[#F59E0B] transition-colors text-body-sm font-semibold"
+            className="inline-flex items-center gap-2 text-[#BE123C] hover:text-[#F59E0B] transition-colors text-body-sm font-semibold"
           >
             <ArrowUp className="w-4 h-4" />
             Back to top

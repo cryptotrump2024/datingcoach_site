@@ -16,10 +16,10 @@ function Section({ children, title, index }: { children: React.ReactNode; title:
       transition={{ duration: 0.5, delay: index * 0.08, ease: easeOutExpo }}
       className="glass-card p-8 md:p-10"
     >
-      <h2 className="text-heading-lg text-[#F5F5F7] mb-5 border-l-[3px] border-[#E11D48] pl-4">
+      <h2 className="text-heading-lg text-text-primary mb-5 border-l-[3px] border-[#E11D48] pl-4">
         {title}
       </h2>
-      <div className="text-body text-[#A1A1AA] leading-[1.7] space-y-4">
+      <div className="text-body text-text-secondary leading-[1.7] space-y-4">
         {children}
       </div>
     </motion.div>
@@ -30,7 +30,7 @@ export default function Privacy() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
   return (
-    <div className="min-h-[100dvh] bg-[#0A0A0F]">
+    <div className="min-h-[100dvh] bg-bg-primary">
       {/* Hero */}
       <section className="relative pt-32 pb-16 px-6">
         <div
@@ -43,10 +43,10 @@ export default function Privacy() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: easeOutExpo }}
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full glow-border mb-8"
-            style={{ background: 'rgba(18,18,26,0.6)', backdropFilter: 'blur(12px)' }}
+            style={{ background: 'rgba(255, 255, 255, 0.82)', backdropFilter: 'blur(12px)' }}
           >
-            <Shield className="w-4 h-4 text-[#FB7185]" />
-            <span className="text-caption text-[#FB7185] uppercase tracking-[0.1em]">Legal</span>
+            <Shield className="w-4 h-4 text-[#BE123C]" />
+            <span className="text-caption text-[#BE123C] uppercase tracking-[0.1em]">Legal</span>
           </motion.div>
 
           <motion.h1
@@ -62,7 +62,7 @@ export default function Privacy() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-body text-[#52525B]"
+            className="text-body text-text-muted"
           >
             Last updated: June 2026
           </motion.p>
@@ -90,7 +90,7 @@ export default function Privacy() {
 
             <div className="space-y-4 mt-4">
               <div className="glass-card-elevated p-5">
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-2">Account Information</h3>
+                <h3 className="text-heading-sm text-text-primary mb-2">Account Information</h3>
                 <p>
                   When you register, we collect your email address, username, and a hashed version of your password. 
                   We use industry-standard bcrypt hashing. We never store your password in plain text.
@@ -98,7 +98,7 @@ export default function Privacy() {
               </div>
 
               <div className="glass-card-elevated p-5">
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-2">Conversation Data</h3>
+                <h3 className="text-heading-sm text-text-primary mb-2">Conversation Data</h3>
                 <p>
                   We store the messages you exchange with simulated personas, along with AI-generated scores, analyses, 
                   and feedback. This data is stored encrypted at rest using AES-256 encryption and is used to provide 
@@ -107,7 +107,7 @@ export default function Privacy() {
               </div>
 
               <div className="glass-card-elevated p-5">
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-2">Usage Data</h3>
+                <h3 className="text-heading-sm text-text-primary mb-2">Usage Data</h3>
                 <p>
                   We collect information about how you interact with the Service, including features used, time spent, 
                   session duration, and click patterns. This data is used for product improvement and understanding 
@@ -116,7 +116,7 @@ export default function Privacy() {
               </div>
 
               <div className="glass-card-elevated p-5">
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-2">Device Information</h3>
+                <h3 className="text-heading-sm text-text-primary mb-2">Device Information</h3>
                 <p>
                   We collect technical information about your device, including browser type, operating system, screen 
                   resolution, and IP address. This helps us optimize the Service for different devices and troubleshoot 
@@ -125,7 +125,7 @@ export default function Privacy() {
               </div>
 
               <div className="glass-card-elevated p-5">
-                <h3 className="text-heading-sm text-[#F5F5F7] mb-2">Payment Information</h3>
+                <h3 className="text-heading-sm text-text-primary mb-2">Payment Information</h3>
                 <p>
                   All payment processing is handled by Stripe, our third-party payment processor. We do not store or 
                   have access to your full credit card numbers or bank account details. Stripe provides us with the 
@@ -140,24 +140,24 @@ export default function Privacy() {
             <p>We use the information we collect for the following purposes:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                <strong className="text-[#F5F5F7]">Provide the Service</strong>. To operate, maintain, and deliver 
+                <strong className="text-text-primary">Provide the Service</strong>. To operate, maintain, and deliver 
                 the features and functionality of DatingCoach, including generating AI persona responses and conversation analysis.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Improve our algorithms</strong>. To train and refine our AI models, 
+                <strong className="text-text-primary">Improve our algorithms</strong>. To train and refine our AI models, 
                 scoring systems, and feedback mechanisms. All training data is anonymized and aggregated.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Send important updates</strong>. To notify you of changes to the 
+                <strong className="text-text-primary">Send important updates</strong>. To notify you of changes to the 
                 Service, security alerts, billing matters, and other administrative messages. You may opt out of 
                 non-essential communications.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Fraud prevention</strong>. To detect, prevent, and address 
+                <strong className="text-text-primary">Fraud prevention</strong>. To detect, prevent, and address 
                 fraudulent transactions, unauthorized access, and other illegal activities.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Customer support</strong>. To respond to your inquiries, 
+                <strong className="text-text-primary">Customer support</strong>. To respond to your inquiries, 
                 troubleshoot issues, and provide assistance when you contact us.
               </li>
             </ul>
@@ -169,23 +169,23 @@ export default function Privacy() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                <strong className="text-[#F5F5F7]">AES-256 encryption</strong>. All sensitive data, including 
+                <strong className="text-text-primary">AES-256 encryption</strong>. All sensitive data, including 
                 conversation data, is encrypted at rest using AES-256 encryption.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">TLS/SSL encryption</strong>. All data transmitted between 
+                <strong className="text-text-primary">TLS/SSL encryption</strong>. All data transmitted between 
                 your device and our servers is encrypted using industry-standard TLS/SSL protocols.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Cloud infrastructure</strong>. We use leading cloud providers 
+                <strong className="text-text-primary">Cloud infrastructure</strong>. We use leading cloud providers 
                 with SOC 2 Type II certified infrastructure, offering robust physical and network security.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Regular security audits</strong>. We conduct periodic security 
+                <strong className="text-text-primary">Regular security audits</strong>. We conduct periodic security 
                 assessments, vulnerability scans, and penetration testing to identify and address potential risks.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Access controls</strong>. Employee access to user data is 
+                <strong className="text-text-primary">Access controls</strong>. Employee access to user data is 
                 strictly limited and granted on a need-to-know basis only. All access is logged and audited.
               </li>
             </ul>
@@ -196,7 +196,7 @@ export default function Privacy() {
           </Section>
 
           <Section title="5. Data Sharing" index={4}>
-            <p className="text-[#F5F5F7] font-semibold">
+            <p className="text-text-primary font-semibold">
               We do NOT sell your personal data to third parties. Period.
             </p>
             <p>
@@ -204,24 +204,24 @@ export default function Privacy() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                <strong className="text-[#F5F5F7]">Stripe</strong>. For payment processing. Stripe's use of your 
+                <strong className="text-text-primary">Stripe</strong>. For payment processing. Stripe's use of your 
                 information is governed by their{' '}
-                <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+                <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                   Privacy Policy
                 </a>.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Analytics providers</strong>. We use anonymous, aggregated 
+                <strong className="text-text-primary">Analytics providers</strong>. We use anonymous, aggregated 
                 usage data with analytics providers to understand how users interact with the Service. No personally 
                 identifiable information is shared.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Legal compliance</strong>. We may disclose information if 
+                <strong className="text-text-primary">Legal compliance</strong>. We may disclose information if 
                 required by law, court order, or government request, or if we believe disclosure is necessary to 
                 protect our rights, property, or safety, or that of our users or the public.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Business transfers</strong>. In the event of a merger, 
+                <strong className="text-text-primary">Business transfers</strong>. In the event of a merger, 
                 acquisition, or sale of assets, user information may be transferred as part of that transaction. 
                 We will notify you before your information becomes subject to a different privacy policy.
               </li>
@@ -235,24 +235,24 @@ export default function Privacy() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                <strong className="text-[#F5F5F7]">Essential cookies</strong>. Required for login authentication, 
+                <strong className="text-text-primary">Essential cookies</strong>. Required for login authentication, 
                 security, and basic functionality. These cookies cannot be disabled as the Service would not function 
                 without them.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Analytics cookies</strong>. Help us understand how users 
+                <strong className="text-text-primary">Analytics cookies</strong>. Help us understand how users 
                 interact with the platform. You can opt out of these cookies through your browser settings or our 
                 cookie preference center.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Marketing cookies</strong>. Used for targeted advertising 
+                <strong className="text-text-primary">Marketing cookies</strong>. Used for targeted advertising 
                 and promotional purposes. These are only placed with your explicit consent. You can opt in or out 
                 at any time.
               </li>
             </ul>
             <p>
               For more details, please see our{' '}
-              <a href="/cookies" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="/cookies" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 Cookie Policy
               </a>.
             </p>
@@ -264,27 +264,27 @@ export default function Privacy() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                <strong className="text-[#F5F5F7]">Access</strong>. Request a copy of the personal data we hold about you.
+                <strong className="text-text-primary">Access</strong>. Request a copy of the personal data we hold about you.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Correction</strong>. Request that we correct inaccurate or incomplete data.
+                <strong className="text-text-primary">Correction</strong>. Request that we correct inaccurate or incomplete data.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Deletion</strong>. Request that we delete your personal data ("right to be forgotten").
+                <strong className="text-text-primary">Deletion</strong>. Request that we delete your personal data ("right to be forgotten").
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Portability</strong>. Request a machine-readable copy of your data for transfer to another service.
+                <strong className="text-text-primary">Portability</strong>. Request a machine-readable copy of your data for transfer to another service.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Restriction</strong>. Request that we limit how we use your data.
+                <strong className="text-text-primary">Restriction</strong>. Request that we limit how we use your data.
               </li>
               <li>
-                <strong className="text-[#F5F5F7]">Objection</strong>. Object to certain types of processing, such as direct marketing.
+                <strong className="text-text-primary">Objection</strong>. Object to certain types of processing, such as direct marketing.
               </li>
             </ul>
             <p>
               To exercise any of these rights, please email us at{' '}
-              <a href="mailto:privacy@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:privacy@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 privacy@datingcoach.site
               </a>. 
               We will respond to all requests within 30 days. For EU residents, these rights are granted under the 
@@ -295,11 +295,11 @@ export default function Privacy() {
 
           <Section title="8. Data Retention" index={7}>
             <p>
-              <strong className="text-[#F5F5F7]">Active accounts:</strong> We retain your personal data for as long 
+              <strong className="text-text-primary">Active accounts:</strong> We retain your personal data for as long 
               as your account remains active. This includes your account information, conversation history, and usage data.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">Deleted accounts:</strong> When you delete your account, we begin 
+              <strong className="text-text-primary">Deleted accounts:</strong> When you delete your account, we begin 
               a comprehensive deletion process. Your personal data is permanently removed from our active systems within 
               30 days. Some anonymized, aggregated data may be retained for analytical purposes, but this data cannot 
               be linked back to you.
@@ -319,7 +319,7 @@ export default function Privacy() {
             <p>
               If you believe we may have inadvertently collected information from a minor, please contact us immediately 
               at{' '}
-              <a href="mailto:privacy@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:privacy@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 privacy@datingcoach.site
               </a>.
             </p>
@@ -332,14 +332,14 @@ export default function Privacy() {
               and potentially other countries where our service providers operate.
             </p>
             <p>
-              <strong className="text-[#F5F5F7]">For EU users:</strong> We comply with the GDPR through the use of 
+              <strong className="text-text-primary">For EU users:</strong> We comply with the GDPR through the use of 
               Standard Contractual Clauses (SCCs) approved by the European Commission for transferring personal data 
               outside the European Economic Area (EEA). These contractual safeguards ensure that your data receives 
               an adequate level of protection regardless of where it is processed.
             </p>
             <p>
               You have the right to request a copy of the Standard Contractual Clauses we use by contacting us at{' '}
-              <a href="mailto:privacy@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+              <a href="mailto:privacy@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                 privacy@datingcoach.site
               </a>.
             </p>
@@ -363,14 +363,14 @@ export default function Privacy() {
               please contact us at:
             </p>
             <div className="glass-card-elevated p-6 mt-4">
-              <p className="text-[#F5F5F7] font-semibold mb-1">DatingCoach, Inc., Data Protection</p>
-              <p className="text-[#A1A1AA] mb-1">
+              <p className="text-text-primary font-semibold mb-1">DatingCoach, Inc., Data Protection</p>
+              <p className="text-text-secondary mb-1">
                 Email:{' '}
-                <a href="mailto:privacy@datingcoach.site" className="text-[#FB7185] hover:text-[#F59E0B] transition-colors">
+                <a href="mailto:privacy@datingcoach.site" className="text-[#BE123C] hover:text-[#F59E0B] transition-colors">
                   privacy@datingcoach.site
                 </a>
               </p>
-              <p className="text-[#52525B] text-body-sm">
+              <p className="text-text-muted text-body-sm">
                 We aim to respond to all privacy-related inquiries within 48 business hours.
               </p>
             </div>
@@ -381,7 +381,7 @@ export default function Privacy() {
         <div className="max-w-[800px] mx-auto mt-16 text-center">
           <button
             onClick={scrollToTop}
-            className="inline-flex items-center gap-2 text-[#FB7185] hover:text-[#F59E0B] transition-colors text-body-sm font-semibold"
+            className="inline-flex items-center gap-2 text-[#BE123C] hover:text-[#F59E0B] transition-colors text-body-sm font-semibold"
           >
             <ArrowUp className="w-4 h-4" />
             Back to top

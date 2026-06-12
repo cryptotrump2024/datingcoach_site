@@ -226,7 +226,7 @@ const ACHIEVEMENTS: Achievement[] = [
     icon: <MessageCircle className="w-6 h-6" />,
     unlocked: true,
     unlockedDate: 'Oct 15',
-    bgColor: '#10B981',
+    bgColor: '#059669',
   },
   {
     id: 'ach-2',
@@ -244,7 +244,7 @@ const ACHIEVEMENTS: Achievement[] = [
     icon: <Zap className="w-6 h-6" />,
     unlocked: true,
     unlockedDate: 'Oct 20',
-    bgColor: '#F59E0B',
+    bgColor: '#D97706',
   },
   {
     id: 'ach-4',
@@ -253,7 +253,7 @@ const ACHIEVEMENTS: Achievement[] = [
     icon: <Brain className="w-6 h-6" />,
     unlocked: true,
     unlockedDate: 'Oct 22',
-    bgColor: '#8B5CF6',
+    bgColor: '#7C3AED',
   },
   {
     id: 'ach-5',
@@ -271,7 +271,7 @@ const ACHIEVEMENTS: Achievement[] = [
     icon: <Target className="w-6 h-6" />,
     unlocked: true,
     unlockedDate: 'Oct 25',
-    bgColor: '#14B8A6',
+    bgColor: '#0D9488',
   },
   {
     id: 'ach-7',
@@ -280,7 +280,7 @@ const ACHIEVEMENTS: Achievement[] = [
     icon: <Star className="w-6 h-6" />,
     unlocked: true,
     unlockedDate: 'Today',
-    bgColor: '#F59E0B',
+    bgColor: '#D97706',
   },
   {
     id: 'ach-8',
@@ -288,7 +288,7 @@ const ACHIEVEMENTS: Achievement[] = [
     description: 'Score 90+ on Expert difficulty',
     icon: <Trophy className="w-6 h-6" />,
     unlocked: false,
-    bgColor: '#52525B',
+    bgColor: '#A8A29E',
   },
   {
     id: 'ach-9',
@@ -296,16 +296,16 @@ const ACHIEVEMENTS: Achievement[] = [
     description: 'Successfully complete all conversation goals',
     icon: <Heart className="w-6 h-6" />,
     unlocked: false,
-    bgColor: '#52525B',
+    bgColor: '#A8A29E',
   },
 ]
 
 const TIPS: Tip[] = [
   {
     icon: <Brain className="w-8 h-8" />,
-    iconColor: '#8B5CF6',
+    iconColor: '#7C3AED',
     category: 'PSYCHOLOGY',
-    categoryColor: '#8B5CF6',
+    categoryColor: '#7C3AED',
     title: 'The Power of Vulnerability Calibration',
     content:
       'Your conversations show strong confidence, but adding calibrated vulnerability at the right moments could deepen connections by 40%. Learn when and how to open up without over-sharing.',
@@ -321,9 +321,9 @@ const TIPS: Tip[] = [
   },
   {
     icon: <Target className="w-8 h-8" />,
-    iconColor: '#14B8A6',
+    iconColor: '#0D9488',
     category: 'STRATEGY',
-    categoryColor: '#14B8A6',
+    categoryColor: '#0D9488',
     title: 'The Abundance Mindset',
     content:
       'Some of your messages show subtle neediness cues. Work on embodying abundance mentality. You\'re offering value, not seeking validation. This shift alone could improve your scores by 15%',
@@ -337,24 +337,24 @@ const TIPS: Tip[] = [
 function getDifficultyColor(d: string): string {
   switch (d) {
     case 'Beginner':
-      return '#10B981'
+      return '#059669'
     case 'Intermediate':
-      return '#F59E0B'
+      return '#D97706'
     case 'Advanced':
       return '#F97316'
     case 'Expert':
       return '#EF4444'
     case 'Master':
-      return '#8B5CF6'
+      return '#7C3AED'
     default:
-      return '#F59E0B'
+      return '#D97706'
   }
 }
 
 function getGradeColor(grade: string): string {
   switch (grade) {
     case 'S':
-      return '#14B8A6'
+      return '#0D9488'
     case 'A':
       return '#16A34A'
     case 'B':
@@ -444,7 +444,7 @@ export default function Dashboard() {
       {/* ============================================================ */}
       {/* SECTION 1: Header + Stats                                      */}
       {/* ============================================================ */}
-      <section className="relative bg-[#0A0A0F]" style={{ padding: 'clamp(48px, 5vw, 64px) 0 48px' }}>
+      <section className="relative bg-bg-primary" style={{ padding: 'clamp(48px, 5vw, 64px) 0 48px' }}>
         <div className="max-w-[1400px] mx-auto px-6">
           <motion.div
             className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10"
@@ -453,10 +453,10 @@ export default function Dashboard() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           >
             <div>
-              <h1 className="text-display-subsection text-[#F5F5F7] mb-2">
+              <h1 className="text-display-subsection text-text-primary mb-2">
                 Welcome back, Alex
               </h1>
-              <p className="text-body-lg text-[#A1A1AA]">
+              <p className="text-body-lg text-text-secondary">
                 Here&apos;s your progress this week. You&apos;re improving fast.
               </p>
             </div>
@@ -467,8 +467,8 @@ export default function Dashboard() {
                   onClick={() => setDateRange(range.key)}
                   className={`text-caption font-medium px-4 py-1.5 rounded-full transition-all ${
                     dateRange === range.key
-                      ? 'bg-[#1A1A25] text-[#F5F5F7]'
-                      : 'text-[#52525B] hover:text-[#A1A1AA]'
+                      ? 'bg-bg-tertiary text-text-primary'
+                      : 'text-text-muted hover:text-text-secondary'
                   }`}
                 >
                   {range.label}
@@ -490,9 +490,9 @@ export default function Dashboard() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   {stat.icon}
-                  <span className="text-caption text-[#52525B]">{stat.label}</span>
+                  <span className="text-caption text-text-muted">{stat.label}</span>
                 </div>
-                <p className="text-heading-xl font-semibold text-[#F5F5F7] mb-2">
+                <p className="text-heading-xl font-semibold text-text-primary mb-2">
                   {stat.value}
                 </p>
                 <div className="flex items-center gap-1">
@@ -518,7 +518,7 @@ export default function Dashboard() {
       {/* ============================================================ */}
       {/* SECTION 2 + 3: Charts Grid                                      */}
       {/* ============================================================ */}
-      <section className="bg-[#12121A]" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
+      <section className="bg-bg-secondary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
         <div className="max-w-[1400px] mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Skill Radar Chart */}
@@ -529,8 +529,8 @@ export default function Dashboard() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
             >
               <div className="mb-6">
-                <p className="text-caption text-[#52525B] uppercase mb-2">Skill Analysis</p>
-                <h2 className="text-display-subsection text-[#F5F5F7]">
+                <p className="text-caption text-text-muted uppercase mb-2">Skill Analysis</p>
+                <h2 className="text-display-subsection text-text-primary">
                   Your Communication Profile
                 </h2>
               </div>
@@ -539,15 +539,15 @@ export default function Dashboard() {
                   <div className="flex-1 min-h-[300px]">
                     <ResponsiveContainer width="100%" height={320}>
                       <RadarChart cx="50%" cy="50%" outerRadius="75%" data={SKILL_RADAR_DATA}>
-                        <PolarGrid stroke="rgba(255,255,255,0.08)" />
+                        <PolarGrid stroke="rgba(28, 25, 23, 0.1)" />
                         <PolarAngleAxis
                           dataKey="skill"
-                          tick={{ fill: '#A1A1AA', fontSize: 11, fontFamily: 'Inter' }}
+                          tick={{ fill: '#57534E', fontSize: 11, fontFamily: 'Inter' }}
                         />
                         <Radar
                           name="Previous"
                           dataKey="previous"
-                          stroke="#52525B"
+                          stroke="#D8D0C2"
                           strokeWidth={1}
                           strokeDasharray="4 4"
                           fill="transparent"
@@ -585,7 +585,7 @@ export default function Dashboard() {
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-body-sm font-semibold text-[#F5F5F7]">
+                          <span className="text-body-sm font-semibold text-text-primary">
                             {skill.name}
                           </span>
                           <span
@@ -595,7 +595,7 @@ export default function Dashboard() {
                             {skill.score}
                           </span>
                         </div>
-                        <div className="w-full h-1.5 bg-[#1A1A25] rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-bg-tertiary rounded-full overflow-hidden">
                           <motion.div
                             className="h-full rounded-full"
                             style={{
@@ -612,7 +612,7 @@ export default function Dashboard() {
                           />
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-caption text-[#A1A1AA]">{skill.insight}</span>
+                          <span className="text-caption text-text-secondary">{skill.insight}</span>
                           <span className="text-caption text-[#14B8A6] font-medium">
                             {skill.change}
                           </span>
@@ -636,8 +636,8 @@ export default function Dashboard() {
               }}
             >
               <div className="mb-6">
-                <p className="text-caption text-[#52525B] uppercase mb-2">Performance Trends</p>
-                <h2 className="text-display-subsection text-[#F5F5F7]">
+                <p className="text-caption text-text-muted uppercase mb-2">Performance Trends</p>
+                <h2 className="text-display-subsection text-text-primary">
                   Your Improvement Over Time
                 </h2>
               </div>
@@ -655,27 +655,27 @@ export default function Dashboard() {
                           <stop offset="100%" stopColor="#E11D48" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(28, 25, 23, 0.06)" />
                       <XAxis
                         dataKey="day"
-                        tick={{ fill: '#52525B', fontSize: 10, fontFamily: 'Inter' }}
-                        axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+                        tick={{ fill: '#A8A29E', fontSize: 10, fontFamily: 'Inter' }}
+                        axisLine={{ stroke: 'rgba(28, 25, 23, 0.08)' }}
                         tickLine={false}
                       />
                       <YAxis
                         domain={[0, 100]}
-                        tick={{ fill: '#52525B', fontSize: 10, fontFamily: 'Inter' }}
-                        axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+                        tick={{ fill: '#A8A29E', fontSize: 10, fontFamily: 'Inter' }}
+                        axisLine={{ stroke: 'rgba(28, 25, 23, 0.08)' }}
                         tickLine={false}
                       />
                       <Tooltip
                         contentStyle={{
-                          background: 'rgba(18,18,26,0.95)',
-                          border: '1px solid rgba(255,255,255,0.08)',
+                          background: 'rgba(255, 255, 255, 0.96)',
+                          border: '1px solid rgba(28, 25, 23, 0.1)',
                           borderRadius: '12px',
                           backdropFilter: 'blur(12px)',
                         }}
-                        labelStyle={{ color: '#A1A1AA', fontSize: '12px' }}
+                        labelStyle={{ color: '#57534E', fontSize: '12px' }}
                         itemStyle={{ fontSize: '12px', fontFamily: 'Inter' }}
                       />
                       <Area
@@ -684,8 +684,8 @@ export default function Dashboard() {
                         stroke="url(#lineGradient)"
                         strokeWidth={3}
                         fill="url(#areaGradient)"
-                        dot={{ r: 4, fill: '#F5F5F7', stroke: '#E11D48', strokeWidth: 2 }}
-                        activeDot={{ r: 6, fill: '#E11D48', stroke: '#F5F5F7', strokeWidth: 2 }}
+                        dot={{ r: 4, fill: '#1C1917', stroke: '#E11D48', strokeWidth: 2 }}
+                        activeDot={{ r: 6, fill: '#E11D48', stroke: '#1C1917', strokeWidth: 2 }}
                       />
                       <Area
                         type="monotone"
@@ -722,7 +722,7 @@ export default function Dashboard() {
                           background: item.dashed ? 'transparent' : item.color,
                         }}
                       />
-                      <span className="text-caption text-[#52525B]">{item.label}</span>
+                      <span className="text-caption text-text-muted">{item.label}</span>
                     </div>
                   ))}
                 </div>
@@ -743,7 +743,7 @@ export default function Dashboard() {
       {/* ============================================================ */}
       {/* SECTION 4: Conversation History                                */}
       {/* ============================================================ */}
-      <section className="bg-[#0A0A0F]" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
+      <section className="bg-bg-primary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
         <div className="max-w-[1400px] mx-auto px-6">
           <motion.div
             className="flex items-end justify-between mb-8"
@@ -753,12 +753,12 @@ export default function Dashboard() {
             transition={{ duration: 0.5 }}
           >
             <div>
-              <p className="text-caption text-[#52525B] uppercase mb-2">History</p>
-              <h2 className="text-display-subsection text-[#F5F5F7]">Recent Conversations</h2>
+              <p className="text-caption text-text-muted uppercase mb-2">History</p>
+              <h2 className="text-display-subsection text-text-primary">Recent Conversations</h2>
             </div>
             <button
               onClick={() => navigate('/dashboard')}
-              className="text-body-sm text-[#FB7185] hover:underline flex items-center gap-1"
+              className="text-body-sm text-[#BE123C] hover:underline flex items-center gap-1"
             >
               View All
               <ChevronRight className="w-4 h-4" />
@@ -791,13 +791,13 @@ export default function Dashboard() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-heading-sm font-semibold text-[#F5F5F7]">
+                    <span className="text-heading-sm font-semibold text-text-primary">
                       {conv.personaName}
                     </span>
-                    <span className="text-caption text-[#52525B]">{conv.date}</span>
+                    <span className="text-caption text-text-muted">{conv.date}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-body-sm text-[#A1A1AA]">{conv.scenario}</span>
+                    <span className="text-body-sm text-text-secondary">{conv.scenario}</span>
                     <span
                       className="text-caption font-medium uppercase px-2 py-0.5 rounded-full"
                       style={{
@@ -818,11 +818,11 @@ export default function Dashboard() {
                   >
                     {conv.grade}
                   </span>
-                  <div className="flex items-center gap-1 text-caption text-[#52525B]">
+                  <div className="flex items-center gap-1 text-caption text-text-muted">
                     <MessageCircle className="w-3.5 h-3.5" />
                     {conv.messages}
                   </div>
-                  <div className="flex items-center gap-1 text-caption text-[#52525B]">
+                  <div className="flex items-center gap-1 text-caption text-text-muted">
                     <Clock className="w-3.5 h-3.5" />
                     {conv.duration}
                   </div>
@@ -835,18 +835,18 @@ export default function Dashboard() {
                       e.stopPropagation()
                       navigate(`/review/${conv.id}`)
                     }}
-                    className="text-body-sm text-[#A1A1AA] hover:text-[#F5F5F7] px-3 py-1.5 rounded-lg transition-colors"
-                    style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                    className="text-body-sm text-text-secondary hover:text-text-primary px-3 py-1.5 rounded-lg transition-colors"
+                    style={{ border: '1px solid rgba(28, 25, 23, 0.1)' }}
                   >
                     Review
                   </button>
                   <button
                     onClick={(e) => e.stopPropagation()}
-                    className="p-2 text-[#52525B] hover:text-[#A1A1AA] transition-colors"
+                    className="p-2 text-text-muted hover:text-text-secondary transition-colors"
                   >
                     <RefreshCw className="w-4 h-4" />
                   </button>
-                  <ChevronRight className="w-5 h-5 text-[#52525B] group-hover:text-[#A1A1AA] transition-colors" />
+                  <ChevronRight className="w-5 h-5 text-text-muted group-hover:text-text-secondary transition-colors" />
                 </div>
               </motion.div>
             ))}
@@ -857,7 +857,7 @@ export default function Dashboard() {
       {/* ============================================================ */}
       {/* SECTION 5: Achievements                                        */}
       {/* ============================================================ */}
-      <section className="bg-[#12121A]" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
+      <section className="bg-bg-secondary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
         <div className="max-w-[1400px] mx-auto px-6">
           <motion.div
             className="mb-8"
@@ -868,8 +868,8 @@ export default function Dashboard() {
           >
             <p className="text-caption text-[#F59E0B] uppercase mb-2">Achievements</p>
             <div className="flex items-baseline gap-3">
-              <h2 className="text-display-subsection text-[#F5F5F7]">Your Milestones</h2>
-              <span className="text-body-sm text-[#A1A1AA]">7 of 9 unlocked</span>
+              <h2 className="text-display-subsection text-text-primary">Your Milestones</h2>
+              <span className="text-body-sm text-text-secondary">7 of 9 unlocked</span>
             </div>
           </motion.div>
 
@@ -891,11 +891,11 @@ export default function Dashboard() {
               >
                 <div
                   className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${
-                    ach.unlocked ? '' : 'bg-[#1A1A25]'
+                    ach.unlocked ? '' : 'bg-bg-tertiary'
                   }`}
                   style={{
                     backgroundColor: ach.unlocked ? ach.bgColor : undefined,
-                    color: ach.unlocked ? '#fff' : '#52525B',
+                    color: ach.unlocked ? '#fff' : '#A8A29E',
                     boxShadow: ach.unlocked ? `0 0 20px ${ach.bgColor}40` : 'none',
                   }}
                 >
@@ -903,20 +903,20 @@ export default function Dashboard() {
                 </div>
                 <h3
                   className={`text-heading-sm font-semibold mb-1 ${
-                    ach.unlocked ? 'text-[#F5F5F7]' : 'text-[#52525B]'
+                    ach.unlocked ? 'text-text-primary' : 'text-text-muted'
                   }`}
                 >
                   {ach.title}
                 </h3>
                 <p
                   className={`text-caption ${
-                    ach.unlocked ? 'text-[#A1A1AA]' : 'text-[#52525B]'
+                    ach.unlocked ? 'text-text-secondary' : 'text-text-muted'
                   }`}
                 >
                   {ach.description}
                 </p>
                 {ach.unlocked && ach.unlockedDate && (
-                  <p className="text-caption text-[#52525B] mt-2">{ach.unlockedDate}</p>
+                  <p className="text-caption text-text-muted mt-2">{ach.unlockedDate}</p>
                 )}
               </motion.div>
             ))}
@@ -927,7 +927,7 @@ export default function Dashboard() {
       {/* ============================================================ */}
       {/* SECTION 6: Personalized Tips                                   */}
       {/* ============================================================ */}
-      <section className="bg-[#0A0A0F]" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
+      <section className="bg-bg-primary" style={{ padding: 'clamp(48px, 5vw, 64px) 0' }}>
         <div className="max-w-[1400px] mx-auto px-6">
           <motion.div
             className="mb-8"
@@ -936,8 +936,8 @@ export default function Dashboard() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-caption text-[#52525B] uppercase mb-2">Personalized For You</p>
-            <h2 className="text-display-subsection text-[#F5F5F7]">This Week&apos;s Focus</h2>
+            <p className="text-caption text-text-muted uppercase mb-2">Personalized For You</p>
+            <h2 className="text-display-subsection text-text-primary">This Week&apos;s Focus</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -964,11 +964,11 @@ export default function Dashboard() {
                     {tip.category}
                   </span>
                 </div>
-                <h3 className="text-heading-md font-semibold text-[#F5F5F7] mb-3">{tip.title}</h3>
-                <p className="text-body text-[#A1A1AA] leading-relaxed mb-5">{tip.content}</p>
+                <h3 className="text-heading-md font-semibold text-text-primary mb-3">{tip.title}</h3>
+                <p className="text-body text-text-secondary leading-relaxed mb-5">{tip.content}</p>
                 <button
                   onClick={() => navigate('/science')}
-                  className="text-body-sm text-[#FB7185] hover:underline inline-flex items-center gap-1"
+                  className="text-body-sm text-[#BE123C] hover:underline inline-flex items-center gap-1"
                 >
                   Read More
                   <ChevronRight className="w-4 h-4" />

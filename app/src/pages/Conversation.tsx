@@ -43,11 +43,11 @@ function TypingIndicator() {
       <div
         className="px-4 py-3 flex items-center gap-1.5"
         style={{
-          background: 'rgba(18, 18, 26, 0.6)',
+          background: 'rgba(255, 255, 255, 0.82)',
           backdropFilter: 'blur(16px)',
           borderLeft: '3px solid #F472B6',
           borderRadius: '0 20px 20px 20px',
-          border: '1px solid rgba(255,255,255,0.06)',
+          border: '1px solid rgba(28, 25, 23, 0.08)',
           borderLeftWidth: 3,
           borderLeftColor: '#F472B6',
         }}
@@ -55,7 +55,7 @@ function TypingIndicator() {
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
-            className="w-2 h-2 rounded-full bg-[#52525B]"
+            className="w-2 h-2 rounded-full bg-stone-400"
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15 }}
           />
@@ -90,17 +90,17 @@ function HerMessageBubble({
       <div
         className="px-5 py-3"
         style={{
-          background: 'rgba(18, 18, 26, 0.6)',
+          background: 'rgba(255, 255, 255, 0.82)',
           backdropFilter: 'blur(16px)',
           borderLeft: '3px solid #F472B6',
           borderRadius: '0 20px 20px 20px',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderTop: '1px solid rgba(28, 25, 23, 0.08)',
+          borderRight: '1px solid rgba(28, 25, 23, 0.08)',
+          borderBottom: '1px solid rgba(28, 25, 23, 0.08)',
         }}
       >
-        <p className="text-body text-[#F5F5F7] leading-relaxed">{message.content}</p>
-        <p className="text-caption text-[#52525B] mt-1">
+        <p className="text-body text-text-primary leading-relaxed">{message.content}</p>
+        <p className="text-caption text-text-muted mt-1">
           {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </p>
       </div>
@@ -141,8 +141,8 @@ function SystemMessageBubble({ message }: { message: Message }) {
       className="flex justify-center my-4"
     >
       <span
-        className="px-4 py-2 rounded-xl text-body-sm text-[#52525B]"
-        style={{ background: '#1A1A25' }}
+        className="px-4 py-2 rounded-xl text-body-sm text-text-muted"
+        style={{ background: '#EDE6DA' }}
       >
         {message.content}
       </span>
@@ -164,7 +164,7 @@ function StarRating({ stars, size = 16 }: { stars: number; size?: number }) {
         >
           <Star
             size={size}
-            className={s <= stars ? 'text-[#F59E0B] fill-[#F59E0B]' : 'text-[#1A1A25]'}
+            className={s <= stars ? 'text-[#F59E0B] fill-[#F59E0B]' : 'text-text-primary'}
           />
         </motion.div>
       ))}
@@ -196,14 +196,14 @@ function AnalysisCard({
       title: 'The Psychology',
       content: analysis.psychology,
       icon: Brain,
-      color: '#8B5CF6',
+      color: '#7C3AED',
     },
     {
       key: 'advice',
       title: 'Your Move',
       content: analysis.advice,
       icon: Zap,
-      color: '#F59E0B',
+      color: '#D97706',
     },
   ]
 
@@ -214,11 +214,11 @@ function AnalysisCard({
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
       className="mb-3"
       style={{
-        background: 'rgba(18, 18, 26, 0.6)',
+        background: 'rgba(255, 255, 255, 0.82)',
         backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.06)',
+        border: '1px solid rgba(28, 25, 23, 0.08)',
         borderRadius: '20px',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.4)',
+        boxShadow: 'inset 0 1px 0 rgba(28, 25, 23, 0.08), 0 4px 24px rgba(0,0,0,0.4)',
       }}
     >
       {/* Header */}
@@ -230,10 +230,10 @@ function AnalysisCard({
           <div className="flex items-center gap-1.5">
             <StarRating stars={analysis.stars} />
           </div>
-          <span className="text-heading-sm text-[#F5F5F7]">Score: {analysis.score}/5</span>
+          <span className="text-heading-sm text-text-primary">Score: {analysis.score}/5</span>
         </div>
         <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <ChevronDown className="w-5 h-5 text-[#52525B]" />
+          <ChevronDown className="w-5 h-5 text-text-muted" />
         </motion.div>
       </button>
 
@@ -256,14 +256,14 @@ function AnalysisCard({
                     className="p-3 rounded-xl"
                     style={{
                       borderLeft: `3px solid ${section.color}`,
-                      background: 'rgba(10, 10, 15, 0.4)',
+                      background: 'rgba(28, 25, 23, 0.04)',
                     }}
                   >
                     <div className="flex items-center gap-2 mb-1.5">
                       <Icon size={16} style={{ color: section.color }} />
-                      <span className="text-body-sm font-semibold text-[#F5F5F7]">{section.title}</span>
+                      <span className="text-body-sm font-semibold text-text-primary">{section.title}</span>
                     </div>
-                    <p className="text-body-sm text-[#A1A1AA] leading-relaxed">{section.content}</p>
+                    <p className="text-body-sm text-text-secondary leading-relaxed">{section.content}</p>
                   </div>
                 )
               })}
@@ -459,8 +459,8 @@ export default function Conversation() {
         className="min-h-[100dvh] flex flex-col items-center justify-center px-6"
         style={{ background: 'var(--bg-primary)' }}
       >
-        <h2 className="text-heading-xl text-[#F5F5F7] mb-4">No Persona Selected</h2>
-        <p className="text-body-lg text-[#A1A1AA] mb-8 text-center">
+        <h2 className="text-heading-xl text-text-primary mb-4">No Persona Selected</h2>
+        <p className="text-body-lg text-text-secondary mb-8 text-center">
           Create a persona first to start practicing conversations.
         </p>
         <motion.button
@@ -489,10 +489,10 @@ export default function Conversation() {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
         className="flex-shrink-0 h-[72px] flex items-center justify-between px-4 lg:px-6"
         style={{
-          background: 'rgba(10, 10, 15, 0.9)',
+          background: 'rgba(253, 251, 247, 0.92)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          borderBottom: '1px solid rgba(28, 25, 23, 0.08)',
         }}
       >
         {/* Left Group */}
@@ -501,7 +501,7 @@ export default function Conversation() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/create')}
-            className="w-8 h-8 flex items-center justify-center rounded-full text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[#1A1A25] transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </motion.button>
@@ -515,7 +515,7 @@ export default function Conversation() {
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-heading-sm text-[#F5F5F7]">{persona.name}</span>
+              <span className="text-heading-sm text-text-primary">{persona.name}</span>
               <span
                 className="text-caption font-mono uppercase px-2 py-0.5 rounded-full hidden sm:inline"
                 style={{ background: `${diffColor}20`, color: diffColor }}
@@ -529,22 +529,22 @@ export default function Conversation() {
                 animate={{ opacity: [1, 0.5, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <span className="text-caption text-[#52525B]">Online</span>
-              {isTyping && <span className="text-caption text-[#52525B]"> · typing...</span>}
+              <span className="text-caption text-text-muted">Online</span>
+              {isTyping && <span className="text-caption text-text-muted"> · typing...</span>}
             </div>
           </div>
         </div>
 
         {/* Center - Phase + Scenario */}
         <div className="hidden md:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: '#1A1A25' }}>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: '#EDE6DA' }}>
             <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
-            <span className="text-caption text-[#A1A1AA]">Phase {currentPhase + 1}:</span>
-            <span className="text-caption font-semibold text-[#F5F5F7]">{phaseName}</span>
+            <span className="text-caption text-text-secondary">Phase {currentPhase + 1}:</span>
+            <span className="text-caption font-semibold text-text-primary">{phaseName}</span>
           </div>
           <span
             className="text-caption px-3 py-1.5 rounded-full hidden lg:inline"
-            style={{ background: '#1A1A25', color: '#52525B' }}
+            style={{ background: '#EDE6DA', color: '#A8A29E' }}
           >
             {persona.scenario}
           </span>
@@ -560,7 +560,7 @@ export default function Conversation() {
             className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
             style={{
               background: isAnalysisOpen ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
-              color: isAnalysisOpen ? '#8B5CF6' : '#A1A1AA',
+              color: isAnalysisOpen ? '#7C3AED' : '#57534E',
             }}
           >
             <Brain className="w-5 h-5" />
@@ -572,7 +572,7 @@ export default function Conversation() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowSettings(!showSettings)}
-              className="w-9 h-9 flex items-center justify-center rounded-full text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[#1A1A25] transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-full text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
             >
               <Settings className="w-5 h-5" />
             </motion.button>
@@ -588,9 +588,9 @@ export default function Conversation() {
                     transition={{ duration: 0.15 }}
                     className="absolute right-0 top-full mt-2 w-52 rounded-xl overflow-hidden z-20"
                     style={{
-                      background: 'rgba(18, 18, 26, 0.95)',
+                      background: 'rgba(255, 255, 255, 0.96)',
                       backdropFilter: 'blur(24px)',
-                      border: '1px solid rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(28, 25, 23, 0.08)',
                     }}
                   >
                     <button
@@ -598,7 +598,7 @@ export default function Conversation() {
                         setShowSettings(false)
                         handleRestart()
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-3 text-body-sm text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[rgba(255,255,255,0.04)] transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-4 py-3 text-body-sm text-text-secondary hover:text-text-primary hover:bg-[rgba(28, 25, 23, 0.06)] transition-colors text-left"
                     >
                       <RotateCcw className="w-4 h-4" />
                       Restart Conversation
@@ -624,7 +624,7 @@ export default function Conversation() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowEndConfirm(true)}
-            className="w-9 h-9 flex items-center justify-center rounded-full text-[#A1A1AA] hover:text-[#EF4444] hover:bg-[rgba(239,68,68,0.1)] transition-colors"
+            className="w-9 h-9 flex items-center justify-center rounded-full text-text-secondary hover:text-[#EF4444] hover:bg-[rgba(239,68,68,0.1)] transition-colors"
           >
             <X className="w-5 h-5" />
           </motion.button>
@@ -638,7 +638,7 @@ export default function Conversation() {
           ref={chatContainerRef}
           className="flex-1 flex flex-col overflow-hidden"
           style={{
-            background: 'rgba(10, 10, 15, 0.95)',
+            background: 'rgba(253, 251, 247, 0.96)',
           }}
         >
           {/* Messages */}
@@ -661,8 +661,8 @@ export default function Conversation() {
                   >
                     <MessageCircle className="w-8 h-8 text-[#E11D48]" />
                   </div>
-                  <h3 className="text-heading-md text-[#F5F5F7] mb-2">Say something to {persona.name}</h3>
-                  <p className="text-body-sm text-[#52525B] max-w-sm">
+                  <h3 className="text-heading-md text-text-primary mb-2">Say something to {persona.name}</h3>
+                  <p className="text-body-sm text-text-muted max-w-sm">
                     Start the conversation. She&apos;s waiting for your first message.
                   </p>
                 </motion.div>
@@ -691,9 +691,9 @@ export default function Conversation() {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
             className="flex-shrink-0 px-4 lg:px-6 py-4"
             style={{
-              background: 'rgba(10, 10, 15, 0.95)',
+              background: 'rgba(253, 251, 247, 0.96)',
               backdropFilter: 'blur(20px)',
-              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+              borderTop: '1px solid rgba(28, 25, 23, 0.08)',
             }}
           >
             <div className="flex items-center gap-3 max-w-4xl mx-auto">
@@ -705,10 +705,10 @@ export default function Conversation() {
                   onKeyDown={handleKeyDown}
                   placeholder={`Message ${persona.name}...`}
                   disabled={isTyping}
-                  className="w-full px-5 py-3 rounded-full text-body text-[#F5F5F7] outline-none transition-all duration-200 disabled:opacity-50"
+                  className="w-full px-5 py-3 rounded-full text-body text-text-primary outline-none transition-all duration-200 disabled:opacity-50"
                   style={{
-                    background: 'rgba(18, 18, 26, 0.6)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(255, 255, 255, 0.82)',
+                    border: '1px solid rgba(28, 25, 23, 0.1)',
                     backdropFilter: 'blur(16px)',
                   }}
                   onFocus={(e) => {
@@ -716,7 +716,7 @@ export default function Conversation() {
                     e.target.style.boxShadow = '0 0 20px rgba(225, 29, 72, 0.1)'
                   }}
                   onBlur={(e) => {
-                    e.target.style.border = '1px solid rgba(255,255,255,0.08)'
+                    e.target.style.border = '1px solid rgba(28, 25, 23, 0.1)'
                     e.target.style.boxShadow = 'none'
                   }}
                 />
@@ -732,7 +732,7 @@ export default function Conversation() {
                   background:
                     inputText.trim() && !isTyping
                       ? 'linear-gradient(135deg, #E11D48, #BE123C)'
-                      : '#1A1A25',
+                      : '#EDE6DA',
                 }}
               >
                 <Send className="w-[18px] h-[18px] text-white" />
@@ -751,23 +751,23 @@ export default function Conversation() {
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
               className="hidden lg:flex w-[40%] xl:w-[380px] flex-shrink-0 flex-col"
               style={{
-                background: 'rgba(10, 10, 15, 0.95)',
+                background: 'rgba(253, 251, 247, 0.96)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
-                borderLeft: '1px solid rgba(255, 255, 255, 0.06)',
+                borderLeft: '1px solid rgba(28, 25, 23, 0.08)',
               }}
             >
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-4 pb-2">
                 <div>
-                  <h3 className="text-heading-md text-[#F5F5F7]">Message Analysis</h3>
-                  <p className="text-body-sm text-[#52525B]">Understanding the invisible layer</p>
+                  <h3 className="text-heading-md text-text-primary">Message Analysis</h3>
+                  <p className="text-body-sm text-text-muted">Understanding the invisible layer</p>
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setIsAnalysisOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full text-[#52525B] hover:text-[#F5F5F7] hover:bg-[#1A1A25] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </motion.button>
@@ -782,8 +782,8 @@ export default function Conversation() {
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <Brain className="w-12 h-12 text-[#52525B] mx-auto mb-4" />
-                      <p className="text-body-sm text-[#52525B]">
+                      <Brain className="w-12 h-12 text-text-muted mx-auto mb-4" />
+                      <p className="text-body-sm text-text-muted">
                         Send messages to see real-time analysis of her responses.
                       </p>
                     </motion.div>
@@ -803,23 +803,23 @@ export default function Conversation() {
               {analyses.length > 0 && (
                 <div
                   className="p-4 border-t"
-                  style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+                  style={{ borderColor: 'rgba(28, 25, 23, 0.08)' }}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-caption text-[#52525B]">Average Score</span>
+                    <span className="text-caption text-text-muted">Average Score</span>
                     <div className="flex items-center gap-2">
                       <StarRating
                         stars={Math.round(analyses.reduce((acc, a) => acc + a.score, 0) / analyses.length)}
                         size={14}
                       />
-                      <span className="text-body-sm font-semibold text-[#F5F5F7]">
+                      <span className="text-body-sm font-semibold text-text-primary">
                         {(analyses.reduce((acc, a) => acc + a.score, 0) / analyses.length).toFixed(1)}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-caption text-[#52525B]">Messages Analyzed</span>
-                    <span className="text-body-sm font-semibold text-[#F5F5F7]">{analyses.length}</span>
+                    <span className="text-caption text-text-muted">Messages Analyzed</span>
+                    <span className="text-body-sm font-semibold text-text-primary">{analyses.length}</span>
                   </div>
                 </div>
               )}
@@ -836,7 +836,7 @@ export default function Conversation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[70] flex items-center justify-center px-4"
-            style={{ background: 'rgba(10, 10, 15, 0.9)', backdropFilter: 'blur(12px)' }}
+            style={{ background: 'rgba(28, 25, 23, 0.45)', backdropFilter: 'blur(12px)' }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -845,14 +845,14 @@ export default function Conversation() {
               transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
               className="w-full max-w-md p-8 rounded-[24px]"
               style={{
-                background: 'rgba(18, 18, 26, 0.95)',
+                background: 'rgba(255, 255, 255, 0.96)',
                 backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                boxShadow: '0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)',
+                border: '1px solid rgba(28, 25, 23, 0.1)',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(28, 25, 23, 0.1)',
               }}
             >
-              <h3 className="text-heading-lg text-[#F5F5F7] mb-2 text-center">End Conversation?</h3>
-              <p className="text-body text-[#A1A1AA] mb-8 text-center">
+              <h3 className="text-heading-lg text-text-primary mb-2 text-center">End Conversation?</h3>
+              <p className="text-body text-text-secondary mb-8 text-center">
                 You&apos;ll be taken to a review page with your performance analysis.
               </p>
 
@@ -861,8 +861,8 @@ export default function Conversation() {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setShowEndConfirm(false)}
-                  className="flex-1 px-6 py-3 rounded-full text-heading-sm font-semibold text-[#A1A1AA] transition-all duration-200 hover:text-[#F5F5F7]"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                  className="flex-1 px-6 py-3 rounded-full text-heading-sm font-semibold text-text-secondary transition-all duration-200 hover:text-text-primary"
+                  style={{ border: '1px solid rgba(28, 25, 23, 0.1)' }}
                 >
                   Keep Chatting
                 </motion.button>

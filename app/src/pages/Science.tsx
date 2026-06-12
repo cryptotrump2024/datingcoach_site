@@ -34,7 +34,7 @@ const staggerItem = {
 
 /* ─────────────────── Reusable components ─────────────────── */
 
-function SectionLabel({ text, color = 'text-[#52525B]' }: { text: string; color?: string }) {
+function SectionLabel({ text, color = 'text-text-muted' }: { text: string; color?: string }) {
   return (
     <span className={`text-caption uppercase tracking-[0.12em] ${color}`}>{text}</span>
   )
@@ -79,10 +79,10 @@ function HeroSection() {
         style={{ backgroundImage: 'url(/science-hero.jpg)' }}
       />
       {/* Overlays */}
-      <div className="absolute inset-0 bg-[rgba(10,10,15,0.7)]" />
+      <div className="absolute inset-0 bg-[rgba(253,251,247,0.78)]" />
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(180deg, transparent 40%, #0A0A0F 100%)' }}
+        style={{ background: 'linear-gradient(180deg, transparent 40%, #FDFBF7 100%)' }}
       />
 
       {/* Content */}
@@ -96,7 +96,7 @@ function HeroSection() {
         </motion.div>
 
         <motion.h1
-          className="text-display-section font-semibold text-[#F5F5F7] mt-6"
+          className="text-display-section font-semibold text-text-primary mt-6"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15, ease: easeOutExpo }}
@@ -106,7 +106,7 @@ function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="text-body-lg text-[#A1A1AA] mt-6 max-w-[640px] mx-auto leading-relaxed"
+          className="text-body-lg text-text-secondary mt-6 max-w-[640px] mx-auto leading-relaxed"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3, ease: easeOutExpo }}
@@ -122,12 +122,12 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <span className="text-caption text-[#52525B]">Scroll to explore</span>
+          <span className="text-caption text-text-muted">Scroll to explore</span>
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
           >
-            <ChevronDown className="w-5 h-5 text-[#52525B]" />
+            <ChevronDown className="w-5 h-5 text-text-muted" />
           </motion.div>
         </motion.div>
       </div>
@@ -141,7 +141,7 @@ const attachmentStyles = [
   {
     icon: Shield,
     title: 'Secure Attachment',
-    color: '#10B981',
+    color: '#059669',
     glow: 'rgba(16, 185, 129, 0.25)',
     description: 'Comfortable with intimacy and independence. Responds well to direct communication.',
     recognize: ['Maintains healthy boundaries', 'Communicates needs openly', 'Handles conflict constructively'],
@@ -150,7 +150,7 @@ const attachmentStyles = [
   {
     icon: Heart,
     title: 'Anxious Attachment',
-    color: '#F59E0B',
+    color: '#D97706',
     glow: 'rgba(245, 158, 11, 0.25)',
     description: 'Craves closeness, fears abandonment. Needs reassurance but too much pushes them away.',
     recognize: ['Seeks frequent validation', 'Overthinks delayed responses', 'Becomes clingy under stress'],
@@ -168,7 +168,7 @@ const attachmentStyles = [
   {
     icon: Zap,
     title: 'Disorganized Attachment',
-    color: '#8B5CF6',
+    color: '#7C3AED',
     glow: 'rgba(139, 92, 246, 0.25)',
     description: 'Mixed signals, unpredictable. Requires patience and consistency.',
     recognize: ['Hot and cold behavior', 'Mixed messages', 'Fear of both intimacy and abandonment'],
@@ -185,10 +185,10 @@ function AttachmentSection() {
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
           <SectionLabel text="DEEP DIVE" color="text-[#8B5CF6]" />
-          <h2 className="text-display-subsection font-medium text-[#F5F5F7] mt-4">
+          <h2 className="text-display-subsection font-medium text-text-primary mt-4">
             Attachment Theory in Dating
           </h2>
-          <p className="text-body-lg text-[#A1A1AA] mt-4 max-w-[600px] mx-auto">
+          <p className="text-body-lg text-text-secondary mt-4 max-w-[600px] mx-auto">
             Understanding your patterns and hers is the foundation of every successful connection
           </p>
         </ScrollReveal>
@@ -220,27 +220,27 @@ function AttachmentSection() {
                   <style.icon className="w-6 h-6" style={{ color: style.color }} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-heading-md text-[#F5F5F7]">{style.title}</h3>
-                  <p className="text-body text-[#A1A1AA] mt-2">{style.description}</p>
+                  <h3 className="text-heading-md text-text-primary">{style.title}</h3>
+                  <p className="text-body text-text-secondary mt-2">{style.description}</p>
 
                   <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <span className="text-caption text-[#52525B] uppercase tracking-wider">How to Recognize</span>
+                      <span className="text-caption text-text-muted uppercase tracking-wider">How to Recognize</span>
                       <ul className="mt-2 space-y-1.5">
                         {style.recognize.map((r) => (
-                          <li key={r} className="text-body-sm text-[#A1A1AA] flex items-start gap-2">
-                            <Eye className="w-3.5 h-3.5 text-[#52525B] mt-0.5 flex-shrink-0" />
+                          <li key={r} className="text-body-sm text-text-secondary flex items-start gap-2">
+                            <Eye className="w-3.5 h-3.5 text-text-muted mt-0.5 flex-shrink-0" />
                             {r}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div>
-                      <span className="text-caption text-[#52525B] uppercase tracking-wider">Best Approach</span>
+                      <span className="text-caption text-text-muted uppercase tracking-wider">Best Approach</span>
                       <ul className="mt-2 space-y-1.5">
                         {style.approach.map((a) => (
-                          <li key={a} className="text-body-sm text-[#A1A1AA] flex items-start gap-2">
-                            <Lightbulb className="w-3.5 h-3.5 text-[#52525B] mt-0.5 flex-shrink-0" />
+                          <li key={a} className="text-body-sm text-text-secondary flex items-start gap-2">
+                            <Lightbulb className="w-3.5 h-3.5 text-text-muted mt-0.5 flex-shrink-0" />
                             {a}
                           </li>
                         ))}
@@ -271,7 +271,7 @@ const pillars = [
   {
     icon: Eye,
     title: 'Mystery',
-    color: '#8B5CF6',
+    color: '#7C3AED',
     explanation: 'The unknown creates curiosity and cognitive investment. She thinks about you more when she doesn\'t know everything.',
     example: 'Reveal personal stories gradually rather than all at once.',
     citation: 'Loewenstein, 1994',
@@ -279,7 +279,7 @@ const pillars = [
   {
     icon: Users,
     title: 'Social Proof',
-    color: '#F59E0B',
+    color: '#D97706',
     explanation: 'Perceived value increases when others validate you. Humans use social signals to make quick judgments.',
     example: 'Mention social activities naturally: "My friend and I were just talking about that..."',
     citation: 'Cialdini, 2001',
@@ -287,7 +287,7 @@ const pillars = [
   {
     icon: Flame,
     title: 'Emotional Range',
-    color: '#14B8A6',
+    color: '#0D9488',
     explanation: 'Taking her through different emotions creates memorable connections. Contrast makes experiences vivid.',
     example: 'Mix humor with sincerity, teasing with genuine compliments.',
     citation: 'Dolcos et al., 2022',
@@ -295,7 +295,7 @@ const pillars = [
   {
     icon: TrendingUp,
     title: 'Progressive Investment',
-    color: '#FB7185',
+    color: '#BE123C',
     explanation: 'Small commitments lead to larger ones through the principle of consistency.',
     example: 'Start with light questions, then gradually ask for more thoughtful responses.',
     citation: 'Cialdini, 2001',
@@ -307,14 +307,14 @@ function AttractionSection() {
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="attraction" className="py-24 lg:py-32 px-6 bg-[#12121A]">
+    <section id="attraction" className="py-24 lg:py-32 px-6 bg-bg-secondary">
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
           <SectionLabel text="THE FORMULA" color="text-[#F59E0B]" />
-          <h2 className="text-display-subsection font-medium text-[#F5F5F7] mt-4">
+          <h2 className="text-display-subsection font-medium text-text-primary mt-4">
             What Creates Attraction
           </h2>
-          <p className="text-body-lg text-[#A1A1AA] mt-4 max-w-[600px] mx-auto">
+          <p className="text-body-lg text-text-secondary mt-4 max-w-[600px] mx-auto">
             Five psychological pillars that drive genuine romantic interest
           </p>
         </ScrollReveal>
@@ -353,18 +353,18 @@ function AttractionSection() {
                   >
                     {i + 1}
                   </span>
-                  <h3 className="text-heading-sm text-[#F5F5F7]">{pillar.title}</h3>
+                  <h3 className="text-heading-sm text-text-primary">{pillar.title}</h3>
                 </div>
 
-                <p className="text-body-sm text-[#A1A1AA] mt-3 leading-relaxed">
+                <p className="text-body-sm text-text-secondary mt-3 leading-relaxed">
                   {pillar.explanation}
                 </p>
 
-                <div className="mt-4 p-3 rounded-xl bg-[#1A1A25]">
-                  <p className="text-body-sm text-[#F5F5F7] italic">"{pillar.example}"</p>
+                <div className="mt-4 p-3 rounded-xl bg-bg-tertiary">
+                  <p className="text-body-sm text-text-primary italic">"{pillar.example}"</p>
                 </div>
 
-                <p className="text-caption text-[#52525B] mt-3">{pillar.citation}</p>
+                <p className="text-caption text-text-muted mt-3">{pillar.citation}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -400,10 +400,10 @@ function ConversationSection() {
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
           <SectionLabel text="COMMUNICATION" color="text-[#14B8A6]" />
-          <h2 className="text-display-subsection font-medium text-[#F5F5F7] mt-4">
+          <h2 className="text-display-subsection font-medium text-text-primary mt-4">
             How Women Communicate
           </h2>
-          <p className="text-body-lg text-[#A1A1AA] mt-4 max-w-[600px] mx-auto">
+          <p className="text-body-lg text-text-secondary mt-4 max-w-[600px] mx-auto">
             Decoding subtext, passing tests, and understanding investment dynamics
           </p>
         </ScrollReveal>
@@ -421,26 +421,26 @@ function ConversationSection() {
               <div className="w-10 h-10 rounded-lg bg-[#8B5CF6]/15 flex items-center justify-center">
                 <MessageSquare className="w-5 h-5 text-[#8B5CF6]" />
               </div>
-              <h3 className="text-heading-lg text-[#F5F5F7]">Reading Between the Lines</h3>
+              <h3 className="text-heading-lg text-text-primary">Reading Between the Lines</h3>
             </div>
-            <p className="text-body text-[#A1A1AA] mb-6">
+            <p className="text-body text-text-secondary mb-6">
               Women often communicate indirectly. Understanding the real message behind common phrases is a critical skill.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[rgba(255,255,255,0.06)]">
-                    <th className="text-left text-caption text-[#52525B] uppercase tracking-wider pb-3 pr-4">What She Says</th>
-                    <th className="text-left text-caption text-[#52525B] uppercase tracking-wider pb-3">What It Means</th>
+                  <tr className="border-b border-[rgba(28, 25, 23, 0.08)]">
+                    <th className="text-left text-caption text-text-muted uppercase tracking-wider pb-3 pr-4">What She Says</th>
+                    <th className="text-left text-caption text-text-muted uppercase tracking-wider pb-3">What It Means</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(255,255,255,0.04)]">
+                <tbody className="divide-y divide-[rgba(28, 25, 23, 0.06)]">
                   {readingBetweenLines.map((row) => (
                     <tr key={row.phrase}>
                       <td className="py-4 pr-4">
-                        <span className="text-body-sm text-[#F5F5F7] font-medium">"{row.phrase}"</span>
+                        <span className="text-body-sm text-text-primary font-medium">"{row.phrase}"</span>
                       </td>
-                      <td className="py-4 text-body-sm text-[#A1A1AA]">{row.meaning}</td>
+                      <td className="py-4 text-body-sm text-text-secondary">{row.meaning}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -454,24 +454,24 @@ function ConversationSection() {
               <div className="w-10 h-10 rounded-lg bg-[#E11D48]/15 flex items-center justify-center">
                 <AlertTriangle className="w-5 h-5 text-[#E11D48]" />
               </div>
-              <h3 className="text-heading-lg text-[#F5F5F7]">Shit Tests & How to Pass Them</h3>
+              <h3 className="text-heading-lg text-text-primary">Shit Tests & How to Pass Them</h3>
             </div>
-            <p className="text-body text-[#A1A1AA] mb-6">
+            <p className="text-body text-text-secondary mb-6">
               Shit tests are not insults. They are unconscious tests of your confidence and congruence. She wants to see if you're the real deal. The key is never to get defensive or justify yourself.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[rgba(255,255,255,0.06)]">
-                    <th className="text-left text-caption text-[#52525B] uppercase tracking-wider pb-3 pr-4">The Test</th>
-                    <th className="text-left text-caption text-[#52525B] uppercase tracking-wider pb-3">How to Respond</th>
+                  <tr className="border-b border-[rgba(28, 25, 23, 0.08)]">
+                    <th className="text-left text-caption text-text-muted uppercase tracking-wider pb-3 pr-4">The Test</th>
+                    <th className="text-left text-caption text-text-muted uppercase tracking-wider pb-3">How to Respond</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(255,255,255,0.04)]">
+                <tbody className="divide-y divide-[rgba(28, 25, 23, 0.06)]">
                   {shitTests.map((row) => (
                     <tr key={row.test}>
                       <td className="py-4 pr-4">
-                        <span className="text-body-sm text-[#F5F5F7] font-medium">"{row.test}"</span>
+                        <span className="text-body-sm text-text-primary font-medium">"{row.test}"</span>
                       </td>
                       <td className="py-4 text-body-sm text-[#14B8A6]">{row.response}</td>
                     </tr>
@@ -487,17 +487,17 @@ function ConversationSection() {
               <div className="w-10 h-10 rounded-lg bg-[#F59E0B]/15 flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-[#F59E0B]" />
               </div>
-              <h3 className="text-heading-lg text-[#F5F5F7]">Investment & Reciprocity</h3>
+              <h3 className="text-heading-lg text-text-primary">Investment & Reciprocity</h3>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
-                <h4 className="text-heading-sm text-[#F5F5F7] mb-3">The Principle</h4>
-                <p className="text-body text-[#A1A1AA] leading-relaxed">
+                <h4 className="text-heading-sm text-text-primary mb-3">The Principle</h4>
+                <p className="text-body text-text-secondary leading-relaxed">
                   People value what they invest in. The more emotional and cognitive effort she puts into the interaction, the more invested she becomes. Your goal is to create an exchange where she's contributing equally or more.
                 </p>
               </div>
               <div>
-                <h4 className="text-heading-sm text-[#F5F5F7] mb-3">How to Get Her Investing</h4>
+                <h4 className="text-heading-sm text-text-primary mb-3">How to Get Her Investing</h4>
                 <ul className="space-y-2.5">
                   {[
                     'Ask questions that require thought, not just yes/no answers',
@@ -505,7 +505,7 @@ function ConversationSection() {
                     'Have her come to your location for the date',
                     'Let her talk about herself. People love that',
                   ].map((tip) => (
-                    <li key={tip} className="text-body-sm text-[#A1A1AA] flex items-start gap-2.5">
+                    <li key={tip} className="text-body-sm text-text-secondary flex items-start gap-2.5">
                       <CheckCircle2 className="w-4 h-4 text-[#10B981] mt-0.5 flex-shrink-0" />
                       {tip}
                     </li>
@@ -514,12 +514,12 @@ function ConversationSection() {
               </div>
             </div>
 
-            <div className="mt-6 p-5 rounded-xl bg-[#1A1A25] border border-[rgba(239,68,68,0.15)]">
+            <div className="mt-6 p-5 rounded-xl bg-bg-tertiary border border-[rgba(239,68,68,0.15)]">
               <div className="flex items-start gap-3">
                 <AlertTriangle className="w-5 h-5 text-[#EF4444] flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-heading-sm text-[#EF4444]">Warning Signs of Over-Investment</h4>
-                  <p className="text-body-sm text-[#A1A1AA] mt-2">
+                  <p className="text-body-sm text-text-secondary mt-2">
                     If you're always initiating, sending longer messages, apologizing for delays, or rearranging your schedule for her, you're over-investing. Pull back and match her effort level. Scarcity increases perceived value.
                   </p>
                 </div>
@@ -545,25 +545,25 @@ const textingStrategies = [
     icon: Star,
     title: 'Emotional Peaks',
     description: "End conversations on a high note. She'll associate you with good feelings and look forward to the next interaction.",
-    color: '#F59E0B',
+    color: '#D97706',
   },
   {
     icon: RefreshCw,
     title: 'Callback Humor',
     description: "Reference inside jokes from previous conversations. Builds rapport and shows you pay attention.",
-    color: '#8B5CF6',
+    color: '#7C3AED',
   },
   {
     icon: TrendingUp,
     title: 'The Takeaway',
     description: "Occasionally pull back. Scarcity increases value. Being always available makes you taken for granted.",
-    color: '#14B8A6',
+    color: '#0D9488',
   },
   {
     icon: Compass,
     title: 'Leading the Dance',
     description: "Always be moving the interaction forward. Have a destination in mind for every conversation.",
-    color: '#FB7185',
+    color: '#BE123C',
   },
   {
     icon: Layers,
@@ -578,14 +578,14 @@ function TextingSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="texting" className="py-24 lg:py-32 px-6 bg-[#12121A]">
+    <section id="texting" className="py-24 lg:py-32 px-6 bg-bg-secondary">
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
-          <SectionLabel text="DIGITAL GAME" color="text-[#FB7185]" />
-          <h2 className="text-display-subsection font-medium text-[#F5F5F7] mt-4">
+          <SectionLabel text="DIGITAL GAME" color="text-[#BE123C]" />
+          <h2 className="text-display-subsection font-medium text-text-primary mt-4">
             The Art of Texting
           </h2>
-          <p className="text-body-lg text-[#A1A1AA] mt-4 max-w-[600px] mx-auto">
+          <p className="text-body-lg text-text-secondary mt-4 max-w-[600px] mx-auto">
             Strategic messaging that builds attraction instead of killing it
           </p>
         </ScrollReveal>
@@ -609,8 +609,8 @@ function TextingSection() {
               >
                 <strategy.icon className="w-6 h-6" style={{ color: strategy.color }} />
               </div>
-              <h3 className="text-heading-md text-[#F5F5F7] mt-5">{strategy.title}</h3>
-              <p className="text-body-sm text-[#A1A1AA] mt-3 leading-relaxed">
+              <h3 className="text-heading-md text-text-primary mt-5">{strategy.title}</h3>
+              <p className="text-body-sm text-text-secondary mt-3 leading-relaxed">
                 {strategy.description}
               </p>
             </motion.div>
@@ -640,7 +640,7 @@ const phases = [
     description: "Create enough trust that she wants to continue elsewhere. This is the first milestone.",
     metrics: 'Message count before transition, engagement level',
     mistakes: 'Staying on the app too long, not creating enough comfort',
-    color: '#F59E0B',
+    color: '#D97706',
   },
   {
     number: '03',
@@ -649,7 +649,7 @@ const phases = [
     description: 'Build anticipation and comfort for the meeting. She should feel like she knows you a little.',
     metrics: 'Response speed, length of replies, initiative taken',
     mistakes: 'Over-texting, revealing too much, killing mystery',
-    color: '#8B5CF6',
+    color: '#7C3AED',
   },
   {
     number: '04',
@@ -658,7 +658,7 @@ const phases = [
     description: 'Convert digital chemistry to real-world attraction. The in-person vibe is what seals it.',
     metrics: 'Date quality rating, second date conversion',
     mistakes: 'Interview-style questions, no physical escalation, being too nice',
-    color: '#14B8A6',
+    color: '#0D9488',
   },
   {
     number: '05',
@@ -680,10 +680,10 @@ function PhasesSection() {
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
           <SectionLabel text="THE JOURNEY" color="text-[#3B82F6]" />
-          <h2 className="text-display-subsection font-medium text-[#F5F5F7] mt-4">
+          <h2 className="text-display-subsection font-medium text-text-primary mt-4">
             From First Text to Relationship
           </h2>
-          <p className="text-body-lg text-[#A1A1AA] mt-4 max-w-[600px] mx-auto">
+          <p className="text-body-lg text-text-secondary mt-4 max-w-[600px] mx-auto">
             Every successful connection progresses through these five phases
           </p>
         </ScrollReveal>
@@ -727,26 +727,26 @@ function PhasesSection() {
                   {phase.context}
                 </span>
 
-                <h3 className="text-heading-sm text-[#F5F5F7] mt-2">{phase.title}</h3>
-                <p className="text-body-sm text-[#A1A1AA] mt-3 leading-relaxed">
+                <h3 className="text-heading-sm text-text-primary mt-2">{phase.title}</h3>
+                <p className="text-body-sm text-text-secondary mt-3 leading-relaxed">
                   {phase.description}
                 </p>
 
-                <div className="mt-4 pt-4 border-t border-[rgba(255,255,255,0.06)] space-y-2">
+                <div className="mt-4 pt-4 border-t border-[rgba(28, 25, 23, 0.08)] space-y-2">
                   <div className="flex items-start gap-2">
-                    <BarChart3 className="w-3.5 h-3.5 text-[#52525B] mt-0.5 flex-shrink-0" />
-                    <span className="text-caption text-[#A1A1AA]">{phase.metrics}</span>
+                    <BarChart3 className="w-3.5 h-3.5 text-text-muted mt-0.5 flex-shrink-0" />
+                    <span className="text-caption text-text-secondary">{phase.metrics}</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="w-3.5 h-3.5 text-[#EF4444] mt-0.5 flex-shrink-0" />
-                    <span className="text-caption text-[#A1A1AA]">{phase.mistakes}</span>
+                    <span className="text-caption text-text-secondary">{phase.mistakes}</span>
                   </div>
                 </div>
 
                 {/* Arrow connector - hidden on last item */}
                 {phase.number !== '05' && (
                   <div className="hidden lg:flex absolute right-[-12px] top-[60px] z-20 w-6 h-6 items-center justify-center">
-                    <ChevronRight className="w-5 h-5 text-[#52525B]" />
+                    <ChevronRight className="w-5 h-5 text-text-muted" />
                   </div>
                 )}
               </motion.div>
@@ -783,14 +783,14 @@ function TipsSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="tips" className="py-24 lg:py-32 px-6 bg-[#12121A]">
+    <section id="tips" className="py-24 lg:py-32 px-6 bg-bg-secondary">
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
-          <SectionLabel text="QUICK REFERENCE" color="text-[#52525B]" />
-          <h2 className="text-display-subsection font-medium text-[#F5F5F7] mt-4">
+          <SectionLabel text="QUICK REFERENCE" color="text-text-muted" />
+          <h2 className="text-display-subsection font-medium text-text-primary mt-4">
             Quick Reference: Do's and Don'ts
           </h2>
-          <p className="text-body-lg text-[#A1A1AA] mt-4 max-w-[600px] mx-auto">
+          <p className="text-body-lg text-text-secondary mt-4 max-w-[600px] mx-auto">
             Print this section. Internalize it. Apply it.
           </p>
         </ScrollReveal>
@@ -814,7 +814,7 @@ function TipsSection() {
               {dos.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
-                  <span className="text-body text-[#F5F5F7]">{item}</span>
+                  <span className="text-body text-text-primary">{item}</span>
                 </li>
               ))}
             </ul>
@@ -832,7 +832,7 @@ function TipsSection() {
               {donts.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <XCircle className="w-5 h-5 text-[#EF4444] flex-shrink-0 mt-0.5" />
-                  <span className="text-body text-[#F5F5F7]">{item}</span>
+                  <span className="text-body text-text-primary">{item}</span>
                 </li>
               ))}
             </ul>
@@ -865,13 +865,13 @@ function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: easeOutExpo }}
         >
-          <h2 className="text-display-subsection font-semibold text-[#F5F5F7]">
+          <h2 className="text-display-subsection font-semibold text-text-primary">
             Ready to Practice?
           </h2>
         </motion.div>
 
         <motion.p
-          className="text-body-lg text-[#A1A1AA] mt-6"
+          className="text-body-lg text-text-secondary mt-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -889,7 +889,7 @@ function CTASection() {
         >
           <button
             onClick={() => navigate('/create')}
-            className="btn-gradient text-[#F5F5F7] text-body font-semibold px-10 py-4 rounded-full inline-flex items-center gap-3"
+            className="btn-gradient text-text-primary text-body font-semibold px-10 py-4 rounded-full inline-flex items-center gap-3"
           >
             Start Practicing
             <ArrowRight className="w-5 h-5" />
@@ -904,7 +904,7 @@ function CTASection() {
 
 export default function Science() {
   return (
-    <div className="bg-[#0A0A0F]">
+    <div className="bg-bg-primary">
       <HeroSection />
       <AttachmentSection />
       <AttractionSection />

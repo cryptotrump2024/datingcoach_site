@@ -463,8 +463,8 @@ function getAnalysisFromInput(filename: string): AnalysisResult {
 }
 
 function getScoreColor(score: number): string {
-  if (score >= 80) return '#10B981'
-  if (score >= 60) return '#F59E0B'
+  if (score >= 80) return '#059669'
+  if (score >= 60) return '#D97706'
   if (score >= 40) return '#F97316'
   return '#EF4444'
 }
@@ -675,7 +675,7 @@ function ScoreCircle({ score, label }: { score: number; label: string }) {
             cy="85"
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.06)"
+            stroke="rgba(28, 25, 23, 0.08)"
             strokeWidth="10"
           />
           <circle
@@ -692,8 +692,8 @@ function ScoreCircle({ score, label }: { score: number; label: string }) {
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-heading-xl text-[#F5F5F7]">{animatedScore}</span>
-          <span className="text-caption text-[#52525B] uppercase tracking-wider">{label}</span>
+          <span className="text-heading-xl text-text-primary">{animatedScore}</span>
+          <span className="text-caption text-text-muted uppercase tracking-wider">{label}</span>
         </div>
       </div>
     </div>
@@ -708,10 +708,10 @@ function ScoreBar({ label, score, max = 10, color }: { label: string; score: num
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between items-center">
-        <span className="text-body-sm text-[#A1A1AA]">{label}</span>
-        <span className="text-mono text-[#F5F5F7]">{score}/{max}</span>
+        <span className="text-body-sm text-text-secondary">{label}</span>
+        <span className="text-mono text-text-primary">{score}/{max}</span>
       </div>
-      <div className="h-2 rounded-full bg-[#1A1A25] overflow-hidden">
+      <div className="h-2 rounded-full bg-bg-tertiary overflow-hidden">
         <motion.div
           className="h-full rounded-full"
           style={{ backgroundColor: barColor }}
@@ -730,15 +730,15 @@ function ComparisonBar({ label, average, current }: { label: string; average: nu
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
-        <span className="text-body-sm text-[#A1A1AA]">{label}</span>
+        <span className="text-body-sm text-text-secondary">{label}</span>
         <div className="flex items-center gap-3">
-          <span className="text-caption text-[#52525B]">Avg {average}%</span>
+          <span className="text-caption text-text-muted">Avg {average}%</span>
           <span className="text-mono text-[#FBBF24] font-medium">{current}%</span>
         </div>
       </div>
-      <div className="h-2.5 rounded-full bg-[#1A1A25] overflow-hidden relative">
+      <div className="h-2.5 rounded-full bg-bg-tertiary overflow-hidden relative">
         <div
-          className="absolute top-0 h-full rounded-full bg-[#52525B] opacity-40"
+          className="absolute top-0 h-full rounded-full bg-stone-400 opacity-40"
           style={{ width: `${average}%` }}
         />
         <motion.div
@@ -772,7 +772,7 @@ function TabButton({
       className={`flex items-center gap-2 px-5 py-3 rounded-xl text-body-sm font-medium transition-all duration-200 whitespace-nowrap ${
         active
           ? 'bg-gradient-to-r from-[#E11D48] to-[#F59E0B] text-white shadow-glow-rose'
-          : 'text-[#A1A1AA] hover:text-[#F5F5F7] hover:bg-[rgba(255,255,255,0.04)]'
+          : 'text-text-secondary hover:text-text-primary hover:bg-[rgba(28, 25, 23, 0.06)]'
       }`}
     >
       <Icon className="w-4 h-4" />
@@ -797,7 +797,7 @@ function FlagCard({ type, text }: { type: 'red' | 'green'; text: string }) {
       ) : (
         <Shield className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
       )}
-      <span className={`text-body-sm ${type === 'red' ? 'text-[#FBBF24]' : 'text-[#A1A1AA]'}`}>{text}</span>
+      <span className={`text-body-sm ${type === 'red' ? 'text-[#FBBF24]' : 'text-text-secondary'}`}>{text}</span>
     </div>
   )
 }
@@ -1035,7 +1035,7 @@ export default function ProfileAnalyzer() {
   }, [])
 
   return (
-    <div className="min-h-[100dvh] bg-[#0A0A0F] pt-[72px]">
+    <div className="min-h-[100dvh] bg-bg-primary pt-[72px]">
       {/* ── Hero Header ────────────────────────────────────────────── */}
       <section className="relative overflow-hidden px-6 py-16 md:py-24">
         <div
@@ -1058,7 +1058,7 @@ export default function ProfileAnalyzer() {
             <h1 className="text-display-section mb-6">
               <span className="gradient-text">Profile Intelligence Analyzer</span>
             </h1>
-            <p className="text-body-lg text-[#A1A1AA] max-w-[600px] mx-auto">
+            <p className="text-body-lg text-text-secondary max-w-[600px] mx-auto">
               Upload any dating profile screenshot and get deep AI analysis on what works, what doesn't, and how to improve
             </p>
           </motion.div>
@@ -1104,23 +1104,23 @@ export default function ProfileAnalyzer() {
                   <div className="w-16 h-16 rounded-2xl bg-[rgba(225,29,72,0.1)] flex items-center justify-center">
                     <Upload
                       className={`w-8 h-8 transition-colors duration-300 ${
-                        dragOver ? 'text-[#E11D48]' : 'text-[#FB7185]'
+                        dragOver ? 'text-[#E11D48]' : 'text-[#BE123C]'
                       }`}
                     />
                   </div>
                   <div>
-                    <p className="text-body-lg text-[#F5F5F7] font-medium">
+                    <p className="text-body-lg text-text-primary font-medium">
                       Drag & drop a profile screenshot here
                     </p>
-                    <p className="text-body text-[#A1A1AA] mt-1">
-                      or <span className="text-[#FB7185] underline underline-offset-2">click to browse</span>
+                    <p className="text-body text-text-secondary mt-1">
+                      or <span className="text-[#BE123C] underline underline-offset-2">click to browse</span>
                     </p>
                   </div>
-                  <p className="text-caption text-[#52525B] mt-2">
+                  <p className="text-caption text-text-muted mt-2">
                     Supports: JPG, PNG, WebP (max 10MB)
                   </p>
-                  <p className="text-caption text-[#A1A1AA] bg-[rgba(225,29,72,0.06)] px-3 py-1.5 rounded-full mt-1 flex items-center gap-1.5">
-                    <Type className="w-3 h-3 text-[#FB7185]" />
+                  <p className="text-caption text-text-secondary bg-[rgba(225,29,72,0.06)] px-3 py-1.5 rounded-full mt-1 flex items-center gap-1.5">
+                    <Type className="w-3 h-3 text-[#BE123C]" />
                     Tip: For best results, upload a screenshot that includes the person's bio/description text
                   </p>
                 </motion.div>
@@ -1136,8 +1136,8 @@ export default function ProfileAnalyzer() {
               {/* URL Input Alternative */}
               <div className="glass-card p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Link className="w-4 h-4 text-[#A1A1AA]" />
-                  <span className="text-body-sm text-[#A1A1AA]">Or paste a profile URL</span>
+                  <Link className="w-4 h-4 text-text-secondary" />
+                  <span className="text-body-sm text-text-secondary">Or paste a profile URL</span>
                 </div>
                 <div className="flex gap-3">
                   <input
@@ -1146,7 +1146,7 @@ export default function ProfileAnalyzer() {
                     onChange={(e) => setUrlInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleUrlAnalyze()}
                     placeholder="https://tinder.com/profile/..."
-                    className="flex-1 bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] rounded-xl px-4 py-3 text-body text-[#F5F5F7] placeholder:text-[#52525B] focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-colors"
+                    className="flex-1 bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] rounded-xl px-4 py-3 text-body text-text-primary placeholder:text-text-muted focus:outline-none focus:border-[rgba(225,29,72,0.4)] transition-colors"
                   />
                   <button
                     onClick={handleUrlAnalyze}
@@ -1178,15 +1178,15 @@ export default function ProfileAnalyzer() {
                 >
                   <BarChart3 className="w-10 h-10 text-[#E11D48]" />
                 </motion.div>
-                <h2 className="text-heading-lg text-[#F5F5F7] mb-2">Analyzing Profile...</h2>
-                <p className="text-body-sm text-[#A1A1AA]">
+                <h2 className="text-heading-lg text-text-primary mb-2">Analyzing Profile...</h2>
+                <p className="text-body-sm text-text-secondary">
                   {loadingStage === 1 ? 'Reading text with OCR engine...' : 'Our AI is examining every detail'}
                 </p>
               </div>
 
               {/* Progress Bar */}
               <div className="mb-10">
-                <div className="h-3 rounded-full bg-[#1A1A25] overflow-hidden relative">
+                <div className="h-3 rounded-full bg-bg-tertiary overflow-hidden relative">
                   <motion.div
                     className="h-full rounded-full"
                     style={{
@@ -1204,8 +1204,8 @@ export default function ProfileAnalyzer() {
                   />
                 </div>
                 <div className="flex justify-between mt-2">
-                  <span className="text-caption text-[#52525B]">{loadingProgress}%</span>
-                  <span className="text-caption text-[#52525B]">100%</span>
+                  <span className="text-caption text-text-muted">{loadingProgress}%</span>
+                  <span className="text-caption text-text-muted">100%</span>
                 </div>
               </div>
 
@@ -1219,11 +1219,11 @@ export default function ProfileAnalyzer() {
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
                     <span className="text-body-sm text-[#10B981] font-medium">Text Detected</span>
-                    <span className="text-caption text-[#52525B] ml-auto">
+                    <span className="text-caption text-text-muted ml-auto">
                       {ocrText.length} characters
                     </span>
                   </div>
-                  <div className="max-h-[120px] overflow-y-auto rounded-lg bg-[#0A0A0F] p-3 font-mono text-xs text-[#A1A1AA] leading-relaxed">
+                  <div className="max-h-[120px] overflow-y-auto rounded-lg bg-bg-primary p-3 font-mono text-xs text-text-secondary leading-relaxed">
                     {ocrText.slice(0, 500)}{ocrText.length > 500 ? '...' : ''}
                   </div>
                 </motion.div>
@@ -1245,7 +1245,7 @@ export default function ProfileAnalyzer() {
                     <span className="text-body-sm text-[#3B82F6] font-medium">
                       OCR Engine: scanning image pixels...
                     </span>
-                    <span className="text-caption text-[#52525B] ml-auto">
+                    <span className="text-caption text-text-muted ml-auto">
                       {ocrProgress}%
                     </span>
                   </div>
@@ -1281,7 +1281,7 @@ export default function ProfileAnalyzer() {
                           transition={{ duration: 0.8, repeat: Infinity }}
                         />
                       ) : (
-                        <div className="w-3 h-3 rounded-full bg-[#1A1A25] border border-[#52525B]" />
+                        <div className="w-3 h-3 rounded-full bg-bg-tertiary border border-stone-300" />
                       )}
                     </div>
                     <span
@@ -1289,8 +1289,8 @@ export default function ProfileAnalyzer() {
                         loadingStage > index
                           ? 'text-[#10B981]'
                           : loadingStage === index
-                          ? 'text-[#F5F5F7]'
-                          : 'text-[#52525B]'
+                          ? 'text-text-primary'
+                          : 'text-text-muted'
                       }`}
                     >
                       {stage}
@@ -1320,19 +1320,19 @@ export default function ProfileAnalyzer() {
                 <div className="flex flex-col md:flex-row items-center gap-8">
                   <ScoreCircle score={analysis.overallScore} label="Profile Score" />
                   <div className="flex-1 text-center md:text-left">
-                    <h2 className="text-heading-lg text-[#F5F5F7] mb-2">
+                    <h2 className="text-heading-lg text-text-primary mb-2">
                       {analysis.personaName}
                     </h2>
-                    <p className="text-body text-[#A1A1AA] mb-4">{analysis.verdict}</p>
+                    <p className="text-body text-text-secondary mb-4">{analysis.verdict}</p>
                     {imageInfo && (
                       <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                        <span className="text-caption text-[#52525B] bg-[#1A1A25] px-3 py-1 rounded-full">
+                        <span className="text-caption text-text-muted bg-bg-tertiary px-3 py-1 rounded-full">
                           {imageInfo.format}
                         </span>
-                        <span className="text-caption text-[#52525B] bg-[#1A1A25] px-3 py-1 rounded-full">
+                        <span className="text-caption text-text-muted bg-bg-tertiary px-3 py-1 rounded-full">
                           {imageInfo.dimensions}
                         </span>
-                        <span className="text-caption text-[#52525B] bg-[#1A1A25] px-3 py-1 rounded-full">
+                        <span className="text-caption text-text-muted bg-bg-tertiary px-3 py-1 rounded-full">
                           {imageInfo.size}
                         </span>
                       </div>
@@ -1341,7 +1341,7 @@ export default function ProfileAnalyzer() {
                 </div>
 
                 {/* Sub-scores */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-[rgba(255,255,255,0.06)]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-[rgba(28, 25, 23, 0.08)]">
                   <ScoreBar label="Photo Quality" score={analysis.photoScore} />
                   <ScoreBar label="Bio Quality" score={analysis.bioScore} />
                   <ScoreBar label="Communication" score={analysis.communicationScore} />
@@ -1357,8 +1357,8 @@ export default function ProfileAnalyzer() {
                   className="glass-card p-4 overflow-hidden"
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <Image className="w-4 h-4 text-[#A1A1AA]" />
-                    <span className="text-body-sm text-[#A1A1AA]">Analyzed Image</span>
+                    <Image className="w-4 h-4 text-text-secondary" />
+                    <span className="text-body-sm text-text-secondary">Analyzed Image</span>
                   </div>
                   <img
                     src={uploadedImage}
@@ -1382,15 +1382,15 @@ export default function ProfileAnalyzer() {
                   >
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-[#8B5CF6]" />
-                      <span className="text-body-sm text-[#F5F5F7] font-medium">View Extracted Text</span>
-                      <span className="text-caption text-[#52525B]">
+                      <span className="text-body-sm text-text-primary font-medium">View Extracted Text</span>
+                      <span className="text-caption text-text-muted">
                         ({analysis.ocr.extractedText.length} chars)
                       </span>
                     </div>
                     {showExtractedText ? (
-                      <EyeOff className="w-4 h-4 text-[#52525B]" />
+                      <EyeOff className="w-4 h-4 text-text-muted" />
                     ) : (
-                      <Eye className="w-4 h-4 text-[#52525B]" />
+                      <Eye className="w-4 h-4 text-text-muted" />
                     )}
                   </button>
                   <AnimatePresence>
@@ -1403,7 +1403,7 @@ export default function ProfileAnalyzer() {
                         className="overflow-hidden"
                       >
                         <div className="px-4 pb-4">
-                          <div className="max-h-[300px] overflow-y-auto rounded-xl bg-[#0A0A0F] border border-[rgba(255,255,255,0.06)] p-4 font-mono text-xs text-[#A1A1AA] leading-relaxed whitespace-pre-wrap">
+                          <div className="max-h-[300px] overflow-y-auto rounded-xl bg-bg-primary border border-[rgba(28, 25, 23, 0.08)] p-4 font-mono text-xs text-text-secondary leading-relaxed whitespace-pre-wrap">
                             {analysis.ocr.extractedText}
                           </div>
                         </div>
@@ -1425,7 +1425,7 @@ export default function ProfileAnalyzer() {
                     <AlertTriangle className="w-5 h-5 text-[#F59E0B] shrink-0 mt-0.5" />
                     <div>
                       <p className="text-body-sm text-[#FBBF24] font-medium mb-1">Limited Text Detected</p>
-                      <p className="text-body-sm text-[#A1A1AA]">
+                      <p className="text-body-sm text-text-secondary">
                         We couldn't read enough text from this image. Try uploading a clearer screenshot with visible bio text for more accurate analysis.
                       </p>
                     </div>
@@ -1441,7 +1441,7 @@ export default function ProfileAnalyzer() {
                 className="glass-card overflow-hidden"
               >
                 {/* Tab Navigation */}
-                <div className="flex gap-2 p-4 overflow-x-auto border-b border-[rgba(255,255,255,0.06)]">
+                <div className="flex gap-2 p-4 overflow-x-auto border-b border-[rgba(28, 25, 23, 0.08)]">
                   {tabs.map((tab, index) => (
                     <TabButton
                       key={tab.label}
@@ -1481,7 +1481,7 @@ export default function ProfileAnalyzer() {
                                   <FlagCard key={i} type="red" text={flag} />
                                 ))
                               ) : (
-                                <p className="text-body-sm text-[#52525B]">No major red flags detected</p>
+                                <p className="text-body-sm text-text-muted">No major red flags detected</p>
                               )}
                             </div>
                           </div>
@@ -1505,7 +1505,7 @@ export default function ProfileAnalyzer() {
                             <Lightbulb className="w-4 h-4" />
                             What Photos Communicate
                           </h4>
-                          <p className="text-body-sm text-[#A1A1AA] leading-relaxed">
+                          <p className="text-body-sm text-text-secondary leading-relaxed">
                             These photos suggest {analysis.photoAnalysis.communicates}
                           </p>
                         </div>
@@ -1525,20 +1525,20 @@ export default function ProfileAnalyzer() {
                         <ScoreBar label="Bio Quality Score" score={analysis.bioScore} />
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          <div className="bg-[#1A1A25] rounded-xl p-4 text-center">
-                            <span className="text-caption text-[#52525B] block mb-1">Length</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.bioAnalysis.length}</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4 text-center">
+                            <span className="text-caption text-text-muted block mb-1">Length</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.bioAnalysis.length}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4 text-center">
-                            <span className="text-caption text-[#52525B] block mb-1">Tone</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.bioAnalysis.tone}</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4 text-center">
+                            <span className="text-caption text-text-muted block mb-1">Tone</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.bioAnalysis.tone}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4 text-center">
-                            <span className="text-caption text-[#52525B] block mb-1">Red Flags</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4 text-center">
+                            <span className="text-caption text-text-muted block mb-1">Red Flags</span>
                             <span className="text-body-sm text-[#FBBF24] font-medium">{analysis.bioAnalysis.redFlags.length}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4 text-center">
-                            <span className="text-caption text-[#52525B] block mb-1">Green Flags</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4 text-center">
+                            <span className="text-caption text-text-muted block mb-1">Green Flags</span>
                             <span className="text-body-sm text-[#10B981] font-medium">{analysis.bioAnalysis.greenFlags.length}</span>
                           </div>
                         </div>
@@ -1555,7 +1555,7 @@ export default function ProfileAnalyzer() {
                                   <FlagCard key={i} type="red" text={flag} />
                                 ))
                               ) : (
-                                <p className="text-body-sm text-[#52525B]">No red flags detected</p>
+                                <p className="text-body-sm text-text-muted">No red flags detected</p>
                               )}
                             </div>
                           </div>
@@ -1580,7 +1580,7 @@ export default function ProfileAnalyzer() {
                             </h4>
                             <ul className="space-y-2">
                               {analysis.bioAnalysis.suggestions.map((s, i) => (
-                                <li key={i} className="flex items-start gap-2 text-body-sm text-[#A1A1AA]">
+                                <li key={i} className="flex items-start gap-2 text-body-sm text-text-secondary">
                                   <ChevronRight className="w-4 h-4 text-[#3B82F6] shrink-0 mt-0.5" />
                                   {s}
                                 </li>
@@ -1604,25 +1604,25 @@ export default function ProfileAnalyzer() {
                         <ScoreBar label="Communication Score" score={analysis.communicationScore} />
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
-                            <Clock className="w-4 h-4 text-[#A1A1AA] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Response Pattern</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.communicationStyle.responsePattern}</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4">
+                            <Clock className="w-4 h-4 text-text-secondary mb-2" />
+                            <span className="text-caption text-text-muted block">Response Pattern</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.communicationStyle.responsePattern}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
-                            <FileText className="w-4 h-4 text-[#A1A1AA] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Message Length</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.communicationStyle.messageLength}</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4">
+                            <FileText className="w-4 h-4 text-text-secondary mb-2" />
+                            <span className="text-caption text-text-muted block">Message Length</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.communicationStyle.messageLength}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
-                            <TrendingUp className="w-4 h-4 text-[#A1A1AA] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Question Ratio</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.communicationStyle.questionRatio}</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4">
+                            <TrendingUp className="w-4 h-4 text-text-secondary mb-2" />
+                            <span className="text-caption text-text-muted block">Question Ratio</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.communicationStyle.questionRatio}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
-                            <Smile className="w-4 h-4 text-[#A1A1AA] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Emoji Usage</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.communicationStyle.emojiUsage}</span>
+                          <div className="bg-bg-tertiary rounded-xl p-4">
+                            <Smile className="w-4 h-4 text-text-secondary mb-2" />
+                            <span className="text-caption text-text-muted block">Emoji Usage</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.communicationStyle.emojiUsage}</span>
                           </div>
                         </div>
 
@@ -1631,7 +1631,7 @@ export default function ProfileAnalyzer() {
                             <Users className="w-4 h-4" />
                             Attachment Style: {analysis.communicationStyle.attachmentStyle}
                           </h4>
-                          <p className="text-body-sm text-[#A1A1AA]">
+                          <p className="text-body-sm text-text-secondary">
                             This communication pattern suggests a{' '}
                             {analysis.communicationStyle.attachmentStyle.split(':')[0].toLowerCase()} attachment style.
                             {analysis.communicationStyle.attachmentStyle.includes('Secure')
@@ -1649,7 +1649,7 @@ export default function ProfileAnalyzer() {
                           </h4>
                           <ul className="space-y-2">
                             {analysis.communicationStyle.recommendations.map((r, i) => (
-                              <li key={i} className="flex items-start gap-2 text-body-sm text-[#A1A1AA]">
+                              <li key={i} className="flex items-start gap-2 text-body-sm text-text-secondary">
                                 <ChevronRight className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
                                 {r}
                               </li>
@@ -1671,7 +1671,7 @@ export default function ProfileAnalyzer() {
                       >
                         {/* Opening Lines */}
                         <div>
-                          <h3 className="text-heading-md text-[#F5F5F7] mb-4 flex items-center gap-2">
+                          <h3 className="text-heading-md text-text-primary mb-4 flex items-center gap-2">
                             <Send className="w-5 h-5 text-[#E11D48]" />
                             Opening Line Suggestions
                           </h3>
@@ -1687,41 +1687,41 @@ export default function ProfileAnalyzer() {
                                 <span className="w-6 h-6 rounded-full bg-gradient-to-r from-[#E11D48] to-[#F59E0B] flex items-center justify-center text-white text-xs font-bold shrink-0">
                                   {i + 1}
                                 </span>
-                                <p className="text-body-sm text-[#A1A1AA]">{line}</p>
+                                <p className="text-body-sm text-text-secondary">{line}</p>
                               </motion.div>
                             ))}
                           </div>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
+                          <div className="bg-bg-tertiary rounded-xl p-4">
                             <Zap className="w-4 h-4 text-[#F59E0B] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Approach Strategy</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.strategy.approach}</span>
+                            <span className="text-caption text-text-muted block">Approach Strategy</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.strategy.approach}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
+                          <div className="bg-bg-tertiary rounded-xl p-4">
                             <Clock className="w-4 h-4 text-[#14B8A6] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Best Timing</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.strategy.timing}</span>
+                            <span className="text-caption text-text-muted block">Best Timing</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.strategy.timing}</span>
                           </div>
-                          <div className="bg-[#1A1A25] rounded-xl p-4">
+                          <div className="bg-bg-tertiary rounded-xl p-4">
                             <Award className="w-4 h-4 text-[#8B5CF6] mb-2" />
-                            <span className="text-caption text-[#52525B] block">Investment Level</span>
-                            <span className="text-body-sm text-[#F5F5F7] font-medium">{analysis.strategy.investment}</span>
+                            <span className="text-caption text-text-muted block">Investment Level</span>
+                            <span className="text-body-sm text-text-primary font-medium">{analysis.strategy.investment}</span>
                           </div>
                         </div>
 
                         {/* Topic Suggestions */}
                         <div>
-                          <h3 className="text-heading-sm text-[#F5F5F7] mb-3 flex items-center gap-2">
-                            <Heart className="w-4 h-4 text-[#FB7185]" />
+                          <h3 className="text-heading-sm text-text-primary mb-3 flex items-center gap-2">
+                            <Heart className="w-4 h-4 text-[#BE123C]" />
                             Conversation Topics
                           </h3>
                           <div className="flex flex-wrap gap-2">
                             {analysis.strategy.topics.map((topic, i) => (
                               <span
                                 key={i}
-                                className="px-4 py-2 rounded-full bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-body-sm text-[#A1A1AA]"
+                                className="px-4 py-2 rounded-full bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-body-sm text-text-secondary"
                               >
                                 {topic}
                               </span>
@@ -1731,11 +1731,11 @@ export default function ProfileAnalyzer() {
 
                         {/* Response Template */}
                         <div className="bg-[rgba(225,29,72,0.08)] border border-[rgba(225,29,72,0.2)] rounded-xl p-5">
-                          <h4 className="text-heading-sm text-[#FB7185] mb-2 flex items-center gap-2">
+                          <h4 className="text-heading-sm text-[#BE123C] mb-2 flex items-center gap-2">
                             <MessageCircle className="w-4 h-4" />
                             Custom Response Template
                           </h4>
-                          <p className="text-body-sm text-[#A1A1AA] leading-relaxed">{analysis.strategy.responseTemplate}</p>
+                          <p className="text-body-sm text-text-secondary leading-relaxed">{analysis.strategy.responseTemplate}</p>
                         </div>
                       </motion.div>
                     )}
@@ -1760,36 +1760,36 @@ export default function ProfileAnalyzer() {
                                   Text Successfully Extracted
                                 </span>
                               </div>
-                              <span className="text-caption text-[#52525B]">
+                              <span className="text-caption text-text-muted">
                                 {analysis.ocr.extractedText.length} characters analyzed
                               </span>
                             </div>
 
                             {/* Key Information Detected */}
                             <div className="glass-card p-6">
-                              <h3 className="text-heading-sm text-[#F5F5F7] mb-5 flex items-center gap-2">
+                              <h3 className="text-heading-sm text-text-primary mb-5 flex items-center gap-2">
                                 <Search className="w-4 h-4 text-[#8B5CF6]" />
                                 Key Information Detected
                               </h3>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="bg-[#1A1A25] rounded-xl p-4">
-                                  <span className="text-caption text-[#52525B] block mb-1">Name</span>
-                                  <span className="text-body-sm text-[#F5F5F7] font-medium">
+                                <div className="bg-bg-tertiary rounded-xl p-4">
+                                  <span className="text-caption text-text-muted block mb-1">Name</span>
+                                  <span className="text-body-sm text-text-primary font-medium">
                                     {analysis.ocr.detectedName}
                                   </span>
                                 </div>
-                                <div className="bg-[#1A1A25] rounded-xl p-4">
-                                  <span className="text-caption text-[#52525B] block mb-1">Age</span>
-                                  <span className="text-body-sm text-[#F5F5F7] font-medium">
+                                <div className="bg-bg-tertiary rounded-xl p-4">
+                                  <span className="text-caption text-text-muted block mb-1">Age</span>
+                                  <span className="text-body-sm text-text-primary font-medium">
                                     {analysis.ocr.detectedAge}
                                   </span>
                                 </div>
                               </div>
 
                               {/* Bio/Summary */}
-                              <div className="mt-4 bg-[#1A1A25] rounded-xl p-4">
-                                <span className="text-caption text-[#52525B] block mb-1">Bio / Summary</span>
-                                <p className="text-body-sm text-[#F5F5F7] leading-relaxed">
+                              <div className="mt-4 bg-bg-tertiary rounded-xl p-4">
+                                <span className="text-caption text-text-muted block mb-1">Bio / Summary</span>
+                                <p className="text-body-sm text-text-primary leading-relaxed">
                                   {analysis.ocr.bioSummary || 'No bio text detected'}
                                 </p>
                               </div>
@@ -1797,7 +1797,7 @@ export default function ProfileAnalyzer() {
 
                             {/* Sentiment Score */}
                             <div className="glass-card p-6">
-                              <h3 className="text-heading-sm text-[#F5F5F7] mb-4 flex items-center gap-2">
+                              <h3 className="text-heading-sm text-text-primary mb-4 flex items-center gap-2">
                                 <BarChart3 className="w-4 h-4 text-[#F59E0B]" />
                                 Keyword Sentiment Score
                               </h3>
@@ -1805,16 +1805,16 @@ export default function ProfileAnalyzer() {
                                 label="Sentiment"
                                 score={analysis.ocr.sentimentScore + 50}
                                 max={100}
-                                color={analysis.ocr.sentimentScore > 0 ? '#10B981' : analysis.ocr.sentimentScore < 0 ? '#F59E0B' : '#A1A1AA'}
+                                color={analysis.ocr.sentimentScore > 0 ? '#059669' : analysis.ocr.sentimentScore < 0 ? '#D97706' : '#57534E'}
                               />
                               <div className="grid grid-cols-2 gap-4 mt-4">
                                 <div className="bg-[rgba(16,185,129,0.06)] border border-[rgba(16,185,129,0.2)] rounded-xl p-4 text-center">
                                   <span className="text-body-lg text-[#10B981] font-bold">{analysis.ocr.greenFlags.length}</span>
-                                  <span className="text-caption text-[#52525B] block">Green Flags Found</span>
+                                  <span className="text-caption text-text-muted block">Green Flags Found</span>
                                 </div>
                                 <div className="bg-[rgba(245,158,11,0.06)] border border-[rgba(245,158,11,0.2)] rounded-xl p-4 text-center">
                                   <span className="text-body-lg text-[#F59E0B] font-bold">{analysis.ocr.redFlags.length}</span>
-                                  <span className="text-caption text-[#52525B] block">Red Flags Found</span>
+                                  <span className="text-caption text-text-muted block">Red Flags Found</span>
                                 </div>
                               </div>
                             </div>
@@ -1822,7 +1822,7 @@ export default function ProfileAnalyzer() {
                             {/* Key Phrases */}
                             {analysis.ocr.keyPhrases.length > 0 && (
                               <div className="glass-card p-6">
-                                <h3 className="text-heading-sm text-[#F5F5F7] mb-4 flex items-center gap-2">
+                                <h3 className="text-heading-sm text-text-primary mb-4 flex items-center gap-2">
                                   <Sparkles className="w-4 h-4 text-[#E11D48]" />
                                   Key Phrases Found
                                 </h3>
@@ -1830,7 +1830,7 @@ export default function ProfileAnalyzer() {
                                   {analysis.ocr.keyPhrases.map((phrase, i) => (
                                     <span
                                       key={i}
-                                      className="px-3 py-2 rounded-lg bg-[#1A1A25] border border-[rgba(255,255,255,0.06)] text-body-sm text-[#A1A1AA]"
+                                      className="px-3 py-2 rounded-lg bg-bg-tertiary border border-[rgba(28, 25, 23, 0.08)] text-body-sm text-text-secondary"
                                     >
                                       {phrase}
                                     </span>
@@ -1871,11 +1871,11 @@ export default function ProfileAnalyzer() {
 
                             {/* Full Extracted Text */}
                             <div className="glass-card p-6">
-                              <h3 className="text-heading-sm text-[#F5F5F7] mb-4 flex items-center gap-2">
-                                <FileText className="w-4 h-4 text-[#A1A1AA]" />
+                              <h3 className="text-heading-sm text-text-primary mb-4 flex items-center gap-2">
+                                <FileText className="w-4 h-4 text-text-secondary" />
                                 Full Extracted Text
                               </h3>
-                              <div className="max-h-[400px] overflow-y-auto rounded-xl bg-[#0A0A0F] border border-[rgba(255,255,255,0.06)] p-4 font-mono text-xs text-[#A1A1AA] leading-relaxed whitespace-pre-wrap">
+                              <div className="max-h-[400px] overflow-y-auto rounded-xl bg-bg-primary border border-[rgba(28, 25, 23, 0.08)] p-4 font-mono text-xs text-text-secondary leading-relaxed whitespace-pre-wrap">
                                 {analysis.ocr.extractedText}
                               </div>
                             </div>
@@ -1883,26 +1883,26 @@ export default function ProfileAnalyzer() {
                         ) : (
                           /* No OCR data available */
                           <div className="text-center py-12">
-                            <Search className="w-12 h-12 text-[#52525B] mx-auto mb-4" />
-                            <h3 className="text-heading-sm text-[#F5F5F7] mb-2">No Extracted Text Available</h3>
-                            <p className="text-body-sm text-[#A1A1AA] max-w-[400px] mx-auto mb-6">
+                            <Search className="w-12 h-12 text-text-muted mx-auto mb-4" />
+                            <h3 className="text-heading-sm text-text-primary mb-2">No Extracted Text Available</h3>
+                            <p className="text-body-sm text-text-secondary max-w-[400px] mx-auto mb-6">
                               We couldn't extract readable text from the uploaded image. This could be because:
                             </p>
-                            <ul className="text-body-sm text-[#52525B] max-w-[400px] mx-auto text-left space-y-2 mb-6">
+                            <ul className="text-body-sm text-text-muted max-w-[400px] mx-auto text-left space-y-2 mb-6">
                               <li className="flex items-start gap-2">
-                                <ChevronRight className="w-4 h-4 text-[#52525B] shrink-0" />
+                                <ChevronRight className="w-4 h-4 text-text-muted shrink-0" />
                                 The image doesn't contain visible text
                               </li>
               <li className="flex items-start gap-2">
-                                <ChevronRight className="w-4 h-4 text-[#52525B] shrink-0" />
+                                <ChevronRight className="w-4 h-4 text-text-muted shrink-0" />
                                 The text is too small or blurry
                               </li>
                               <li className="flex items-start gap-2">
-                                <ChevronRight className="w-4 h-4 text-[#52525B] shrink-0" />
+                                <ChevronRight className="w-4 h-4 text-text-muted shrink-0" />
                                 The image quality is too low for OCR
                               </li>
                             </ul>
-                            <p className="text-body-sm text-[#A1A1AA]">
+                            <p className="text-body-sm text-text-secondary">
                               The analysis shown is based on our AI model's visual assessment.
                             </p>
                           </div>
@@ -1920,7 +1920,7 @@ export default function ProfileAnalyzer() {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 className="glass-card p-6 md:p-8"
               >
-                <h3 className="text-heading-md text-[#F5F5F7] mb-6 flex items-center gap-2">
+                <h3 className="text-heading-md text-text-primary mb-6 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-[#F59E0B]" />
                   How This Profile Compares
                 </h3>
@@ -1940,14 +1940,14 @@ export default function ProfileAnalyzer() {
               >
                 <button
                   onClick={handleShare}
-                  className="flex items-center gap-2 glass-card px-6 py-3 text-body-sm text-[#A1A1AA] hover:text-[#F5F5F7] hover:border-[rgba(255,255,255,0.12)] transition-all"
+                  className="flex items-center gap-2 glass-card px-6 py-3 text-body-sm text-text-secondary hover:text-text-primary hover:border-[rgba(255,255,255,0.12)] transition-all"
                 >
                   {copySuccess ? <CheckCircle2 className="w-4 h-4 text-[#10B981]" /> : <Share2 className="w-4 h-4" />}
                   {copySuccess ? 'Copied!' : 'Share Analysis'}
                 </button>
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 glass-card px-6 py-3 text-body-sm text-[#A1A1AA] hover:text-[#F5F5F7] hover:border-[rgba(255,255,255,0.12)] transition-all"
+                  className="flex items-center gap-2 glass-card px-6 py-3 text-body-sm text-text-secondary hover:text-text-primary hover:border-[rgba(255,255,255,0.12)] transition-all"
                 >
                   {saveSuccess ? <CheckCircle2 className="w-4 h-4 text-[#10B981]" /> : <Save className="w-4 h-4" />}
                   {saveSuccess ? 'Saved!' : 'Save to History'}

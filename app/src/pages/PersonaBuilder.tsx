@@ -377,7 +377,7 @@ export default function PersonaBuilder() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            className="text-display-section text-center text-[#F5F5F7] mb-3"
+            className="text-display-section text-center text-text-primary mb-3"
           >
             Create Your Practice Partner
           </motion.h1>
@@ -385,7 +385,7 @@ export default function PersonaBuilder() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            className="text-body-lg text-center text-[#A1A1AA]"
+            className="text-body-lg text-center text-text-secondary"
           >
             Customize every detail. Build your perfect practice partner.
           </motion.p>
@@ -404,7 +404,7 @@ export default function PersonaBuilder() {
               <motion.div
                 className="absolute left-0 top-1/2 -translate-y-1/2 h-[2px] rounded-full"
                 style={{
-                  background: 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)',
+                  background: 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)',
                 }}
                 animate={{ width: `${((step - 1) / 2) * 100}%` }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
@@ -417,9 +417,9 @@ export default function PersonaBuilder() {
                     animate={{
                       background:
                         s < step
-                          ? 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)'
+                          ? 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)'
                           : s === step
-                            ? 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)'
+                            ? 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)'
                             : 'var(--bg-tertiary)',
                       boxShadow: s === step ? '0 0 20px rgba(225, 29, 72, 0.3)' : 'none',
                     }}
@@ -431,10 +431,10 @@ export default function PersonaBuilder() {
                     {s < step ? (
                       <Check className="w-4 h-4 text-white" />
                     ) : (
-                      <span className={s === step ? 'text-white' : 'text-[#52525B]'}>{s}</span>
+                      <span className={s === step ? 'text-white' : 'text-text-muted'}>{s}</span>
                     )}
                   </motion.div>
-                  <span className="text-caption" style={{ color: s === step ? '#F5F5F7' : '#52525B' }}>
+                  <span className="text-caption" style={{ color: s === step ? '#1C1917' : '#A8A29E' }}>
                     {s === 1 ? 'Basics' : s === 2 ? 'Personality' : 'Scenario'}
                   </span>
                 </div>
@@ -460,7 +460,7 @@ export default function PersonaBuilder() {
                 >
                   {/* Step 1: Basic Profile */}
                   <span className="text-caption uppercase tracking-[0.08em] text-[#E11D48]">Step 1 of 3</span>
-                  <h2 className="text-heading-xl text-[#F5F5F7] mt-2 mb-8">
+                  <h2 className="text-heading-xl text-text-primary mt-2 mb-8">
                     Who would you like to practice with?
                   </h2>
 
@@ -475,23 +475,23 @@ export default function PersonaBuilder() {
                       onClick={() => setShowImportSection((v) => !v)}
                       className="w-full flex items-center gap-3 px-5 py-4 rounded-xl text-left transition-all duration-200"
                       style={{
-                        background: showImportSection ? 'rgba(139, 92, 246, 0.08)' : 'rgba(18, 18, 26, 0.6)',
-                        border: showImportSection ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid rgba(255,255,255,0.08)',
+                        background: showImportSection ? 'rgba(139, 92, 246, 0.08)' : 'rgba(255, 255, 255, 0.82)',
+                        border: showImportSection ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid rgba(28, 25, 23, 0.1)',
                         backdropFilter: 'blur(16px)',
                       }}
                     >
                       <div
                         className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
                         style={{
-                          background: showImportSection ? 'rgba(139, 92, 246, 0.15)' : 'rgba(18, 18, 26, 0.8)',
+                          background: showImportSection ? 'rgba(139, 92, 246, 0.15)' : 'rgba(255, 255, 255, 0.92)',
                           border: '1px solid rgba(139, 92, 246, 0.2)',
                         }}
                       >
                         <Download className="w-5 h-5 text-[#8B5CF6]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <span className="text-body-sm font-semibold text-[#F5F5F7] block">Import from Profile Analyzer</span>
-                        <span className="text-caption text-[#52525B]">Pre-fill persona from a saved profile analysis</span>
+                        <span className="text-body-sm font-semibold text-text-primary block">Import from Profile Analyzer</span>
+                        <span className="text-caption text-text-muted">Pre-fill persona from a saved profile analysis</span>
                       </div>
                       <motion.div
                         animate={{ rotate: showImportSection ? 180 : 0 }}
@@ -499,7 +499,7 @@ export default function PersonaBuilder() {
                       >
                         <ChevronRight
                           className="w-5 h-5 flex-shrink-0"
-                          style={{ color: '#52525B', transform: showImportSection ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                          style={{ color: '#A8A29E', transform: showImportSection ? 'rotate(90deg)' : 'rotate(0deg)' }}
                         />
                       </motion.div>
                     </button>
@@ -518,23 +518,23 @@ export default function PersonaBuilder() {
                               <div
                                 className="flex flex-col items-center gap-3 px-6 py-10 rounded-xl text-center"
                                 style={{
-                                  background: 'rgba(18, 18, 26, 0.6)',
-                                  border: '1px solid rgba(255,255,255,0.06)',
+                                  background: 'rgba(255, 255, 255, 0.82)',
+                                  border: '1px solid rgba(28, 25, 23, 0.08)',
                                 }}
                               >
                                 <div
                                   className="w-12 h-12 rounded-full flex items-center justify-center"
-                                  style={{ background: 'rgba(18, 18, 26, 0.8)', border: '1px solid rgba(255,255,255,0.06)' }}
+                                  style={{ background: 'rgba(255, 255, 255, 0.92)', border: '1px solid rgba(28, 25, 23, 0.08)' }}
                                 >
-                                  <Download className="w-5 h-5 text-[#52525B]" />
+                                  <Download className="w-5 h-5 text-text-muted" />
                                 </div>
-                                <p className="text-body-sm text-[#A1A1AA]">No saved analyses yet.</p>
-                                <p className="text-caption text-[#52525B]">Go to Profile Analyzer to analyze a profile first.</p>
+                                <p className="text-body-sm text-text-secondary">No saved analyses yet.</p>
+                                <p className="text-caption text-text-muted">Go to Profile Analyzer to analyze a profile first.</p>
                                 <button
                                   onClick={() => navigate('/profile-analyzer')}
                                   className="mt-1 px-5 py-2 rounded-full text-body-sm font-semibold text-white transition-all duration-200 hover:opacity-90"
                                   style={{
-                                    background: 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)',
+                                    background: 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)',
                                   }}
                                 >
                                   Go to Profile Analyzer
@@ -543,7 +543,7 @@ export default function PersonaBuilder() {
                             ) : (
                               <div className="flex gap-3 overflow-x-auto pb-2 px-1" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.1) transparent' }}>
                                 {savedAnalyses.map((analysis, idx) => {
-                                  const scoreColor = analysis.overallScore >= 80 ? '#10B981' : analysis.overallScore >= 60 ? '#F59E0B' : '#E11D48'
+                                  const scoreColor = analysis.overallScore >= 80 ? '#059669' : analysis.overallScore >= 60 ? '#D97706' : '#E11D48'
                                   return (
                                     <motion.div
                                       key={analysis.id || idx}
@@ -552,10 +552,10 @@ export default function PersonaBuilder() {
                                       transition={{ delay: idx * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                                       className="flex-shrink-0 w-[240px] rounded-xl overflow-hidden"
                                       style={{
-                                        background: 'rgba(18, 18, 26, 0.75)',
+                                        background: 'rgba(255, 255, 255, 0.9)',
                                         backdropFilter: 'blur(24px)',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.3)',
+                                        border: '1px solid rgba(28, 25, 23, 0.1)',
+                                        boxShadow: 'inset 0 1px 0 rgba(28, 25, 23, 0.08), 0 4px 20px rgba(0,0,0,0.3)',
                                       }}
                                     >
                                       {/* Card header with score badge */}
@@ -567,14 +567,14 @@ export default function PersonaBuilder() {
                                           >
                                             {analysis.overallScore}/100
                                           </span>
-                                          <span className="text-caption text-[#52525B]">
+                                          <span className="text-caption text-text-muted">
                                             {analysis.savedAt ? new Date(analysis.savedAt).toLocaleDateString() : 'Recently'}
                                           </span>
                                         </div>
-                                        <h4 className="text-body-sm font-semibold text-[#F5F5F7] truncate">
+                                        <h4 className="text-body-sm font-semibold text-text-primary truncate">
                                           {analysis.ocr?.detectedName || analysis.personaName || `Analysis ${idx + 1}`}
                                         </h4>
-                                        <p className="text-caption text-[#52525B] truncate mt-0.5">
+                                        <p className="text-caption text-text-muted truncate mt-0.5">
                                           {analysis.verdict || 'Profile analysis'}
                                         </p>
                                       </div>
@@ -587,7 +587,7 @@ export default function PersonaBuilder() {
                                           onClick={() => importFromAnalysis(analysis)}
                                           className="w-full py-2.5 rounded-lg text-body-sm font-semibold text-white transition-all duration-200"
                                           style={{
-                                            background: 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)',
+                                            background: 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)',
                                           }}
                                         >
                                           Import
@@ -606,32 +606,32 @@ export default function PersonaBuilder() {
 
                   {/* Name Input */}
                   <motion.div custom={0} initial="hidden" animate="visible" variants={fadeUp} className="mb-6">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-2">Her Name</label>
+                    <label className="text-heading-sm text-text-primary block mb-2">Her Name</label>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => updateField('name', e.target.value)}
                       placeholder="e.g., Sophia"
-                      className="w-full px-[18px] py-[14px] rounded-xl text-body text-[#F5F5F7] outline-none transition-all duration-200 focus:shadow-[0_0_20px_rgba(225,29,72,0.15)]"
+                      className="w-full px-[18px] py-[14px] rounded-xl text-body text-text-primary outline-none transition-all duration-200 focus:shadow-[0_0_20px_rgba(225,29,72,0.15)]"
                       style={{
-                        background: 'rgba(18, 18, 26, 0.6)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'rgba(255, 255, 255, 0.82)',
+                        border: '1px solid rgba(28, 25, 23, 0.1)',
                         backdropFilter: 'blur(16px)',
                       }}
                       onFocus={(e) => {
                         e.target.style.border = '1px solid rgba(225, 29, 72, 0.3)'
                       }}
                       onBlur={(e) => {
-                        e.target.style.border = '1px solid rgba(255,255,255,0.08)'
+                        e.target.style.border = '1px solid rgba(28, 25, 23, 0.1)'
                       }}
                     />
-                    <p className="text-caption text-[#52525B] mt-1">Choose any name, or let us suggest one</p>
+                    <p className="text-caption text-text-muted mt-1">Choose any name, or let us suggest one</p>
                   </motion.div>
 
                   {/* Age Slider */}
                   <motion.div custom={1} initial="hidden" animate="visible" variants={fadeUp} className="mb-6">
                     <div className="flex items-center justify-between mb-2">
-                      <label className="text-heading-sm text-[#F5F5F7]">Age</label>
+                      <label className="text-heading-sm text-text-primary">Age</label>
                       <span className="text-heading-xl text-[#E11D48]">{age}</span>
                     </div>
                     <input
@@ -642,18 +642,18 @@ export default function PersonaBuilder() {
                       onChange={(e) => updateField('age', parseInt(e.target.value))}
                       className="w-full h-1 rounded-full appearance-none cursor-pointer"
                       style={{
-                        background: `linear-gradient(to right, #E11D48 0%, #F59E0B ${((age - 18) / (45 - 18)) * 100}%, #1A1A25 ${((age - 18) / (45 - 18)) * 100}%, #1A1A25 100%)`,
+                        background: `linear-gradient(to right, #E11D48 0%, #D97706 ${((age - 18) / (45 - 18)) * 100}%, #EDE6DA ${((age - 18) / (45 - 18)) * 100}%, #EDE6DA 100%)`,
                       }}
                     />
                     <div className="flex justify-between mt-1">
-                      <span className="text-caption text-[#52525B]">18</span>
-                      <span className="text-caption text-[#52525B]">45</span>
+                      <span className="text-caption text-text-muted">18</span>
+                      <span className="text-caption text-text-muted">45</span>
                     </div>
                   </motion.div>
 
                   {/* Ethnicity Selector */}
                   <motion.div custom={2} initial="hidden" animate="visible" variants={fadeUp} className="mb-6">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-3">Ethnicity</label>
+                    <label className="text-heading-sm text-text-primary block mb-3">Ethnicity</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {ethnicities.map((eth) => (
                         <motion.button
@@ -663,15 +663,15 @@ export default function PersonaBuilder() {
                           onClick={() => updateField('ethnicity', eth)}
                           className="px-4 py-3 rounded-xl text-body-sm font-medium transition-all duration-200"
                           style={{
-                            background: ethnicity === eth ? 'rgba(225, 29, 72, 0.08)' : 'rgba(18, 18, 26, 0.6)',
+                            background: ethnicity === eth ? 'rgba(225, 29, 72, 0.08)' : 'rgba(255, 255, 255, 0.82)',
                             border:
                               ethnicity === eth
                                 ? '1px solid rgba(225, 29, 72, 0.3)'
-                                : '1px solid rgba(255,255,255,0.06)',
-                            color: ethnicity === eth ? '#F5F5F7' : '#A1A1AA',
+                                : '1px solid rgba(28, 25, 23, 0.08)',
+                            color: ethnicity === eth ? '#1C1917' : '#57534E',
                             backdropFilter: 'blur(16px)',
                             boxShadow:
-                              ethnicity === eth ? '0 0 20px rgba(225, 29, 72, 0.15), inset 0 1px 0 rgba(255,255,255,0.06)' : 'inset 0 1px 0 rgba(255,255,255,0.06)',
+                              ethnicity === eth ? '0 0 20px rgba(225, 29, 72, 0.15), inset 0 1px 0 rgba(28, 25, 23, 0.08)' : 'inset 0 1px 0 rgba(28, 25, 23, 0.08)',
                           }}
                         >
                           {eth}
@@ -682,11 +682,11 @@ export default function PersonaBuilder() {
 
                   {/* Physical Traits */}
                   <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp} className="mb-8">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-3">Physical Appearance</label>
+                    <label className="text-heading-sm text-text-primary block mb-3">Physical Appearance</label>
 
                     {/* Hair Color */}
                     <div className="mb-3">
-                      <span className="text-body-sm text-[#A1A1AA] mb-2 block">Hair Color</span>
+                      <span className="text-body-sm text-text-secondary mb-2 block">Hair Color</span>
                       <div className="flex flex-wrap gap-2">
                         {hairColors.map((hc) => (
                           <button
@@ -694,9 +694,9 @@ export default function PersonaBuilder() {
                             onClick={() => updateField('hairColor', hc === hairColor ? '' : hc)}
                             className="px-3 py-1.5 rounded-full text-body-sm transition-all duration-200"
                             style={{
-                              background: hairColor === hc ? 'rgba(225, 29, 72, 0.15)' : '#1A1A25',
-                              border: hairColor === hc ? '1px solid rgba(225, 29, 72, 0.4)' : '1px solid rgba(255,255,255,0.06)',
-                              color: hairColor === hc ? '#FB7185' : '#A1A1AA',
+                              background: hairColor === hc ? 'rgba(225, 29, 72, 0.15)' : '#EDE6DA',
+                              border: hairColor === hc ? '1px solid rgba(225, 29, 72, 0.4)' : '1px solid rgba(28, 25, 23, 0.08)',
+                              color: hairColor === hc ? '#BE123C' : '#57534E',
                             }}
                           >
                             {hc}
@@ -707,7 +707,7 @@ export default function PersonaBuilder() {
 
                     {/* Eye Color */}
                     <div className="mb-3">
-                      <span className="text-body-sm text-[#A1A1AA] mb-2 block">Eye Color</span>
+                      <span className="text-body-sm text-text-secondary mb-2 block">Eye Color</span>
                       <div className="flex flex-wrap gap-2">
                         {eyeColors.map((ec) => (
                           <button
@@ -715,9 +715,9 @@ export default function PersonaBuilder() {
                             onClick={() => updateField('eyeColor', ec === eyeColor ? '' : ec)}
                             className="px-3 py-1.5 rounded-full text-body-sm transition-all duration-200"
                             style={{
-                              background: eyeColor === ec ? 'rgba(225, 29, 72, 0.15)' : '#1A1A25',
-                              border: eyeColor === ec ? '1px solid rgba(225, 29, 72, 0.4)' : '1px solid rgba(255,255,255,0.06)',
-                              color: eyeColor === ec ? '#FB7185' : '#A1A1AA',
+                              background: eyeColor === ec ? 'rgba(225, 29, 72, 0.15)' : '#EDE6DA',
+                              border: eyeColor === ec ? '1px solid rgba(225, 29, 72, 0.4)' : '1px solid rgba(28, 25, 23, 0.08)',
+                              color: eyeColor === ec ? '#BE123C' : '#57534E',
                             }}
                           >
                             {ec}
@@ -728,7 +728,7 @@ export default function PersonaBuilder() {
 
                     {/* Body Type */}
                     <div className="mb-3">
-                      <span className="text-body-sm text-[#A1A1AA] mb-2 block">Body Type</span>
+                      <span className="text-body-sm text-text-secondary mb-2 block">Body Type</span>
                       <div className="flex gap-2">
                         {bodyTypes.map((bt) => (
                           <button
@@ -736,9 +736,9 @@ export default function PersonaBuilder() {
                             onClick={() => updateField('bodyType', bt === bodyType ? '' : bt)}
                             className="px-4 py-2 rounded-xl text-body-sm font-medium transition-all duration-200"
                             style={{
-                              background: bodyType === bt ? 'rgba(225, 29, 72, 0.15)' : '#1A1A25',
-                              border: bodyType === bt ? '1px solid rgba(225, 29, 72, 0.4)' : '1px solid rgba(255,255,255,0.06)',
-                              color: bodyType === bt ? '#FB7185' : '#A1A1AA',
+                              background: bodyType === bt ? 'rgba(225, 29, 72, 0.15)' : '#EDE6DA',
+                              border: bodyType === bt ? '1px solid rgba(225, 29, 72, 0.4)' : '1px solid rgba(28, 25, 23, 0.08)',
+                              color: bodyType === bt ? '#BE123C' : '#57534E',
                             }}
                           >
                             {bt}
@@ -749,11 +749,11 @@ export default function PersonaBuilder() {
 
                     {/* Hair Length */}
                     <div className="mb-3">
-                      <span className="text-body-sm text-[#A1A1AA] mb-2 block">Hair Length</span>
+                      <span className="text-body-sm text-text-secondary mb-2 block">Hair Length</span>
                       <select
                         value={hairLength}
                         onChange={(e) => updateField('hairLength', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl text-body-sm bg-[#1A1A25] text-[#A1A1AA] border border-[rgba(255,255,255,0.06)] focus:border-[rgba(225,29,72,0.4)] focus:outline-none transition-colors appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl text-body-sm bg-bg-tertiary text-text-secondary border border-[rgba(28, 25, 23, 0.08)] focus:border-[rgba(225,29,72,0.4)] focus:outline-none transition-colors appearance-none cursor-pointer"
                         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center' }}
                       >
                         {hairLengths.map((hl) => (
@@ -764,11 +764,11 @@ export default function PersonaBuilder() {
 
                     {/* Height */}
                     <div className="mb-3">
-                      <span className="text-body-sm text-[#A1A1AA] mb-2 block">Height</span>
+                      <span className="text-body-sm text-text-secondary mb-2 block">Height</span>
                       <select
                         value={height}
                         onChange={(e) => updateField('height', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl text-body-sm bg-[#1A1A25] text-[#A1A1AA] border border-[rgba(255,255,255,0.06)] focus:border-[rgba(225,29,72,0.4)] focus:outline-none transition-colors appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl text-body-sm bg-bg-tertiary text-text-secondary border border-[rgba(28, 25, 23, 0.08)] focus:border-[rgba(225,29,72,0.4)] focus:outline-none transition-colors appearance-none cursor-pointer"
                         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center' }}
                       >
                         {heights.map((h) => (
@@ -779,11 +779,11 @@ export default function PersonaBuilder() {
 
                     {/* Style */}
                     <div className="mb-3">
-                      <span className="text-body-sm text-[#A1A1AA] mb-2 block">Style</span>
+                      <span className="text-body-sm text-text-secondary mb-2 block">Style</span>
                       <select
                         value={style}
                         onChange={(e) => updateField('style', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl text-body-sm bg-[#1A1A25] text-[#A1A1AA] border border-[rgba(255,255,255,0.06)] focus:border-[rgba(225,29,72,0.4)] focus:outline-none transition-colors appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl text-body-sm bg-bg-tertiary text-text-secondary border border-[rgba(28, 25, 23, 0.08)] focus:border-[rgba(225,29,72,0.4)] focus:outline-none transition-colors appearance-none cursor-pointer"
                         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center' }}
                       >
                         {styles.map((s) => (
@@ -795,7 +795,7 @@ export default function PersonaBuilder() {
                     {/* Toggle Switches: Glasses, Tattoos, Piercings */}
                     <div className="space-y-3 pt-2">
                       <div className="flex items-center justify-between">
-                        <label className="text-body text-[#A1A1AA]">Glasses</label>
+                        <label className="text-body text-text-secondary">Glasses</label>
                         <button
                           type="button"
                           onClick={() => updateField('glasses', !glasses)}
@@ -810,7 +810,7 @@ export default function PersonaBuilder() {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <label className="text-body text-[#A1A1AA]">Tattoos</label>
+                        <label className="text-body text-text-secondary">Tattoos</label>
                         <button
                           type="button"
                           onClick={() => updateField('tattoos', !tattoos)}
@@ -825,7 +825,7 @@ export default function PersonaBuilder() {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <label className="text-body text-[#A1A1AA]">Piercings</label>
+                        <label className="text-body text-text-secondary">Piercings</label>
                         <button
                           type="button"
                           onClick={() => updateField('piercings', !piercings)}
@@ -851,7 +851,7 @@ export default function PersonaBuilder() {
                       className="flex items-center gap-2 px-7 py-3 rounded-full text-heading-sm font-semibold text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                       style={{
                         background: canProceedStep1
-                          ? 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)'
+                          ? 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)'
                           : 'var(--bg-tertiary)',
                       }}
                     >
@@ -872,7 +872,7 @@ export default function PersonaBuilder() {
                 >
                   {/* Step 2: Personality */}
                   <span className="text-caption uppercase tracking-[0.08em] text-[#F59E0B]">Step 2 of 3</span>
-                  <h2 className="text-heading-xl text-[#F5F5F7] mt-2 mb-8">Define her personality</h2>
+                  <h2 className="text-heading-xl text-text-primary mt-2 mb-8">Define her personality</h2>
 
                   {/* Personality Sliders */}
                   <div className="space-y-5 mb-8">
@@ -896,7 +896,7 @@ export default function PersonaBuilder() {
                         }}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-heading-sm text-[#F5F5F7]">
+                          <span className="text-heading-sm text-text-primary">
                             {slider.label} ↔ {slider.rightLabel}
                           </span>
                           <span className="text-body-sm text-[#F59E0B]">
@@ -916,12 +916,12 @@ export default function PersonaBuilder() {
                           }}
                           className="w-full h-1 rounded-full appearance-none cursor-pointer"
                           style={{
-                            background: `linear-gradient(to right, #E11D48 0%, #F59E0B ${personality[slider.key as keyof typeof personality]}%, #1A1A25 ${personality[slider.key as keyof typeof personality]}%, #1A1A25 100%)`,
+                            background: `linear-gradient(to right, #E11D48 0%, #D97706 ${personality[slider.key as keyof typeof personality]}%, #EDE6DA ${personality[slider.key as keyof typeof personality]}%, #EDE6DA 100%)`,
                           }}
                         />
                         <div className="flex justify-between mt-1">
-                          <span className="text-caption text-[#52525B]">{slider.label}</span>
-                          <span className="text-caption text-[#52525B]">{slider.rightLabel}</span>
+                          <span className="text-caption text-text-muted">{slider.label}</span>
+                          <span className="text-caption text-text-muted">{slider.rightLabel}</span>
                         </div>
                       </motion.div>
                     ))}
@@ -929,7 +929,7 @@ export default function PersonaBuilder() {
 
                   {/* Archetype Selector */}
                   <div className="mb-8">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-3">Or choose a preset archetype</label>
+                    <label className="text-heading-sm text-text-primary block mb-3">Or choose a preset archetype</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {archetypes.map((arch, idx) => {
                         const Icon = arch.icon
@@ -945,27 +945,27 @@ export default function PersonaBuilder() {
                             onClick={() => handleArchetypeSelect(arch.id)}
                             className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-200"
                             style={{
-                              background: archetype === arch.id ? 'rgba(225, 29, 72, 0.08)' : 'rgba(18, 18, 26, 0.6)',
+                              background: archetype === arch.id ? 'rgba(225, 29, 72, 0.08)' : 'rgba(255, 255, 255, 0.82)',
                               border:
                                 archetype === arch.id
                                   ? '1px solid rgba(225, 29, 72, 0.3)'
-                                  : '1px solid rgba(255,255,255,0.06)',
+                                  : '1px solid rgba(28, 25, 23, 0.08)',
                               boxShadow:
-                                archetype === arch.id ? '0 0 20px rgba(225, 29, 72, 0.15), inset 0 1px 0 rgba(255,255,255,0.06)' : 'inset 0 1px 0 rgba(255,255,255,0.06)',
+                                archetype === arch.id ? '0 0 20px rgba(225, 29, 72, 0.15), inset 0 1px 0 rgba(28, 25, 23, 0.08)' : 'inset 0 1px 0 rgba(28, 25, 23, 0.08)',
                               backdropFilter: 'blur(16px)',
                             }}
                           >
                             <Icon
                               className="w-7 h-7"
-                              style={{ color: archetype === arch.id ? '#E11D48' : '#A1A1AA' }}
+                              style={{ color: archetype === arch.id ? '#E11D48' : '#57534E' }}
                             />
                             <span
                               className="text-body-sm font-semibold"
-                              style={{ color: archetype === arch.id ? '#F5F5F7' : '#A1A1AA' }}
+                              style={{ color: archetype === arch.id ? '#1C1917' : '#57534E' }}
                             >
                               {arch.label}
                             </span>
-                            <span className="text-caption text-[#52525B] text-center leading-tight">{arch.desc}</span>
+                            <span className="text-caption text-text-muted text-center leading-tight">{arch.desc}</span>
                           </motion.button>
                         )
                       })}
@@ -974,26 +974,26 @@ export default function PersonaBuilder() {
 
                   {/* Bio Textarea */}
                   <div className="mb-8">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-2">Bio / Background</label>
+                    <label className="text-heading-sm text-text-primary block mb-2">Bio / Background</label>
                     <textarea
                       value={bio}
                       onChange={(e) => updateField('bio', e.target.value)}
                       placeholder="She loves hiking, reading poetry, and spontaneous road trips..."
                       rows={4}
-                      className="w-full px-[18px] py-[14px] rounded-xl text-body text-[#F5F5F7] outline-none transition-all duration-200 resize-none focus:shadow-[0_0_20px_rgba(225,29,72,0.15)]"
+                      className="w-full px-[18px] py-[14px] rounded-xl text-body text-text-primary outline-none transition-all duration-200 resize-none focus:shadow-[0_0_20px_rgba(225,29,72,0.15)]"
                       style={{
-                        background: 'rgba(18, 18, 26, 0.6)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'rgba(255, 255, 255, 0.82)',
+                        border: '1px solid rgba(28, 25, 23, 0.1)',
                         backdropFilter: 'blur(16px)',
                       }}
                       onFocus={(e) => {
                         e.target.style.border = '1px solid rgba(225, 29, 72, 0.3)'
                       }}
                       onBlur={(e) => {
-                        e.target.style.border = '1px solid rgba(255,255,255,0.08)'
+                        e.target.style.border = '1px solid rgba(28, 25, 23, 0.1)'
                       }}
                     />
-                    <p className="text-caption text-[#52525B] mt-1">
+                    <p className="text-caption text-text-muted mt-1">
                       {bio.length === 0 && archetype
                         ? `Auto-generated based on ${archetype}. Edit as you like.`
                         : `${bio.length} characters`}
@@ -1006,8 +1006,8 @@ export default function PersonaBuilder() {
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => setStep(1)}
-                      className="flex items-center gap-2 px-6 py-3 rounded-full text-heading-sm font-semibold text-[#A1A1AA] transition-all duration-200 hover:text-[#F5F5F7]"
-                      style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                      className="flex items-center gap-2 px-6 py-3 rounded-full text-heading-sm font-semibold text-text-secondary transition-all duration-200 hover:text-text-primary"
+                      style={{ border: '1px solid rgba(28, 25, 23, 0.1)' }}
                     >
                       <ChevronLeft className="w-5 h-5" />
                       Back
@@ -1020,7 +1020,7 @@ export default function PersonaBuilder() {
                       className="flex items-center gap-2 px-7 py-3 rounded-full text-heading-sm font-semibold text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                       style={{
                         background: canProceedStep2
-                          ? 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)'
+                          ? 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)'
                           : 'var(--bg-tertiary)',
                       }}
                     >
@@ -1041,11 +1041,11 @@ export default function PersonaBuilder() {
                 >
                   {/* Step 3: Difficulty & Scenario */}
                   <span className="text-caption uppercase tracking-[0.08em] text-[#14B8A6]">Step 3 of 3</span>
-                  <h2 className="text-heading-xl text-[#F5F5F7] mt-2 mb-8">Set the challenge</h2>
+                  <h2 className="text-heading-xl text-text-primary mt-2 mb-8">Set the challenge</h2>
 
                   {/* Difficulty Selector */}
                   <div className="mb-8">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-3">Conversation Difficulty</label>
+                    <label className="text-heading-sm text-text-primary block mb-3">Conversation Difficulty</label>
                     <div className="space-y-2">
                       {difficultyTiers.map((tier, idx) => {
                         const color = getDifficultyColor(tier.level)
@@ -1062,17 +1062,17 @@ export default function PersonaBuilder() {
                             onClick={() => updateField('difficulty', tier.level)}
                             className="w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-200 text-left"
                             style={{
-                              background: isSelected ? `${color}14` : 'rgba(18, 18, 26, 0.6)',
+                              background: isSelected ? `${color}14` : 'rgba(255, 255, 255, 0.82)',
                               borderLeft: isSelected ? `4px solid ${color}` : '4px solid transparent',
-                              border: isSelected ? `1px solid ${color}30` : '1px solid rgba(255,255,255,0.06)',
+                              border: isSelected ? `1px solid ${color}30` : '1px solid rgba(28, 25, 23, 0.08)',
                               backdropFilter: 'blur(16px)',
                               boxShadow: isSelected ? `0 0 20px ${color}25` : 'none',
                             }}
                           >
                             <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: color }} />
                             <div className="flex-1 min-w-0">
-                              <div className="text-heading-sm font-semibold text-[#F5F5F7]">{tier.level}</div>
-                              <div className="text-body-sm text-[#A1A1AA]">{tier.desc}</div>
+                              <div className="text-heading-sm font-semibold text-text-primary">{tier.level}</div>
+                              <div className="text-body-sm text-text-secondary">{tier.desc}</div>
                             </div>
                             <span
                               className="text-caption font-mono uppercase px-3 py-1 rounded-full flex-shrink-0"
@@ -1088,7 +1088,7 @@ export default function PersonaBuilder() {
 
                   {/* Scenario Selector */}
                   <div className="mb-8">
-                    <label className="text-heading-sm text-[#F5F5F7] block mb-3">Scenario</label>
+                    <label className="text-heading-sm text-text-primary block mb-3">Scenario</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {scenarios.map((sc, idx) => (
                         <motion.button
@@ -1101,12 +1101,12 @@ export default function PersonaBuilder() {
                           onClick={() => updateField('scenario', sc)}
                           className="p-4 rounded-xl text-body-sm font-medium text-center transition-all duration-200"
                           style={{
-                            background: scenario === sc ? 'rgba(225, 29, 72, 0.08)' : 'rgba(18, 18, 26, 0.6)',
+                            background: scenario === sc ? 'rgba(225, 29, 72, 0.08)' : 'rgba(255, 255, 255, 0.82)',
                             border:
                               scenario === sc
                                 ? '1px solid rgba(225, 29, 72, 0.3)'
-                                : '1px solid rgba(255,255,255,0.06)',
-                            color: scenario === sc ? '#F5F5F7' : '#A1A1AA',
+                                : '1px solid rgba(28, 25, 23, 0.08)',
+                            color: scenario === sc ? '#1C1917' : '#57534E',
                             backdropFilter: 'blur(16px)',
                             boxShadow: scenario === sc ? '0 0 20px rgba(225, 29, 72, 0.15)' : 'none',
                           }}
@@ -1128,7 +1128,7 @@ export default function PersonaBuilder() {
                       style={{
                         background: imageGenerated
                           ? 'rgba(16, 185, 129, 0.1)'
-                          : 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)',
+                          : 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)',
                         border: imageGenerated ? '1px solid rgba(16, 185, 129, 0.3)' : 'none',
                         color: '#fff',
                       }}
@@ -1158,8 +1158,8 @@ export default function PersonaBuilder() {
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => setStep(2)}
-                      className="flex items-center gap-2 px-6 py-3 rounded-full text-heading-sm font-semibold text-[#A1A1AA] transition-all duration-200 hover:text-[#F5F5F7]"
-                      style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                      className="flex items-center gap-2 px-6 py-3 rounded-full text-heading-sm font-semibold text-text-secondary transition-all duration-200 hover:text-text-primary"
+                      style={{ border: '1px solid rgba(28, 25, 23, 0.1)' }}
                     >
                       <ChevronLeft className="w-5 h-5" />
                       Back
@@ -1172,7 +1172,7 @@ export default function PersonaBuilder() {
                       className="flex items-center gap-3 px-9 py-4 rounded-full text-heading-md font-semibold text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                       style={{
                         background: canProceedStep1
-                          ? 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #8B5CF6 100%)'
+                          ? 'linear-gradient(135deg, #E11D48 0%, #D97706 50%, #8B5CF6 100%)'
                           : 'var(--bg-tertiary)',
                         boxShadow: canProceedStep1 ? '0 0 40px rgba(225, 29, 72, 0.3)' : 'none',
                       }}
@@ -1197,15 +1197,15 @@ export default function PersonaBuilder() {
               <div
                 className="rounded-[20px] overflow-hidden"
                 style={{
-                  background: 'rgba(18, 18, 26, 0.75)',
+                  background: 'rgba(255, 255, 255, 0.9)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 40px rgba(0, 0, 0, 0.5)',
+                  border: '1px solid rgba(28, 25, 23, 0.1)',
+                  boxShadow: 'inset 0 1px 0 rgba(28, 25, 23, 0.1), 0 8px 40px rgba(0, 0, 0, 0.5)',
                 }}
               >
                 {/* Image Area */}
-                <div className="relative aspect-square flex items-center justify-center overflow-hidden" style={{ background: '#0A0A0F' }}>
+                <div className="relative aspect-square flex items-center justify-center overflow-hidden" style={{ background: '#FDFBF7' }}>
                   {image && showImageReveal ? (
                     <motion.img
                       initial={{ opacity: 0, scale: 0.95 }}
@@ -1220,18 +1220,18 @@ export default function PersonaBuilder() {
                       <div
                         className="w-20 h-20 rounded-full flex items-center justify-center"
                         style={{
-                          background: 'rgba(18, 18, 26, 0.6)',
-                          border: '1px solid rgba(255,255,255,0.06)',
+                          background: 'rgba(255, 255, 255, 0.82)',
+                          border: '1px solid rgba(28, 25, 23, 0.08)',
                         }}
                       >
-                        <Sparkles className="w-8 h-8 text-[#52525B]" />
+                        <Sparkles className="w-8 h-8 text-text-muted" />
                       </div>
-                      <p className="text-body-sm text-[#52525B]">Your persona will appear here</p>
+                      <p className="text-body-sm text-text-muted">Your persona will appear here</p>
                       {isGenerating && (
-                        <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'rgba(10, 10, 15, 0.8)' }}>
+                        <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'rgba(253, 251, 247, 0.85)' }}>
                           <div className="flex flex-col items-center gap-3">
                             <Loader2 className="w-10 h-10 text-[#E11D48] animate-spin" />
-                            <p className="text-body-sm text-[#A1A1AA]">Creating your persona...</p>
+                            <p className="text-body-sm text-text-secondary">Creating your persona...</p>
                             <motion.div
                               className="w-48 h-1 rounded-full overflow-hidden"
                               style={{ background: 'var(--bg-tertiary)' }}
@@ -1265,10 +1265,10 @@ export default function PersonaBuilder() {
 
                 {/* Persona Summary */}
                 <div className="p-5">
-                  <h3 className="text-heading-md text-[#F5F5F7] mb-1">
+                  <h3 className="text-heading-md text-text-primary mb-1">
                     {name || 'Your Persona'}
                   </h3>
-                  <p className="text-body-sm text-[#A1A1AA] mb-3">
+                  <p className="text-body-sm text-text-secondary mb-3">
                     {age ? `${age} years old` : ''}
                     {age && ethnicity ? ' · ' : ''}
                     {ethnicity || ''}
@@ -1279,7 +1279,7 @@ export default function PersonaBuilder() {
                     {hairColor && (
                       <span
                         className="px-3 py-1 rounded-full text-body-sm"
-                        style={{ background: '#1A1A25', border: '1px solid rgba(255,255,255,0.06)', color: '#A1A1AA' }}
+                        style={{ background: '#EDE6DA', border: '1px solid rgba(28, 25, 23, 0.08)', color: '#57534E' }}
                       >
                         {hairColor} hair
                       </span>
@@ -1287,7 +1287,7 @@ export default function PersonaBuilder() {
                     {eyeColor && (
                       <span
                         className="px-3 py-1 rounded-full text-body-sm"
-                        style={{ background: '#1A1A25', border: '1px solid rgba(255,255,255,0.06)', color: '#A1A1AA' }}
+                        style={{ background: '#EDE6DA', border: '1px solid rgba(28, 25, 23, 0.08)', color: '#57534E' }}
                       >
                         {eyeColor} eyes
                       </span>
@@ -1295,7 +1295,7 @@ export default function PersonaBuilder() {
                     {bodyType && (
                       <span
                         className="px-3 py-1 rounded-full text-body-sm"
-                        style={{ background: '#1A1A25', border: '1px solid rgba(255,255,255,0.06)', color: '#A1A1AA' }}
+                        style={{ background: '#EDE6DA', border: '1px solid rgba(28, 25, 23, 0.08)', color: '#57534E' }}
                       >
                         {bodyType}
                       </span>
@@ -1303,7 +1303,7 @@ export default function PersonaBuilder() {
                     {archetype && (
                       <span
                         className="px-3 py-1 rounded-full text-body-sm"
-                        style={{ background: 'rgba(225, 29, 72, 0.1)', border: '1px solid rgba(225, 29, 72, 0.2)', color: '#FB7185' }}
+                        style={{ background: 'rgba(225, 29, 72, 0.1)', border: '1px solid rgba(225, 29, 72, 0.2)', color: '#BE123C' }}
                       >
                         {archetype}
                       </span>
@@ -1313,7 +1313,7 @@ export default function PersonaBuilder() {
                   {/* Difficulty Preview */}
                   {difficulty && (
                     <div className="flex items-center gap-2">
-                      <span className="text-caption text-[#52525B]">Difficulty:</span>
+                      <span className="text-caption text-text-muted">Difficulty:</span>
                       <span
                         className="text-caption font-mono uppercase px-3 py-1 rounded-full"
                         style={{
@@ -1329,8 +1329,8 @@ export default function PersonaBuilder() {
                   {/* Scenario */}
                   {scenario && (
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-caption text-[#52525B]">Scenario:</span>
-                      <span className="text-caption text-[#A1A1AA]">{scenario}</span>
+                      <span className="text-caption text-text-muted">Scenario:</span>
+                      <span className="text-caption text-text-secondary">{scenario}</span>
                     </div>
                   )}
                 </div>
