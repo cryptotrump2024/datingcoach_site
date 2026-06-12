@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import AuthGuard from './components/AuthGuard'
 import ScrollToTop from './components/ScrollToTop'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const PersonaBuilder = lazy(() => import('./pages/PersonaBuilder'))
 const Conversation = lazy(() => import('./pages/Conversation'))
@@ -21,6 +22,8 @@ const About = lazy(() => import('./pages/About'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Careers = lazy(() => import('./pages/Careers'))
+const Scenarios = lazy(() => import('./pages/Scenarios'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 function PageLoader() {
   return (
@@ -34,8 +37,9 @@ export default function App() {
   return (
     <Layout>
       <ScrollToTop />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
+      <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<PersonaBuilder />} />
           <Route path="/chat" element={<Conversation />} />
@@ -60,8 +64,11 @@ export default function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/careers" element={<Careers />} />
-        </Routes>
-      </Suspense>
+          <Route path="/scenarios" element={<Scenarios />} />
+          <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </Layout>
   )
 }
