@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OG Image Generator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 50%, #0D0D1A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', -apple-system, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+    .glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+    }
+    .glow-2 {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+      bottom: -50px;
+      left: -50px;
+    }
+    .content {
+      text-align: center;
+      z-index: 1;
+      padding: 60px;
+    }
+    .logo {
+      font-size: 72px;
+      font-weight: 700;
+      color: #D4AF37;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+    }
+    .logo span { color: #FFFFFF; }
+    .tagline {
+      font-size: 32px;
+      color: #E0E0E0;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      margin-bottom: 40px;
+    }
+    .cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #D4AF37, #F4D03F);
+      color: #0A0A0F;
+      padding: 16px 48px;
+      border-radius: 50px;
+      font-size: 20px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .url {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="glow-2"></div>
+  <div class="content">
+    <div class="logo">Dating<span>Coach</span></div>
+    <div class="tagline">Master the Conversation. Win the Date.</div>
+    <div class="cta">Start Practicing Free</div>
+  </div>
+  <div class="url">datingcoach.site</div>
+</body>
+</html>
