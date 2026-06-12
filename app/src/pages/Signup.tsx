@@ -343,17 +343,17 @@ export default function Signup() {
                   onChange={(e) => setAgreed(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border border-[rgba(255,255,255,0.12)] bg-bg-tertiary peer-checked:bg-[#E11D48] peer-checked:border-[#E11D48] transition-all duration-200 flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border border-stone-300 bg-white peer-checked:bg-[#E11D48] peer-checked:border-[#E11D48] transition-all duration-200 flex items-center justify-center">
                   {agreed && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                 </div>
               </div>
               <span className="text-body-sm text-text-secondary leading-relaxed">
                 I agree to the{' '}
-                <Link to="#" className="text-[#BE123C] hover:text-[#E11D48] transition-colors">
+                <Link to="/terms" className="text-[#BE123C] hover:text-[#E11D48] transition-colors">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link to="#" className="text-[#BE123C] hover:text-[#E11D48] transition-colors">
+                <Link to="/privacy" className="text-[#BE123C] hover:text-[#E11D48] transition-colors">
                   Privacy Policy
                 </Link>
               </span>

@@ -10,7 +10,6 @@ import {
   LogOut,
   Crown,
   Home,
-  BookOpen,
   CreditCard,
   Target,
   Flame,
@@ -164,7 +163,7 @@ export default function Navbar() {
             )}
             <Link
               to="/create"
-              className="flex items-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-5 py-2.5 rounded-full"
+              className="flex items-center gap-2 btn-gradient text-body-sm font-semibold px-5 py-2.5 rounded-full"
             >
               Start Practice
               <MessageCircle className="w-4 h-4" />
@@ -229,7 +228,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/signup"
-                  className="flex items-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-5 py-2.5 rounded-full"
+                  className="flex items-center gap-2 btn-gradient text-body-sm font-semibold px-5 py-2.5 rounded-full"
                 >
                   Sign Up
                 </Link>
@@ -275,7 +274,7 @@ export default function Navbar() {
               <Link
                 to="/create"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 btn-gradient text-text-primary text-body-sm font-semibold px-6 py-3.5 rounded-full w-full min-h-[56px]"
+                className="flex items-center justify-center gap-2 btn-gradient text-body-sm font-semibold px-6 py-3.5 rounded-full w-full min-h-[56px]"
               >
                 Start Practice
                 <MessageCircle className="w-4 h-4" />

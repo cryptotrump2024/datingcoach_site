@@ -336,7 +336,8 @@ export function generateResponse(
   persona: Persona,
   userMessage: string,
   currentPhase: number,
-  messageCount: number
+  messageCount: number,
+  recentReplies: string[] = []
 ): GenerateResponseResult {
   const archetype = archetypeResponses[persona.archetype] || archetypeResponses['The Girl Next Door']
   const difficulty = persona.difficulty
@@ -374,8 +375,11 @@ export function generateResponse(
     }
   }
 
-  // Pick response, trying to avoid repetition
-  const message = responsePool[Math.floor(Math.random() * responsePool.length)]
+  // Pick response, avoiding anything she already said this conversation
+  const fresh = responsePool.filter((r) => !recentReplies.includes(r))
+  const freshRapport = archetype.rapport.filter((r) => !recentReplies.includes(r))
+  const pickFrom = fresh.length > 0 ? fresh : freshRapport.length > 0 ? freshRapport : responsePool
+  const message = pickFrom[Math.floor(Math.random() * pickFrom.length)]
 
   // Calculate delay based on message length and difficulty
   const baseDelay = 1000 + message.length * 30

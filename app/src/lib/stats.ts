@@ -76,7 +76,13 @@ export function computeDashboardStats(conversations: Conversation[]): DashboardS
   const buckets = new Map<string, { total: number; samples: number }>()
   for (const skill of Object.values(PHASE_TO_SKILL)) buckets.set(skill, { total: 0, samples: 0 })
   for (const c of completed) {
-    const phasedReplies = c.messages.filter((m) => m.role === 'assistant' && m.phase)
+    // Pair each analysis with the persona reply it accompanied. Replies sent
+    // before the user's first message (scripted drill openers) produce no
+    // analysis, so pairing starts after the first user turn.
+    const firstUserIdx = c.messages.findIndex((m) => m.role === 'user')
+    const phasedReplies = c.messages.filter(
+      (m, idx) => m.role === 'assistant' && m.phase && (firstUserIdx === -1 || idx > firstUserIdx)
+    )
     c.analyses.forEach((analysis, i) => {
       const phase = phasedReplies[i]?.phase ?? phasedReplies[phasedReplies.length - 1]?.phase
       const skill = PHASE_TO_SKILL[phase ?? ''] ?? 'Openers'

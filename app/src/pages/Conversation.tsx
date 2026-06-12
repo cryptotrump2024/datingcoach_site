@@ -444,7 +444,8 @@ export default function Conversation() {
       }
 
       setAIStatus(getAIEngineStatus())
-      const result = generateResponse(persona, trimmed, currentPhase, userMessageCount)
+      const recentReplies = messages.filter((m) => m.role === 'assistant').map((m) => m.content)
+      const result = generateResponse(persona, trimmed, currentPhase, userMessageCount, recentReplies)
       return {
         message: result.message,
         delay: result.delay,
@@ -769,9 +770,10 @@ export default function Conversation() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowEndConfirm(true)}
+            aria-label="End conversation"
             className="w-9 h-9 flex items-center justify-center rounded-full text-text-secondary hover:text-[#EF4444] hover:bg-[rgba(239,68,68,0.1)] transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" aria-hidden="true" />
           </motion.button>
         </div>
       </motion.div>

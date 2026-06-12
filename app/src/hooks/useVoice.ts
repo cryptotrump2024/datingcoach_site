@@ -64,7 +64,9 @@ export function useVoice(onTranscript: (text: string) => void): UseVoiceResult {
   )
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null)
   const onTranscriptRef = useRef(onTranscript)
-  onTranscriptRef.current = onTranscript
+  useEffect(() => {
+    onTranscriptRef.current = onTranscript
+  }, [onTranscript])
 
   const setVoiceEnabled = useCallback(
     (on: boolean) => {
@@ -121,7 +123,7 @@ export function useVoice(onTranscript: (text: string) => void): UseVoiceResult {
       if (!ttsSupported) return
       const utterance = new SpeechSynthesisUtterance(
         // strip emoji so the synthesizer doesn't read them out
-        text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '').trim()
+        text.replace(/\p{Extended_Pictographic}/gu, '').replace(/️/g, '').trim()
       )
       const voice = pickVoice()
       if (voice) utterance.voice = voice
