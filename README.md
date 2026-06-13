@@ -34,30 +34,54 @@ The app runs fully without any environment variables (offline practice engine + 
 Copy `app/.env.example` to `app/.env.local` and fill in what you have. Mirror the same values in
 **Vercel → Project → Settings → Environment Variables** for production.
 
+The public `VITE_SUPABASE_*` values are committed in `app/.env.production` so cloud auth works on
+the deployed build without any dashboard config. All **server secrets** below must be set in the
+Vercel project settings (Environment Variables) — they are never committed.
+
 | Variable | Where used | Purpose |
 | --- | --- | --- |
-| `VITE_SUPABASE_URL` | client | Supabase project URL (enables real accounts + cloud sync) |
-| `VITE_SUPABASE_ANON_KEY` | client | Supabase publishable/anon key (safe to expose; RLS protects data) |
-| `ANTHROPIC_API_KEY` | server only | Enables the live AI engine via `/api` functions |
-| `ANTHROPIC_CHAT_MODEL` | server only | Optional override (default `claude-haiku-4-5`) |
-| `ANTHROPIC_ANALYSIS_MODEL` | server only | Optional override (default `claude-sonnet-4-6`) |
-| `SUPABASE_DB_URL` | local script only | Postgres connection string for `npm run apply-schema` |
-| `SUPABASE_SECRET_KEY` | server only | Reserved for future server functions — never expose |
+| `VITE_SUPABASE_URL` | client (committed) | Supabase project URL — real accounts + cloud sync |
+| `VITE_SUPABASE_ANON_KEY` | client (committed) | Supabase publishable key (safe to expose; RLS protects data) |
+| `ANTHROPIC_API_KEY` | **Vercel** | Live AI via Anthropic |
+| `OPENROUTER_API_KEY` | **Vercel** | Live AI via OpenRouter (any model — GPT, Gemini, Llama, Claude…) |
+| `AI_PRIMARY` | **Vercel** | Which provider to try first: `anthropic` or `openrouter` (the other is the backup) |
+| `OPENROUTER_CHAT_MODEL` | **Vercel** | Optional (default `openai/gpt-4o-mini`) |
+| `OPENROUTER_ANALYSIS_MODEL` | **Vercel** | Optional vision model (default `openai/gpt-4o-mini`) |
+| `ANTHROPIC_CHAT_MODEL` / `ANTHROPIC_ANALYSIS_MODEL` | **Vercel** | Optional (defaults `claude-haiku-4-5` / `claude-sonnet-4-6`) |
+| `STRIPE_SECRET_KEY` | **Vercel** | Enables real Stripe Checkout (test or live key) |
+| `STRIPE_WEBHOOK_SECRET` | **Vercel** | Verifies Stripe webhooks → upgrades the user's plan |
+| `SUPABASE_SECRET_KEY` | **Vercel** | Server-only; the Stripe webhook uses it to update plans (bypasses RLS) |
+| `SUPABASE_DB_URL` | local only | Postgres string for `npm run apply-schema` (never in Vercel) |
 
-## Supabase setup (one-time)
+The AI engine tries providers in `AI_PRIMARY` order, falling through to the other on failure, then
+to the built-in offline practice engine. Configure either Anthropic or OpenRouter (or both).
 
-1. Create a project at [supabase.com](https://supabase.com) and grab the URL + publishable key.
-2. Apply the database schema: `cd app && npm run apply-schema` (uses `SUPABASE_DB_URL`), or paste
-   `supabase/schema.sql` into the Supabase SQL editor.
-3. Optional: enable the Google provider (Authentication → Providers) for one-tap sign-in.
-4. **Security:** rotate your keys (Settings → API) if they were ever shared in plaintext.
+## Supabase setup
+
+The schema is **already applied** to the configured project (`profiles`, `conversations`,
+`profile_analyses`, `user_progress`, all with owner-only RLS + a signup trigger). To re-apply or set
+up a fresh project: `cd app && npm run apply-schema` (uses `SUPABASE_DB_URL`), or paste
+`supabase/schema.sql` into the Supabase SQL editor ("Success. No rows returned" = applied).
+
+- **Email confirmation** is currently ON, so new signups must confirm by email before logging in.
+  Turn it off for frictionless testing: Supabase → Authentication → Providers → Email → disable
+  "Confirm email".
+- **Google sign-in:** enable the Google provider (Authentication → Providers) for the button to work.
+- **Security:** rotate keys (Settings → API) — they were shared in plaintext during setup.
 
 ## Deploy (Vercel)
 
-- Project root: `app/` — framework preset **Vite**. `app/vercel.json` provides SPA rewrites that
-  keep `/api/*` routed to the serverless functions.
-- Set the environment variables above. Without `ANTHROPIC_API_KEY` the site still works using the
-  offline practice engine; with it, conversations and profile analysis use live AI.
+This repo's app lives in `app/`. To deploy a fresh test URL:
+
+1. Vercel → **Add New Project** → import `cryptotrump2024/datingcoach_site`.
+2. Set **Root Directory = `app`**, Framework preset **Vite**. `app/vercel.json` provides the SPA
+   rewrites that keep `/api/*` routed to the serverless functions.
+3. Add the server-secret env vars from the table above (at minimum `OPENROUTER_API_KEY` +
+   `AI_PRIMARY=openrouter` for live AI). Redeploy.
+
+Without any AI key the deployed site still works fully on the offline practice engine; without
+Stripe keys the Pricing page uses a demo upgrade. Cloud auth + sync work out of the box (public
+Supabase keys are baked into the build).
 
 ## Repository layout
 

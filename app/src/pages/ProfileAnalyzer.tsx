@@ -59,11 +59,14 @@ async function fileToApiImage(
 
 // Overlay the live AI result onto the locally generated analysis shape.
 function mergeAnalysisWithAI(base: AnalysisResult, ai: ProfileResponse): AnalysisResult {
+  // overallScore + comparison bars are 0-100; the sub-score bars are 0-10.
+  const to10 = (n: number) => Math.round(Math.min(100, Math.max(0, n)) / 10)
   return {
     ...base,
     overallScore: ai.overallScore,
-    photoScore: ai.photoScore,
-    bioScore: ai.bioScore,
+    photoScore: to10(ai.photoScore),
+    bioScore: to10(ai.bioScore),
+    communicationScore: to10(ai.overallScore),
     verdict: ai.firstImpression,
     photoAnalysis: {
       ...base.photoAnalysis,

@@ -16,28 +16,42 @@ What shipped in the v2 overhaul and what comes next. Strategy details live in
 - Voice practice mode (speech-to-text input, spoken persona replies)
 - BrowserRouter + clean URLs, error boundary, 404, unit tests, README
 
-## 🔜 Next up (launch blockers)
+## ✅ Now done (was: launch blockers)
 
-1. **Apply the database schema** — `cd app && npm run apply-schema` (or paste
-   `supabase/schema.sql` into the Supabase SQL editor). Until then the app
-   runs local-first.
-2. **Set production env vars in Vercel** — `VITE_SUPABASE_URL`,
-   `VITE_SUPABASE_ANON_KEY`, `ANTHROPIC_API_KEY`.
-3. **Rotate exposed credentials** — the Supabase keys/DB password and the
-   GitHub PAT were shared in chat during development; rotate both before
-   serious launch.
-4. **Enable Google OAuth** in Supabase (Authentication → Providers) so the
-   "Continue with Google" button works in production.
-5. **Email confirmation flow** — decide whether to require it (Supabase
-   default: on). The UI already surfaces the "check your email" state.
+- **Database schema applied** to the live Supabase project — verified: tables +
+  signup trigger work (admin-creating a user auto-creates its profile row).
+- **AI engine** — OpenRouter wired and verified live (`gpt-4o-mini`), Anthropic
+  supported, configurable order + offline fallback.
+- **Stripe payments** built (env-gated, test-mode ready) — checkout + webhook +
+  Pricing wiring, with a demo upgrade fallback.
+- **Pre-confirmed demo login** for testing cloud mode:
+  `datingcoach.demo.1781320938@gmail.com` / `Sunset-Harbor-99`.
 
-## 💳 Payments (next major feature)
+## 🔜 To go live
 
-- Stripe Checkout for Pro/Advanced (monthly + annual), webhook → update
-  `profiles.plan` and `credits`
+1. **Deploy** — import `cryptotrump2024/datingcoach_site` as a Vercel project
+   with Root Directory = `app` (see README → Deploy). The existing `datingcoach`
+   Vercel project is wired to a *different* repo (an Expo build) — don't reuse it
+   without repointing its git connection + build settings.
+2. **Add server-secret env vars in Vercel** — `OPENROUTER_API_KEY` (+
+   `AI_PRIMARY=openrouter`) for live AI; `STRIPE_SECRET_KEY` +
+   `STRIPE_WEBHOOK_SECRET` for real payments; `SUPABASE_SECRET_KEY` for webhook
+   plan updates. The Vercel MCP can't set these — add them in the dashboard.
+3. **Rotate exposed credentials** — the OpenRouter key, Supabase keys/DB
+   password, and GitHub PAT were shared in chat. Rotate before serious launch
+   (and update `app/.env.production` if the Supabase publishable key changes).
+4. **Enable Google OAuth** and decide on **email confirmation** in Supabase
+   (currently ON — turn off for frictionless signup testing).
+5. **Register the Stripe webhook** → `https://<domain>/api/stripe-webhook` for
+   `checkout.session.completed`.
+
+## 💳 Payments — remaining
+
+- Switch Stripe from test to live keys; create real Products/Prices (current
+  build uses inline `price_data`, which is fine but per-session)
 - Credit packs as one-time purchases
-- Crypto checkout (the pricing UI already advertises it) via Coinbase Commerce
-  or strike it from the copy
+- Crypto checkout (the pricing UI advertises it) via Coinbase Commerce, or strike
+  it from the copy
 - RevenueCat once mobile apps exist (see `docs/DatingCoach_Mobile_App_Plan.md`)
 
 ## 📱 Mobile app
