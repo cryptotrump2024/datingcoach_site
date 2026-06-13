@@ -1,11 +1,5 @@
-import {
-  callClaudeJson,
-  ClaudeError,
-  fallbackResponse,
-  getApiKey,
-  json,
-  type ContentBlockParam,
-} from './_lib/anthropic'
+import { fallbackResponse, json, type ContentBlockParam } from './_lib/anthropic'
+import { anyProviderConfigured, generateJson } from './_lib/ai-provider'
 import { buildProfileSystemPrompt } from './_lib/prompts'
 import {
   profileOutputJsonSchema,
@@ -13,15 +7,12 @@ import {
   profileResponseSchema,
 } from './_lib/schemas'
 
-const ANALYSIS_MODEL = process.env.ANTHROPIC_ANALYSIS_MODEL || 'claude-sonnet-4-6'
-
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
     return json({ error: 'Method not allowed' }, 405)
   }
 
-  const apiKey = getApiKey()
-  if (!apiKey) {
+  if (!anyProviderConfigured()) {
     return fallbackResponse('AI engine not configured')
   }
 
@@ -55,8 +46,8 @@ export default async function handler(req: Request): Promise<Response> {
   })
 
   try {
-    const raw = await callClaudeJson(apiKey, {
-      model: ANALYSIS_MODEL,
+    const { data: raw } = await generateJson({
+      kind: 'analysis',
       system: buildProfileSystemPrompt(),
       messages: [{ role: 'user', content }],
       maxTokens: 1500,
@@ -74,10 +65,7 @@ export default async function handler(req: Request): Promise<Response> {
       return fallbackResponse('Model returned unexpected shape')
     }
     return json(validated.data)
-  } catch (err) {
-    if (err instanceof ClaudeError) {
-      return fallbackResponse(err.message)
-    }
+  } catch {
     return fallbackResponse('AI engine error')
   }
 }

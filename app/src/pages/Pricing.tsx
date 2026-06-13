@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'sonner'
 import {
   Check,
   X,
@@ -154,13 +155,14 @@ const cryptoWallets: Record<CryptoOption, { name: string; symbol: string; addres
 
 export default function Pricing() {
   const navigate = useNavigate()
-  const { isAuthenticated, updatePlan } = useAuth()
+  const { isAuthenticated, updatePlan, user } = useAuth()
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('annual')
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoOption>('usdt')
   const [copiedAddress, setCopiedAddress] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
+  const [processing, setProcessing] = useState(false)
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(cryptoWallets[selectedCrypto].address)
@@ -181,12 +183,40 @@ export default function Pricing() {
     window.scrollTo({ top: document.body.scrollHeight * 0.5, behavior: 'smooth' })
   }
 
-  const handleConfirmPayment = () => {
+  const handleConfirmPayment = async () => {
     const plan = selectedPlan?.toLowerCase() as 'pro' | 'advanced'
-    if (plan) {
-      updatePlan(plan)
-      navigate('/dashboard')
+    if (!plan || processing) return
+    setProcessing(true)
+
+    // Try real Stripe Checkout; fall back to demo upgrade if not configured.
+    try {
+      const res = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan,
+          billing: billingPeriod,
+          userId: user?.id,
+          email: user?.email,
+        }),
+      })
+      if (res.ok) {
+        const data = (await res.json()) as { url?: string }
+        if (data.url) {
+          window.location.href = data.url
+          return
+        }
+      }
+    } catch {
+      /* fall through to demo mode */
     }
+
+    updatePlan(plan)
+    toast.success(`Upgraded to ${plan} — demo mode`, {
+      description: 'Add Stripe keys in Vercel to take real payments.',
+    })
+    navigate('/dashboard')
+    setProcessing(false)
   }
 
   return (
@@ -509,15 +539,19 @@ export default function Pricing() {
 
                         {/* Submit */}
                         <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                          whileHover={processing ? {} : { scale: 1.02 }}
+                          whileTap={processing ? {} : { scale: 0.98 }}
                           onClick={handleConfirmPayment}
-                          className="w-full py-3.5 rounded-xl btn-gradient text-text-primary font-semibold text-body cursor-pointer"
+                          disabled={processing}
+                          className="w-full py-3.5 rounded-xl btn-gradient text-white font-semibold text-body cursor-pointer disabled:opacity-60"
                         >
-                          Pay ${billingPeriod === 'monthly'
-                            ? tiers.find((t) => t.name === selectedPlan)?.priceMonthly.toFixed(2)
-                            : tiers.find((t) => t.name === selectedPlan)?.priceAnnual.toFixed(2)}
-                          {billingPeriod === 'monthly' ? '/month' : '/month (billed annually)'}
+                          {processing
+                            ? 'Starting checkout…'
+                            : `Pay $${
+                                billingPeriod === 'monthly'
+                                  ? tiers.find((t) => t.name === selectedPlan)?.priceMonthly.toFixed(2)
+                                  : tiers.find((t) => t.name === selectedPlan)?.priceAnnual.toFixed(2)
+                              }${billingPeriod === 'monthly' ? '/month' : '/month (billed annually)'}`}
                         </motion.button>
                       </div>
                     </motion.div>

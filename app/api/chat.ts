@@ -1,16 +1,14 @@
-import { callClaudeJson, ClaudeError, fallbackResponse, getApiKey, json } from './_lib/anthropic'
+import { fallbackResponse, json } from './_lib/anthropic'
+import { anyProviderConfigured, generateJson } from './_lib/ai-provider'
 import { buildChatSystemPrompt } from './_lib/prompts'
 import { chatOutputJsonSchema, chatRequestSchema, chatResponseSchema } from './_lib/schemas'
-
-const CHAT_MODEL = process.env.ANTHROPIC_CHAT_MODEL || 'claude-haiku-4-5'
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
     return json({ error: 'Method not allowed' }, 405)
   }
 
-  const apiKey = getApiKey()
-  if (!apiKey) {
+  if (!anyProviderConfigured()) {
     return fallbackResponse('AI engine not configured')
   }
 
@@ -29,19 +27,22 @@ export default async function handler(req: Request): Promise<Response> {
   // conversation, anchor it with a synthetic user turn.
   const messages = [...body.messages]
   if (messages[0].role === 'assistant') {
-    messages.unshift({ role: 'user', content: '(You matched. She is about to see your profile — the conversation begins.)' })
+    messages.unshift({
+      role: 'user',
+      content: '(You matched. She is about to see your profile — the conversation begins.)',
+    })
   }
 
   try {
-    const raw = await callClaudeJson(apiKey, {
-      model: CHAT_MODEL,
+    const { data: raw } = await generateJson({
+      kind: 'chat',
       system: buildChatSystemPrompt(body),
       messages,
       maxTokens: 800,
       jsonSchema: chatOutputJsonSchema,
     })
 
-    // Clamp score defensively before validation (schema can't express min/max).
+    // Clamp score/phase defensively before validation (schema can't express min/max).
     const candidate = raw as { analysis?: { score?: number }; suggestedPhase?: number }
     if (candidate?.analysis && typeof candidate.analysis.score === 'number') {
       candidate.analysis.score = Math.min(5, Math.max(1, Math.round(candidate.analysis.score)))
@@ -55,10 +56,7 @@ export default async function handler(req: Request): Promise<Response> {
       return fallbackResponse('Model returned unexpected shape')
     }
     return json(validated.data)
-  } catch (err) {
-    if (err instanceof ClaudeError) {
-      return fallbackResponse(err.message)
-    }
+  } catch {
     return fallbackResponse('AI engine error')
   }
 }
